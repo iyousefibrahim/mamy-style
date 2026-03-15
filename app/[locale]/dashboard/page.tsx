@@ -1,0 +1,56 @@
+import { getTranslations } from "next-intl/server"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator"
+import { StatsCards } from "@/features/dashboard/components/overview/StatsCards"
+import { ProductsByCategoryChart } from "@/features/dashboard/components/overview/ProductsByCategoryChart"
+import { StockByCategoryChart } from "@/features/dashboard/components/overview/StockByCategoryChart"
+import { LowStockAlert } from "@/features/dashboard/components/overview/LowStockAlert"
+import { NewProductsChart } from "@/features/dashboard/components/overview/NewProductsChart"
+import { FastActions } from "@/features/dashboard/components/overview/FastActions"
+import { mockCurrentUser } from "@/lib/mock/users"
+
+function getGreeting(t: (key: string) => string) {
+  const hour = new Date().getHours()
+  if (hour < 12) return t("greetingMorning")
+  if (hour < 17) return t("greetingAfternoon")
+  return t("greetingEvening")
+}
+
+export default async function DashboardPage() {
+  const t = await getTranslations("dashboard.overview")
+  const firstName = mockCurrentUser.full_name.split(" ")[0]
+
+  return (
+    <div className="flex flex-col">
+      {/* Header */}
+      <div className="flex items-center gap-2 px-6 pt-4 pb-6">
+        <SidebarTrigger className="-ms-1" />
+        <Separator orientation="vertical" className="h-4" />
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">
+            {getGreeting(t)}, {firstName}
+          </p>
+        </div>
+      </div>
+
+      <div className="px-6 pb-8 space-y-6">
+        {/* Stats */}
+        <StatsCards />
+
+        {/* Charts row */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <ProductsByCategoryChart />
+          <StockByCategoryChart />
+          <LowStockAlert />
+        </div>
+
+        {/* Area chart full width */}
+        <NewProductsChart />
+
+        {/* Fast actions */}
+        <FastActions />
+      </div>
+    </div>
+  )
+}
