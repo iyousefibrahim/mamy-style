@@ -16,6 +16,11 @@ function getGreeting(t: (key: string) => string) {
   return t("greetingEvening")
 }
 
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard.overview")
+  return { title: t("title") }
+}
+
 export default async function DashboardPage() {
   const t = await getTranslations("dashboard.overview")
   const firstName = mockCurrentUser.full_name.split(" ")[0]

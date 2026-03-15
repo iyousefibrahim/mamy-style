@@ -5,6 +5,11 @@ import { buttonVariants } from "@/components/ui/button-variants"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { ProductForm } from "@/features/dashboard/components/products/ProductForm"
 
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard.products")
+  return { title: t("createTitle") }
+}
+
 export default async function CreateProductPage() {
   const t = await getTranslations("dashboard.products")
   const tc = await getTranslations("dashboard.nav")

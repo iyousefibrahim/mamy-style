@@ -7,6 +7,11 @@ import { ProfileForm } from "@/features/dashboard/components/settings/ProfileFor
 import { SecurityForm } from "@/features/dashboard/components/settings/SecurityForm"
 import { mockCurrentUser } from "@/lib/mock/users"
 
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard.settings")
+  return { title: t("title") }
+}
+
 export default async function ProfileSettingsPage() {
   const t = await getTranslations("dashboard.settings")
   const tc = await getTranslations("dashboard.nav")

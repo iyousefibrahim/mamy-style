@@ -9,6 +9,13 @@ import { mockProducts } from "@/lib/mock/products"
 
 type Props = { params: Promise<{ id: string }> }
 
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params
+  const product = mockProducts.find((p) => p.id === id)
+  const t = await getTranslations("dashboard.products")
+  return { title: product ? `${t("editTitle")} — ${product.name}` : t("editTitle") }
+}
+
 export default async function EditProductPage({ params }: Props) {
   const { id } = await params
   const t = await getTranslations("dashboard.products")

@@ -27,11 +27,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { cn } from "@/lib/utils"
 import { ImageUploadZone } from "./ImageUploadZone"
 import { GalleryUploadZone } from "./GalleryUploadZone"
 import { createProductSchema, type CreateProductFormValues } from "../../types"
 import { mockCategories } from "@/lib/mock/categories"
 import type { MockProduct } from "@/lib/mock/products"
+
+const SIZES = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "freeSize"] as const
 
 type Props = {
   defaultValues?: Partial<MockProduct>
@@ -47,10 +50,13 @@ export function ProductForm({ defaultValues, mode }: Props) {
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>(
     defaultValues?.gallery_urls ?? []
   )
-  const [variantName, setVariantName] = useState("")
-  const [variantValue, setVariantValue] = useState("")
-  const [variants, setVariants] = useState<{ name: string; values: string[] }[]>(
-    defaultValues?.variants ?? []
+  const [colorHex, setColorHex] = useState("#7c1033")
+  const [colorName, setColorName] = useState("")
+  const [colors, setColors] = useState<{ name: string; hex: string }[]>(
+    defaultValues?.colors ?? []
+  )
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(
+    defaultValues?.sizes ?? []
   )
 
   const form = useForm<CreateProductFormValues>({
@@ -64,6 +70,7 @@ export function ProductForm({ defaultValues, mode }: Props) {
       brand: defaultValues?.brand ?? "",
       publish_status: defaultValues?.publish_status ?? "draft",
       is_active: defaultValues ? defaultValues.status === "active" : true,
+      is_featured: defaultValues?.is_featured ?? false,
       discount_percentage: defaultValues?.discount_percentage ?? 0,
       discount_value: defaultValues?.discount_value ?? 0,
       discount_valid_until: defaultValues?.discount_valid_until ?? "",
@@ -73,20 +80,23 @@ export function ProductForm({ defaultValues, mode }: Props) {
   const watchedName = form.watch("name")
   const watchedDesc = form.watch("description")
 
-  function addVariant() {
-    if (!variantName.trim() || !variantValue.trim()) return
-    const values = variantValue.split(",").map((v) => v.trim()).filter(Boolean)
-    const existing = variants.find((v) => v.name === variantName)
-    if (existing) {
-      setVariants(variants.map((v) => v.name === variantName ? { ...v, values: [...v.values, ...values] } : v))
-    } else {
-      setVariants([...variants, { name: variantName, values }])
-    }
-    setVariantValue("")
+  function addColor() {
+    if (!colorName.trim()) return
+    if (colors.find((c) => c.name === colorName)) return
+    setColors([...colors, { name: colorName, hex: colorHex }])
+    setColorName("")
   }
 
-  function removeVariant(name: string) {
-    setVariants(variants.filter((v) => v.name !== name))
+  function removeColor(name: string) {
+    setColors(colors.filter((c) => c.name !== name))
+  }
+
+  function toggleSize(size: string) {
+    setSelectedSizes(
+      selectedSizes.includes(size)
+        ? selectedSizes.filter((s) => s !== size)
+        : [...selectedSizes, size]
+    )
   }
 
   function onSubmit(_values: CreateProductFormValues) {
@@ -103,7 +113,7 @@ export function ProductForm({ defaultValues, mode }: Props) {
             {/* Basic Info */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Basic Information</CardTitle>
+                <CardTitle className="text-base">{t("basicInfo")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <FormField
@@ -286,57 +296,83 @@ export function ProductForm({ defaultValues, mode }: Props) {
               </CardContent>
             </Card>
 
-            {/* Variants */}
+            {/* Colors */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">{t("variants")}</CardTitle>
+                <CardTitle className="text-base">{t("colors")}</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <Input
-                    placeholder={t("variantNamePlaceholder")}
-                    value={variantName}
-                    onChange={(e) => setVariantName(e.target.value)}
+              <CardContent className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={colorHex}
+                    onChange={(e) => setColorHex(e.target.value)}
+                    className="h-9 w-10 cursor-pointer rounded-md border border-input bg-background p-0.5"
                   />
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder={t("variantValuePlaceholder")}
-                      value={variantValue}
-                      onChange={(e) => setVariantValue(e.target.value)}
-                    />
-                    <Button type="button" variant="outline" onClick={addVariant}>
-                      <Plus className="size-4" />
-                    </Button>
-                  </div>
+                  <Input
+                    placeholder={t("colorNamePlaceholder")}
+                    value={colorName}
+                    onChange={(e) => setColorName(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addColor())}
+                  />
+                  <Button type="button" variant="outline" onClick={addColor}>
+                    <Plus className="size-4" />
+                  </Button>
                 </div>
-                {variants.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">{t("noVariants")}</p>
+                {colors.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">{t("noColors")}</p>
                 ) : (
-                  <div className="space-y-2">
-                    {variants.map((v) => (
-                      <div key={v.name} className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-medium">{v.name}:</span>
-                        {v.values.map((val) => (
-                          <span
-                            key={val}
-                            className="rounded-full bg-muted px-2.5 py-0.5 text-xs"
-                          >
-                            {val}
-                          </span>
-                        ))}
-                        <Button
+                  <div className="flex flex-wrap gap-2">
+                    {colors.map((c) => (
+                      <span
+                        key={c.name}
+                        className="flex items-center gap-1.5 rounded-full border bg-muted px-3 py-1 text-xs"
+                      >
+                        <span
+                          className="size-3 rounded-full border border-black/10"
+                          style={{ backgroundColor: c.hex }}
+                        />
+                        {c.name}
+                        <button
                           type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="size-5 ms-auto"
-                          onClick={() => removeVariant(v.name)}
+                          onClick={() => removeColor(c.name)}
+                          className="ms-0.5 opacity-60 hover:opacity-100"
                         >
                           <X className="size-3" />
-                        </Button>
-                      </div>
+                        </button>
+                      </span>
                     ))}
                   </div>
                 )}
+              </CardContent>
+            </Card>
+
+            {/* Sizes */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{t("sizes")}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {selectedSizes.length === 0 && (
+                  <p className="mb-3 text-sm text-muted-foreground">{t("noSizes")}</p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {SIZES.map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      onClick={() => toggleSize(size)}
+                      className={cn(
+                        "rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
+                        selectedSizes.includes(size)
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-input bg-background hover:bg-muted"
+                      )}
+                    >
+                      {size === "freeSize" ? t("freeSize") : size}
+                    </button>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -348,7 +384,7 @@ export function ProductForm({ defaultValues, mode }: Props) {
               <CardHeader>
                 <CardTitle className="text-base">{t("visibility")}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
                 <FormField
                   control={form.control}
                   name="is_active"
@@ -361,6 +397,24 @@ export function ProductForm({ defaultValues, mode }: Props) {
                         />
                       </FormControl>
                       <FormLabel className="font-normal">{tc("active")}</FormLabel>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="is_featured"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-2 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div>
+                        <FormLabel className="font-normal">{t("featured")}</FormLabel>
+                        <p className="text-xs text-muted-foreground">{t("featuredDesc")}</p>
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -424,11 +478,15 @@ export function ProductForm({ defaultValues, mode }: Props) {
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">{t("variants")}</p>
+                  <p className="text-xs text-muted-foreground">{t("colors")}</p>
+                  <p>{colors.length > 0 ? colors.map((c) => c.name).join(", ") : t("noColors")}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">{t("sizes")}</p>
                   <p>
-                    {variants.length > 0
-                      ? `${variants.length} variant(s)`
-                      : t("noVariants")}
+                    {selectedSizes.length > 0
+                      ? selectedSizes.map((s) => (s === "freeSize" ? t("freeSize") : s)).join(", ")
+                      : t("noSizes")}
                   </p>
                 </div>
               </CardContent>

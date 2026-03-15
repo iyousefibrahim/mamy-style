@@ -5,6 +5,11 @@ import { buttonVariants } from "@/components/ui/button-variants"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { CategoryForm } from "@/features/dashboard/components/categories/CategoryForm"
 
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard.categories")
+  return { title: t("createTitle") }
+}
+
 export default async function CreateCategoryPage() {
   const t = await getTranslations("dashboard.categories")
   const tc = await getTranslations("dashboard.nav")

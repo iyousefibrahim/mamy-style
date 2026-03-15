@@ -10,6 +10,13 @@ import { mockCategories } from "@/lib/mock/categories"
 
 type Props = { params: Promise<{ id: string }> }
 
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params
+  const category = mockCategories.find((c) => c.id === id)
+  const t = await getTranslations("dashboard.categories")
+  return { title: category?.name ?? t("categoryInfo") }
+}
+
 export default async function CategoryDetailPage({ params }: Props) {
   const { id } = await params
   const t = await getTranslations("dashboard.categories")

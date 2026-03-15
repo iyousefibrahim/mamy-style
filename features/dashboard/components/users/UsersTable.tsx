@@ -86,7 +86,7 @@ export function UsersTable() {
             <SelectValue placeholder={t("filterRole")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Roles</SelectItem>
+            <SelectItem value="all">{tc("allStatus")}</SelectItem>
             <SelectItem value="super-admin">{tc("superAdmin")}</SelectItem>
             <SelectItem value="admin">{tc("admin")}</SelectItem>
             <SelectItem value="customer">{tc("customer")}</SelectItem>
@@ -99,6 +99,7 @@ export function UsersTable() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>{tc("colId")}</TableHead>
               <TableHead>{t("colName")}</TableHead>
               <TableHead>{t("colEmail")}</TableHead>
               <TableHead>{t("colUsername")}</TableHead>
@@ -111,6 +112,11 @@ export function UsersTable() {
           <TableBody>
             {filtered.map((u) => (
               <TableRow key={u.id}>
+                <TableCell>
+                  <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+                    {u.id}
+                  </code>
+                </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Avatar className="size-7">

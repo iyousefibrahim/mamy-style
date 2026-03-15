@@ -2,6 +2,11 @@ import { getTranslations } from "next-intl/server"
 import { Construction } from "lucide-react"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard")
+  return { title: t("nav.orders") }
+}
+
 export default async function OrdersPage() {
   const t = await getTranslations("dashboard")
 

@@ -2,6 +2,11 @@ import { getTranslations } from "next-intl/server"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { UsersTable } from "@/features/dashboard/components/users/UsersTable"
 
+export async function generateMetadata() {
+  const t = await getTranslations("dashboard.users")
+  return { title: t("title") }
+}
+
 export default async function UsersPage() {
   const t = await getTranslations("dashboard.users")
 

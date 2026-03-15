@@ -1,5 +1,6 @@
+import type { Metadata } from "next"
 import { NextIntlClientProvider, hasLocale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { Cairo } from "next/font/google"
 import { routing } from "@/i18n/routing"
@@ -18,6 +19,17 @@ type Props = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: "common" })
+  return {
+    title: {
+      template: `%s | ${t("appName")}`,
+      default: t("appName"),
+    },
+  }
 }
 
 export default async function LocaleLayout({ children, params }: Props) {

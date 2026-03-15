@@ -132,18 +132,22 @@ export function ProfileForm() {
               </FormItem>
             )}
           />
-          <FormItem>
-            <FormLabel>{t("email")}</FormLabel>
-            <div className="relative">
-              <Mail className="absolute start-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <Input
-                className="ps-9"
-                value={mockCurrentUser.email}
-                disabled
-              />
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">{t("emailNote")}</p>
-          </FormItem>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("email")}</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Mail className="absolute start-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                    <Input className="ps-9" type="email" {...field} />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <FormField

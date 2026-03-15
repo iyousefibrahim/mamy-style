@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,6 +29,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { mockProducts, type MockProduct } from "@/lib/mock/products"
 
 const PAGE_SIZE = 10
@@ -41,6 +52,7 @@ export function ProductsTable() {
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [page, setPage] = useState(1)
+  const [deleteTarget, setDeleteTarget] = useState<MockProduct | null>(null)
 
   const filtered = mockProducts.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase())
@@ -52,7 +64,7 @@ export function ProductsTable() {
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   function formatPrice(price: number) {
-    return `${price.toLocaleString('en-US')} EGP`
+    return `${price.toLocaleString("en-US")} EGP`
   }
 
   function formatDate(iso: string) {
@@ -86,6 +98,7 @@ export function ProductsTable() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>{tc("colId")}</TableHead>
               <TableHead>{t("colName")}</TableHead>
               <TableHead>{t("colStatus")}</TableHead>
               <TableHead>{t("colStock")}</TableHead>
@@ -97,8 +110,8 @@ export function ProductsTable() {
           <TableBody>
             {paginated.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                  No products found
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -108,10 +121,11 @@ export function ProductsTable() {
                   product={p}
                   formatPrice={formatPrice}
                   formatDate={formatDate}
+                  t={t}
                   tc={tc}
                   onView={() => router.push(`/dashboard/products/${p.id}` as "/dashboard")}
                   onEdit={() => router.push(`/dashboard/products/${p.id}/edit` as "/dashboard")}
-                  onDelete={() => toast.info(tc("comingSoon"))}
+                  onDelete={() => setDeleteTarget(p)}
                 />
               ))
             )}
@@ -151,6 +165,38 @@ export function ProductsTable() {
           </Button>
         </div>
       )}
+
+      {/* Delete confirmation */}
+      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent size="sm">
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <Trash2 className="size-5 text-destructive" />
+            </AlertDialogMedia>
+            <AlertDialogTitle>{tc("deleteConfirmTitle")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {tc("deleteConfirmDesc")}
+              {deleteTarget && (
+                <span className="mt-1 block font-medium text-foreground">
+                  &ldquo;{deleteTarget.name}&rdquo;
+                </span>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => {
+                toast.info(tc("comingSoon"))
+                setDeleteTarget(null)
+              }}
+            >
+              {tc("delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
@@ -159,6 +205,7 @@ function ProductRow({
   product: p,
   formatPrice,
   formatDate,
+  t,
   tc,
   onView,
   onEdit,
@@ -167,6 +214,7 @@ function ProductRow({
   product: MockProduct
   formatPrice: (n: number) => string
   formatDate: (s: string) => string
+  t: (k: string) => string
   tc: (k: string) => string
   onView: () => void
   onEdit: () => void
@@ -174,7 +222,33 @@ function ProductRow({
 }) {
   return (
     <TableRow>
-      <TableCell className="font-medium">{p.name}</TableCell>
+      <TableCell>
+        <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+          {p.id}
+        </code>
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <span className="font-medium">{p.name}</span>
+          {p.is_featured && (
+            <Badge className="shrink-0 border-amber-400 bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400">
+              {t("featured")}
+            </Badge>
+          )}
+          {p.colors.length > 0 && (
+            <div className="flex gap-0.5">
+              {p.colors.slice(0, 4).map((c) => (
+                <span
+                  key={c.name}
+                  title={c.name}
+                  className="size-3 rounded-full border border-black/10"
+                  style={{ backgroundColor: c.hex }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </TableCell>
       <TableCell>
         <Badge variant={p.status === "active" ? "default" : "secondary"}>
           {p.status === "active" ? tc("active") : tc("inactive")}

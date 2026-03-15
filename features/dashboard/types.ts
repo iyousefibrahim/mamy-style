@@ -11,6 +11,7 @@ export const createProductSchema = z.object({
   brand: z.string().optional(),
   publish_status: z.enum(["draft", "published", "archived"]),
   is_active: z.boolean(),
+  is_featured: z.boolean(),
   discount_percentage: z.coerce.number().min(0).max(100),
   discount_value: z.coerce.number().min(0),
   discount_valid_until: z.string().optional(),

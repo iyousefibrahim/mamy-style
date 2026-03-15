@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,7 +29,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { mockCategories } from "@/lib/mock/categories"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { mockCategories, type MockCategory } from "@/lib/mock/categories"
 
 const PAGE_SIZE = 10
 
@@ -41,6 +52,7 @@ export function CategoriesTable() {
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [page, setPage] = useState(1)
+  const [deleteTarget, setDeleteTarget] = useState<MockCategory | null>(null)
 
   const filtered = mockCategories.filter((c) => {
     const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase())
@@ -80,6 +92,7 @@ export function CategoriesTable() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>{tc("colId")}</TableHead>
               <TableHead>{t("colName")}</TableHead>
               <TableHead>{t("colStatus")}</TableHead>
               <TableHead>{t("colProducts")}</TableHead>
@@ -91,13 +104,18 @@ export function CategoriesTable() {
           <TableBody>
             {paginated.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                  No categories found
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                  {tc("noResults")}
                 </TableCell>
               </TableRow>
             ) : (
               paginated.map((c) => (
                 <TableRow key={c.id}>
+                  <TableCell>
+                    <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+                      {c.id}
+                    </code>
+                  </TableCell>
                   <TableCell className="font-medium">{c.name}</TableCell>
                   <TableCell>
                     <Badge variant={c.status === "active" ? "default" : "secondary"}>
@@ -121,7 +139,7 @@ export function CategoriesTable() {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-destructive"
-                          onClick={() => toast.info(tc("comingSoon"))}
+                          onClick={() => setDeleteTarget(c)}
                         >
                           {tc("delete")}
                         </DropdownMenuItem>
@@ -156,6 +174,38 @@ export function CategoriesTable() {
           </Button>
         </div>
       )}
+
+      {/* Delete confirmation */}
+      <AlertDialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent size="sm">
+          <AlertDialogHeader>
+            <AlertDialogMedia>
+              <Trash2 className="size-5 text-destructive" />
+            </AlertDialogMedia>
+            <AlertDialogTitle>{tc("deleteConfirmTitle")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {tc("deleteConfirmDesc")}
+              {deleteTarget && (
+                <span className="mt-1 block font-medium text-foreground">
+                  &ldquo;{deleteTarget.name}&rdquo;
+                </span>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => {
+                toast.info(tc("comingSoon"))
+                setDeleteTarget(null)
+              }}
+            >
+              {tc("delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
