@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
 import { MoreHorizontal, Trash2 } from "lucide-react"
+import { formatDate } from "@/utils/formatDate"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -40,31 +41,51 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { mockCategories, type MockCategory } from "@/lib/mock/categories"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import { useCategories, useDeleteCategory } from "@/features/dashboard/hooks/useCategories"
+import { getPageItems } from "@/utils/pagination"
+import type { Category } from "@/features/dashboard/types"
 
 const PAGE_SIZE = 10
 
 export function CategoriesTable() {
   const t = useTranslations("dashboard.categories")
   const tc = useTranslations("dashboard.common")
+  const tg = useTranslations("common")
   const router = useRouter()
 
   const [search, setSearch] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all")
   const [page, setPage] = useState(1)
-  const [deleteTarget, setDeleteTarget] = useState<MockCategory | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<Category | null>(null)
 
-  const filtered = mockCategories.filter((c) => {
-    const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase())
-    const matchesStatus = statusFilter === "all" || c.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+  const { data: result, isLoading } = useCategories({ search, status: statusFilter, page })
+  const deleteCategory = useDeleteCategory()
 
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const categories = result?.data ?? []
+  const totalPages = Math.ceil((result?.total ?? 0) / PAGE_SIZE)
 
-  function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("en-GB")
+
+  function handleDelete() {
+    if (!deleteTarget) return
+    deleteCategory.mutate(deleteTarget.id, {
+      onSuccess: () => {
+        toast.success(tc("delete") + " ✓")
+        setDeleteTarget(null)
+      },
+      onError: (err) => {
+        toast.error(err.message)
+        setDeleteTarget(null)
+      },
+    })
   }
 
   return (
@@ -76,7 +97,10 @@ export function CategoriesTable() {
           onChange={(e) => { setSearch(e.target.value); setPage(1) }}
           className="max-w-xs"
         />
-        <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v ?? "all"); setPage(1) }}>
+        <Select
+          value={statusFilter}
+          onValueChange={(v) => { setStatusFilter((v ?? "all") as typeof statusFilter); setPage(1) }}
+        >
           <SelectTrigger className="w-36">
             <SelectValue />
           </SelectTrigger>
@@ -102,14 +126,20 @@ export function CategoriesTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginated.length === 0 ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                  {tg("loading")}
+                </TableCell>
+              </TableRow>
+            ) : categories.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   {tc("noResults")}
                 </TableCell>
               </TableRow>
             ) : (
-              paginated.map((c) => (
+              categories.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell>
                     <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
@@ -154,25 +184,45 @@ export function CategoriesTable() {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
-            {tc("previous")}
-          </Button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-            <Button
-              key={n}
-              variant={n === page ? "default" : "outline"}
-              size="sm"
-              className="size-8"
-              onClick={() => setPage(n)}
-            >
-              {n}
-            </Button>
-          ))}
-          <Button variant="outline" size="sm" disabled={page === totalPages} onClick={() => setPage((p) => p + 1)}>
-            {tc("next")}
-          </Button>
-        </div>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                text={tc("previous")}
+                onClick={(e) => { e.preventDefault(); setPage((p) => Math.max(1, p - 1)) }}
+                aria-disabled={page === 1}
+                className={page === 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+            {getPageItems(page, totalPages).map((item, i) =>
+              item === "ellipsis" ? (
+                <PaginationItem key={`ellipsis-${i}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={item}>
+                  <PaginationLink
+                    href="#"
+                    isActive={item === page}
+                    onClick={(e) => { e.preventDefault(); setPage(item) }}
+                  >
+                    {item}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            )}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                text={tc("next")}
+                onClick={(e) => { e.preventDefault(); setPage((p) => Math.min(totalPages, p + 1)) }}
+                aria-disabled={page === totalPages}
+                className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       )}
 
       {/* Delete confirmation */}
@@ -196,10 +246,8 @@ export function CategoriesTable() {
             <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
-              onClick={() => {
-                toast.info(tc("comingSoon"))
-                setDeleteTarget(null)
-              }}
+              disabled={deleteCategory.isPending}
+              onClick={handleDelete}
             >
               {tc("delete")}
             </AlertDialogAction>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
@@ -18,33 +18,61 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { updateProfileSchema, type UpdateProfileFormValues } from "../../types"
-import { mockCurrentUser } from "@/lib/mock/users"
+import { useCurrentProfile, useUpdateProfile } from "@/features/dashboard/hooks/useProfile"
 
 export function ProfileForm() {
   const t = useTranslations("dashboard.settings")
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(
-    mockCurrentUser.avatar_url
-  )
 
-  const [firstName, lastName] = mockCurrentUser.full_name.split(" ")
+  const { data: profile, isLoading } = useCurrentProfile()
+  const updateProfile = useUpdateProfile()
+
+  const [avatarLocalPreview, setAvatarLocalPreview] = useState<string | null>(null)
+  const avatarPreview = avatarLocalPreview ?? profile?.avatar_url ?? null
+
+  const [firstName, lastName] = (profile?.full_name ?? "").split(" ")
 
   const form = useForm<UpdateProfileFormValues>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      firstName: firstName ?? "",
-      lastName: lastName ?? "",
-      email: mockCurrentUser.email,
-      username: mockCurrentUser.username,
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
       phone: "",
     },
   })
 
+  // Populate form once profile loads
+  useEffect(() => {
+    if (!profile) return
+    const [first = "", ...rest] = profile.full_name.split(" ")
+    form.reset({
+      firstName: first,
+      lastName: rest.join(" "),
+      email: profile.email,
+      username: profile.username ?? "",
+      phone: profile.phone ?? "",
+    })
+  }, [profile, form])
+
   const initials = `${(firstName?.[0] ?? "")}${(lastName?.[0] ?? "")}`.toUpperCase()
 
-  function onSubmit(_values: UpdateProfileFormValues) {
-    toast.success(t("profileUpdated"))
+  async function onSubmit(values: UpdateProfileFormValues) {
+    updateProfile.mutate(
+      {
+        full_name: `${values.firstName} ${values.lastName}`.trim(),
+        username: values.username,
+        phone: values.phone,
+      },
+      {
+        onSuccess: () => toast.success(t("profileUpdated")),
+        onError: (err) => toast.error(err.message),
+      }
+    )
   }
+
+  if (isLoading) return null
 
   return (
     <Form {...form}>
@@ -72,7 +100,7 @@ export function ProfileForm() {
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0]
-                if (file) setAvatarPreview(URL.createObjectURL(file))
+                if (file) setAvatarLocalPreview(URL.createObjectURL(file))
               }}
             />
           </div>
@@ -141,7 +169,7 @@ export function ProfileForm() {
                 <FormControl>
                   <div className="relative">
                     <Mail className="absolute start-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                    <Input className="ps-9" type="email" {...field} />
+                    <Input className="ps-9" type="email" disabled {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -168,7 +196,7 @@ export function ProfileForm() {
         />
 
         <div className="flex justify-end">
-          <Button type="submit" variant="outline">
+          <Button type="submit" variant="outline" disabled={updateProfile.isPending}>
             {t("updateProfile")}
           </Button>
         </div>

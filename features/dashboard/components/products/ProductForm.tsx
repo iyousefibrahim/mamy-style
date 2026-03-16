@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useForm, type Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
@@ -31,13 +31,18 @@ import { cn } from "@/lib/utils"
 import { ImageUploadZone } from "./ImageUploadZone"
 import { GalleryUploadZone } from "./GalleryUploadZone"
 import { createProductSchema, type CreateProductFormValues } from "../../types"
-import { mockCategories } from "@/lib/mock/categories"
-import type { MockProduct } from "@/lib/mock/products"
+import { useCategoryOptions } from "@/features/dashboard/hooks/useCategories"
+import { useCreateProduct, useUpdateProduct } from "@/features/dashboard/hooks/useProducts"
+import { uploadProductImage } from "@/features/dashboard/api/storage"
+import type { Product } from "../../types"
 
 const SIZES = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "freeSize"] as const
+const MAX_GALLERY = 5
+
+type GalleryItem = { url: string; file?: File }
 
 type Props = {
-  defaultValues?: Partial<MockProduct>
+  defaultValues?: Product
   mode: "create" | "edit"
 }
 
@@ -46,9 +51,28 @@ export function ProductForm({ defaultValues, mode }: Props) {
   const tc = useTranslations("dashboard.common")
   const router = useRouter()
 
+  const { data: categories = [] } = useCategoryOptions()
+  const createProduct = useCreateProduct()
+  const updateProduct = useUpdateProduct()
+
+  const mainBlobRef = useRef<string | null>(null)
+  const galleryBlobsRef = useRef<Set<string>>(new Set())
+
+  // Revoke all blob URLs when the form unmounts
+  useEffect(() => {
+    const mainBlob = mainBlobRef
+    const galleryBlobs = galleryBlobsRef
+    return () => {
+      if (mainBlob.current) URL.revokeObjectURL(mainBlob.current)
+      galleryBlobs.current.forEach((url) => URL.revokeObjectURL(url))
+    }
+  }, [])
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [mainImage, setMainImage] = useState<string | null>(defaultValues?.image_url ?? null)
-  const [galleryPreviews, setGalleryPreviews] = useState<string[]>(
-    defaultValues?.gallery_urls ?? []
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null)
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(
+    (defaultValues?.gallery_urls ?? []).map((url) => ({ url }))
   )
   const [colorHex, setColorHex] = useState("#7c1033")
   const [colorName, setColorName] = useState("")
@@ -72,7 +96,6 @@ export function ProductForm({ defaultValues, mode }: Props) {
       is_active: defaultValues ? defaultValues.status === "active" : true,
       is_featured: defaultValues?.is_featured ?? false,
       discount_percentage: defaultValues?.discount_percentage ?? 0,
-      discount_value: defaultValues?.discount_value ?? 0,
       discount_valid_until: defaultValues?.discount_valid_until ?? "",
     },
   })
@@ -99,10 +122,71 @@ export function ProductForm({ defaultValues, mode }: Props) {
     )
   }
 
-  function onSubmit(_values: CreateProductFormValues) {
-    toast.success(mode === "create" ? "Product created!" : "Product updated!")
-    router.push("/dashboard/products")
+  async function onSubmit(values: CreateProductFormValues) {
+    setIsSubmitting(true)
+    try {
+      const basePayload = {
+        name: values.name,
+        description: values.description ?? null,
+        status: (values.is_active ? "active" : "inactive") as "active" | "inactive",
+        stock: values.stock,
+        price: values.price,
+        category_id: values.category_id || null,
+        brand: values.brand || null,
+        publish_status: values.publish_status,
+        discount_percentage: values.discount_percentage,
+        discount_valid_until: values.discount_valid_until || null,
+        colors,
+        sizes: selectedSizes,
+        is_featured: values.is_featured,
+      }
+
+      if (mode === "create") {
+        const created = await createProduct.mutateAsync({
+          ...basePayload,
+          image_url: null,
+          gallery_urls: [],
+        })
+
+        let image_url: string | null = null
+        if (mainImageFile) {
+          image_url = await uploadProductImage(mainImageFile, created.id, "main")
+        }
+
+        const newFiles = galleryItems.filter((i) => i.file).map((i) => i.file!)
+        const gallery_urls = await Promise.all(
+          newFiles.map((f) => uploadProductImage(f, created.id, "gallery"))
+        )
+
+        if (image_url !== null || gallery_urls.length > 0) {
+          await updateProduct.mutateAsync({ id: created.id, payload: { image_url, gallery_urls } })
+        }
+      } else {
+        const id = defaultValues!.id
+        const image_url = mainImageFile
+          ? await uploadProductImage(mainImageFile, id, "main")
+          : mainImage
+
+        const existingUrls = galleryItems.filter((i) => !i.file).map((i) => i.url)
+        const newFiles = galleryItems.filter((i) => i.file).map((i) => i.file!)
+        const newUrls = await Promise.all(
+          newFiles.map((f) => uploadProductImage(f, id, "gallery"))
+        )
+        const gallery_urls = [...existingUrls, ...newUrls]
+
+        await updateProduct.mutateAsync({ id, payload: { ...basePayload, image_url, gallery_urls } })
+      }
+
+      toast.success(mode === "create" ? t("createProduct") : t("updateProduct"))
+      router.push("/dashboard/products")
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : String(err))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
+
+  const galleryPreviews = galleryItems.map((i) => i.url)
 
   return (
     <Form {...form}>
@@ -180,14 +264,14 @@ export function ProductForm({ defaultValues, mode }: Props) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t("category")} *</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value ?? ""}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder={t("selectCategory")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {mockCategories.map((cat) => (
+                          {categories.map((cat) => (
                             <SelectItem key={cat.id} value={cat.id}>
                               {cat.name}
                             </SelectItem>
@@ -223,8 +307,16 @@ export function ProductForm({ defaultValues, mode }: Props) {
                   preview={mainImage}
                   badge="1/1"
                   onChange={(file) => {
-                    if (file) setMainImage(URL.createObjectURL(file))
-                    else setMainImage(null)
+                    setMainImageFile(file)
+                    if (mainBlobRef.current) URL.revokeObjectURL(mainBlobRef.current)
+                    if (file) {
+                      const url = URL.createObjectURL(file)
+                      mainBlobRef.current = url
+                      setMainImage(url)
+                    } else {
+                      mainBlobRef.current = null
+                      setMainImage(null)
+                    }
                   }}
                 />
               </CardContent>
@@ -237,10 +329,24 @@ export function ProductForm({ defaultValues, mode }: Props) {
                   label={t("galleryImages")}
                   description={t("galleryImagesDesc")}
                   previews={galleryPreviews}
-                  badge={`${galleryPreviews.length}/5`}
-                  onChange={(files) => {
-                    const urls = files.map((f) => URL.createObjectURL(f))
-                    setGalleryPreviews(urls)
+                  badge={`${galleryItems.length}/${MAX_GALLERY}`}
+                  onAdd={(files) => {
+                    const newItems = files.map((f) => {
+                      const url = URL.createObjectURL(f)
+                      galleryBlobsRef.current.add(url)
+                      return { url, file: f }
+                    })
+                    setGalleryItems((prev) => [...prev, ...newItems].slice(0, MAX_GALLERY))
+                  }}
+                  onRemove={(index) => {
+                    setGalleryItems((prev) => {
+                      const item = prev[index]
+                      if (item.file) {
+                        URL.revokeObjectURL(item.url)
+                        galleryBlobsRef.current.delete(item.url)
+                      }
+                      return prev.filter((_, i) => i !== index)
+                    })
                   }}
                 />
               </CardContent>
@@ -252,34 +358,19 @@ export function ProductForm({ defaultValues, mode }: Props) {
                 <CardTitle className="text-base">{t("discounts")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="discount_percentage"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("discountPercentage")}</FormLabel>
-                        <FormControl>
-                          <Input type="number" min={0} max={100} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="discount_value"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("discountValue")}</FormLabel>
-                        <FormControl>
-                          <Input type="number" min={0} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="discount_percentage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("discountPercentage")}</FormLabel>
+                      <FormControl>
+                        <Input type="number" min={0} max={100} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="discount_valid_until"
@@ -432,7 +523,7 @@ export function ProductForm({ defaultValues, mode }: Props) {
                   name="publish_status"
                   render={({ field }) => (
                     <FormItem>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
@@ -472,8 +563,8 @@ export function ProductForm({ defaultValues, mode }: Props) {
                 <div>
                   <p className="text-xs text-muted-foreground">{t("galleryImages")}</p>
                   <p>
-                    {galleryPreviews.length > 0
-                      ? `✓ ${galleryPreviews.length} files`
+                    {galleryItems.length > 0
+                      ? `✓ ${galleryItems.length} files`
                       : t("noImageSelected")}
                   </p>
                 </div>
@@ -496,10 +587,15 @@ export function ProductForm({ defaultValues, mode }: Props) {
 
         {/* Footer actions */}
         <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t">
-          <Button type="button" variant="outline" onClick={() => router.push("/dashboard/products")}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isSubmitting}
+            onClick={() => router.push("/dashboard/products")}
+          >
             {tc("cancel")}
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={isSubmitting}>
             {mode === "create" ? t("createProduct") : t("updateProduct")}
           </Button>
         </div>

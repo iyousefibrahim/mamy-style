@@ -6,13 +6,13 @@ import { buttonVariants } from "@/components/ui/button-variants"
 import { Badge } from "@/components/ui/badge"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { ProductDetails } from "@/features/dashboard/components/products/ProductDetails"
-import { mockProducts } from "@/lib/mock/products"
+import { fetchProductServer } from "@/features/dashboard/api/products.server"
 
 type Props = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params
-  const product = mockProducts.find((p) => p.id === id)
+  const product = await fetchProductServer(id)
   const t = await getTranslations("dashboard.products")
   return { title: product?.name ?? t("productInfo") }
 }
@@ -22,7 +22,8 @@ export default async function ProductDetailPage({ params }: Props) {
   const t = await getTranslations("dashboard.products")
   const tc = await getTranslations("dashboard")
 
-  const product = mockProducts.find((p) => p.id === id)
+  const product = await fetchProductServer(id)
+
   if (!product) notFound()
 
   return (
@@ -33,7 +34,7 @@ export default async function ProductDetailPage({ params }: Props) {
           { label: product.name },
         ]}
         title={product.name}
-        subtitle={product.description}
+        subtitle={product.description ?? undefined}
         action={
           <div className="flex items-center gap-2">
             <Link href="/dashboard/products" className={buttonVariants({ variant: "outline", size: "icon" })}>

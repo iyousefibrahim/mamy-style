@@ -3,7 +3,6 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { useTranslations } from "next-intl"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { mockCategories } from "@/lib/mock/categories"
 
 const COLORS = [
   "hsl(var(--chart-1))",
@@ -15,12 +14,12 @@ const COLORS = [
   "#6bc5a1",
 ]
 
-export function ProductsByCategoryChart() {
-  const t = useTranslations("dashboard.overview")
+type Props = {
+  data: { name: string; value: number }[]
+}
 
-  const data = mockCategories
-    .filter((c) => c.products_count > 0)
-    .map((c) => ({ name: c.name, value: c.products_count }))
+export function ProductsByCategoryChart({ data }: Props) {
+  const t = useTranslations("dashboard.overview")
 
   return (
     <Card>

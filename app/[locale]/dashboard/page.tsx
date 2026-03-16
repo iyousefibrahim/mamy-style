@@ -7,7 +7,7 @@ import { StockByCategoryChart } from "@/features/dashboard/components/overview/S
 import { LowStockAlert } from "@/features/dashboard/components/overview/LowStockAlert"
 import { NewProductsChart } from "@/features/dashboard/components/overview/NewProductsChart"
 import { FastActions } from "@/features/dashboard/components/overview/FastActions"
-import { mockCurrentUser } from "@/lib/mock/users"
+import { fetchOverviewData } from "@/features/dashboard/api/overview.server"
 
 function getGreeting(t: (key: string) => string) {
   const hour = new Date().getHours()
@@ -23,7 +23,9 @@ export async function generateMetadata() {
 
 export default async function DashboardPage() {
   const t = await getTranslations("dashboard.overview")
-  const firstName = mockCurrentUser.full_name.split(" ")[0]
+
+  const { firstName, productsByCategoryData, stockByCategoryData, newProductsData } =
+    await fetchOverviewData()
 
   return (
     <div className="flex flex-col">
@@ -45,13 +47,13 @@ export default async function DashboardPage() {
 
         {/* Charts row */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <ProductsByCategoryChart />
-          <StockByCategoryChart />
+          <ProductsByCategoryChart data={productsByCategoryData} />
+          <StockByCategoryChart data={stockByCategoryData} />
           <LowStockAlert />
         </div>
 
         {/* Area chart full width */}
-        <NewProductsChart />
+        <NewProductsChart data={newProductsData} />
 
         {/* Fast actions */}
         <FastActions />

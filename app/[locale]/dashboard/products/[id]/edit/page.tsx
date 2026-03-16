@@ -5,13 +5,13 @@ import { ArrowLeft } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button-variants"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { ProductForm } from "@/features/dashboard/components/products/ProductForm"
-import { mockProducts } from "@/lib/mock/products"
+import { fetchProductServer } from "@/features/dashboard/api/products.server"
 
 type Props = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params
-  const product = mockProducts.find((p) => p.id === id)
+  const product = await fetchProductServer(id)
   const t = await getTranslations("dashboard.products")
   return { title: product ? `${t("editTitle")} — ${product.name}` : t("editTitle") }
 }
@@ -21,7 +21,8 @@ export default async function EditProductPage({ params }: Props) {
   const t = await getTranslations("dashboard.products")
   const tc = await getTranslations("dashboard.nav")
 
-  const product = mockProducts.find((p) => p.id === id)
+  const product = await fetchProductServer(id)
+
   if (!product) notFound()
 
   return (

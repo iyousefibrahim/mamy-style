@@ -18,7 +18,8 @@ import { useTranslations } from "next-intl"
 import { useTheme } from "next-themes"
 import { useRouter, Link } from "@/i18n/navigation"
 import { useParams } from "next/navigation"
-import { mockCurrentUser } from "@/lib/mock/users"
+import { useCurrentProfile } from "@/features/dashboard/hooks/useProfile"
+import { useLogout } from "@/features/auth/hooks/useAuth"
 import {
   Sidebar,
   SidebarContent,
@@ -49,6 +50,9 @@ export function AppSidebar() {
   const params = useParams()
   const locale = params.locale as string
 
+  const { data: profile } = useCurrentProfile()
+  const logout = useLogout()
+
   const navItems = [
     { label: t("dashboard"), href: "/dashboard", icon: LayoutDashboard },
     { label: t("products"), href: "/dashboard/products", icon: Package },
@@ -57,7 +61,7 @@ export function AppSidebar() {
     { label: t("orders"), href: "/dashboard/orders", icon: ShoppingCart },
   ]
 
-  const initials = mockCurrentUser.full_name
+  const initials = (profile?.full_name ?? "")
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -160,10 +164,10 @@ export function AppSidebar() {
                 </Avatar>
                 <div className="flex flex-col items-start min-w-0 group-data-[collapsible=icon]:hidden">
                   <span className="text-sm font-medium truncate">
-                    {mockCurrentUser.full_name}
+                    {profile?.full_name ?? ""}
                   </span>
                   <span className="text-xs text-primary-foreground/60 truncate">
-                    {mockCurrentUser.email}
+                    {profile?.email ?? ""}
                   </span>
                 </div>
                 <MoreHorizontal className="ms-auto size-4 shrink-0 group-data-[collapsible=icon]:hidden" />
@@ -173,7 +177,10 @@ export function AppSidebar() {
                   <Settings className="size-4" />
                   {t("settings")}
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive focus:text-destructive">
+                <DropdownMenuItem
+                  className="text-destructive focus:text-destructive"
+                  onClick={() => logout.mutate()}
+                >
                   <LogOut className="size-4" />
                   {tc("logout")}
                 </DropdownMenuItem>

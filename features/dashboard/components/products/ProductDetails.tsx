@@ -2,24 +2,15 @@ import { DollarSign, Package, Tag, LayoutGrid, Calendar, Percent } from "lucide-
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { getTranslations } from "next-intl/server"
-import type { MockProduct } from "@/lib/mock/products"
+import type { Product } from "@/features/dashboard/types"
+import { formatDate } from "@/utils/formatDate"
 
 type Props = {
-  product: MockProduct
+  product: Product
 }
 
 export async function ProductDetails({ product: p }: Props) {
   const t = await getTranslations("dashboard.products")
-
-  function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
@@ -74,7 +65,7 @@ export async function ProductDetails({ product: p }: Props) {
               <div className="flex items-center gap-2">
                 <Percent className="size-4 text-orange-500" />
                 <span className="font-medium text-orange-600">
-                  -{p.discount_percentage}% ({p.discount_value.toLocaleString("en-US")} EGP off)
+                  -{p.discount_percentage}% ({Math.round(p.price * p.discount_percentage / 100).toLocaleString("en-US")} EGP off)
                 </span>
               </div>
             </div>

@@ -5,13 +5,13 @@ import { ArrowLeft } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button-variants"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { CategoryForm } from "@/features/dashboard/components/categories/CategoryForm"
-import { mockCategories } from "@/lib/mock/categories"
+import { fetchCategoryServer } from "@/features/dashboard/api/categories.server"
 
 type Props = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params
-  const category = mockCategories.find((c) => c.id === id)
+  const category = await fetchCategoryServer(id)
   const t = await getTranslations("dashboard.categories")
   return { title: category ? `${t("editTitle")} — ${category.name}` : t("editTitle") }
 }
@@ -21,7 +21,8 @@ export default async function EditCategoryPage({ params }: Props) {
   const t = await getTranslations("dashboard.categories")
   const tc = await getTranslations("dashboard.nav")
 
-  const category = mockCategories.find((c) => c.id === id)
+  const category = await fetchCategoryServer(id)
+
   if (!category) notFound()
 
   return (

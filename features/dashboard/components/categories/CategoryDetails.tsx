@@ -1,22 +1,13 @@
 import { Package, Eye, Calendar } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import type { MockCategory } from "@/lib/mock/categories"
+import type { Category } from "@/features/dashboard/types"
 import { getTranslations } from "next-intl/server"
+import { formatDate } from "@/utils/formatDate"
 
-type Props = { category: MockCategory }
+type Props = { category: Category }
 
 export async function CategoryDetails({ category: c }: Props) {
   const t = await getTranslations("dashboard.categories")
-
-  function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  }
 
   return (
     <div className="flex justify-end">

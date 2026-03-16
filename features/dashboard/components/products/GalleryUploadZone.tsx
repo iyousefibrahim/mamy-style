@@ -10,19 +10,16 @@ type Props = {
   label: string
   description: string
   previews: string[]
-  onChange: (files: File[]) => void
+  onAdd: (files: File[]) => void
+  onRemove: (index: number) => void
   badge?: string
 }
 
-export function GalleryUploadZone({ label, description, previews, onChange, badge }: Props) {
+export function GalleryUploadZone({ label, description, previews, onAdd, onRemove, badge }: Props) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   function removeAt(index: number) {
-    // Can't easily remove file from FileList — we just signal empty for simplicity in mock
-    // In real implementation you'd manage a File[] array in state
-    const el = inputRef.current
-    if (el) el.value = ""
-    onChange([])
+    onRemove(index)
   }
 
   return (
@@ -41,8 +38,8 @@ export function GalleryUploadZone({ label, description, previews, onChange, badg
       {previews.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {previews.map((src, i) => (
-            <div key={i} className="relative size-20 rounded-lg overflow-hidden border bg-muted">
-              <img src={src} alt="" className="object-cover w-full h-full" />
+            <div key={src} className="relative size-20 rounded-lg overflow-hidden border bg-muted">
+              <img src={src} alt="" loading="lazy" className="object-cover w-full h-full" />
               <Button
                 type="button"
                 variant="destructive"
@@ -76,7 +73,8 @@ export function GalleryUploadZone({ label, description, previews, onChange, badg
         className="hidden"
         onChange={(e) => {
           const files = Array.from(e.target.files ?? [])
-          onChange(files)
+          onAdd(files)
+          e.target.value = ""
         }}
       />
     </div>

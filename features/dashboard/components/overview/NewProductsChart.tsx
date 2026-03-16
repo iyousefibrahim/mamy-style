@@ -11,27 +11,13 @@ import {
 } from "recharts"
 import { useTranslations } from "next-intl"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { mockProducts } from "@/lib/mock/products"
 
-function buildMonthlyData() {
-  const months: Record<string, number> = {}
-  // Build last 6 months buckets
-  for (let i = 5; i >= 0; i--) {
-    const d = new Date(2025, 11 - i, 1) // Dec 2025 going back
-    const key = d.toLocaleString("en", { month: "short", year: "numeric" })
-    months[key] = 0
-  }
-  mockProducts.forEach((p) => {
-    const d = new Date(p.created_at)
-    const key = d.toLocaleString("en", { month: "short", year: "numeric" })
-    if (key in months) months[key]++
-  })
-  return Object.entries(months).map(([month, count]) => ({ month, count }))
+type Props = {
+  data: { month: string; count: number }[]
 }
 
-export function NewProductsChart() {
+export function NewProductsChart({ data }: Props) {
   const t = useTranslations("dashboard.overview")
-  const data = buildMonthlyData()
 
   return (
     <Card>

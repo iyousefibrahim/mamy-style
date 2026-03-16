@@ -6,13 +6,13 @@ import { buttonVariants } from "@/components/ui/button-variants"
 import { Badge } from "@/components/ui/badge"
 import { DashboardHeader } from "@/features/dashboard/components/layout/DashboardHeader"
 import { CategoryDetails } from "@/features/dashboard/components/categories/CategoryDetails"
-import { mockCategories } from "@/lib/mock/categories"
+import { fetchCategoryServer } from "@/features/dashboard/api/categories.server"
 
 type Props = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params
-  const category = mockCategories.find((c) => c.id === id)
+  const category = await fetchCategoryServer(id)
   const t = await getTranslations("dashboard.categories")
   return { title: category?.name ?? t("categoryInfo") }
 }
@@ -22,7 +22,8 @@ export default async function CategoryDetailPage({ params }: Props) {
   const t = await getTranslations("dashboard.categories")
   const tc = await getTranslations("dashboard")
 
-  const category = mockCategories.find((c) => c.id === id)
+  const category = await fetchCategoryServer(id)
+
   if (!category) notFound()
 
   return (
@@ -33,7 +34,7 @@ export default async function CategoryDetailPage({ params }: Props) {
           { label: category.name },
         ]}
         title={category.name}
-        subtitle={category.description}
+        subtitle={category.description ?? undefined}
         action={
           <div className="flex items-center gap-2">
             <Link href="/dashboard/categories" className={buttonVariants({ variant: "outline", size: "icon" })}>

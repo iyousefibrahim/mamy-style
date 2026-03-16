@@ -11,20 +11,13 @@ import {
 } from "recharts"
 import { useTranslations } from "next-intl"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { mockProducts } from "@/lib/mock/products"
-import { mockCategories } from "@/lib/mock/categories"
 
-export function StockByCategoryChart() {
+type Props = {
+  data: { name: string; stock: number }[]
+}
+
+export function StockByCategoryChart({ data }: Props) {
   const t = useTranslations("dashboard.overview")
-
-  const data = mockCategories
-    .map((cat) => ({
-      name: cat.name,
-      stock: mockProducts
-        .filter((p) => p.category_id === cat.id)
-        .reduce((sum, p) => sum + p.stock, 0),
-    }))
-    .filter((d) => d.stock > 0)
 
   return (
     <Card>

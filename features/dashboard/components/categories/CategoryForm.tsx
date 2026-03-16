@@ -23,10 +23,16 @@ import {
 import { ImageUploadZone } from "../products/ImageUploadZone"
 import { GalleryUploadZone } from "../products/GalleryUploadZone"
 import { createCategorySchema, type CreateCategoryFormValues } from "../../types"
-import type { MockCategory } from "@/lib/mock/categories"
+import { useCreateCategory, useUpdateCategory } from "@/features/dashboard/hooks/useCategories"
+import { uploadCategoryImage } from "@/features/dashboard/api/storage"
+import type { Category } from "../../types"
+
+const MAX_GALLERY = 5
+
+type GalleryItem = { url: string; file?: File }
 
 type Props = {
-  defaultValues?: Partial<MockCategory>
+  defaultValues?: Category
   mode: "create" | "edit"
 }
 
@@ -35,9 +41,14 @@ export function CategoryForm({ defaultValues, mode }: Props) {
   const tc = useTranslations("dashboard.common")
   const router = useRouter()
 
+  const createCategory = useCreateCategory()
+  const updateCategory = useUpdateCategory()
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [mainImage, setMainImage] = useState<string | null>(defaultValues?.image_url ?? null)
-  const [galleryPreviews, setGalleryPreviews] = useState<string[]>(
-    defaultValues?.gallery_urls ?? []
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null)
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(
+    (defaultValues?.gallery_urls ?? []).map((url) => ({ url }))
   )
   const [tagInput, setTagInput] = useState("")
   const [tags, setTags] = useState<string[]>(defaultValues?.tags ?? [])
@@ -65,10 +76,62 @@ export function CategoryForm({ defaultValues, mode }: Props) {
     setTags(tags.filter((t) => t !== tag))
   }
 
-  function onSubmit(_values: CreateCategoryFormValues) {
-    toast.success(mode === "create" ? "Category created!" : "Category updated!")
-    router.push("/dashboard/categories")
+  async function onSubmit(values: CreateCategoryFormValues) {
+    setIsSubmitting(true)
+    try {
+      const basePayload = {
+        name: values.name,
+        description: values.description ?? null,
+        status: (values.is_active ? "active" : "inactive") as "active" | "inactive",
+        tags,
+      }
+
+      if (mode === "create") {
+        const created = await createCategory.mutateAsync({
+          ...basePayload,
+          image_url: null,
+          gallery_urls: [],
+        })
+
+        let image_url: string | null = null
+        if (mainImageFile) {
+          image_url = await uploadCategoryImage(mainImageFile, created.id, "main")
+        }
+
+        const newFiles = galleryItems.filter((i) => i.file).map((i) => i.file!)
+        const gallery_urls = await Promise.all(
+          newFiles.map((f) => uploadCategoryImage(f, created.id, "gallery"))
+        )
+
+        if (image_url !== null || gallery_urls.length > 0) {
+          await updateCategory.mutateAsync({ id: created.id, payload: { image_url, gallery_urls } })
+        }
+      } else {
+        const id = defaultValues!.id
+        const image_url = mainImageFile
+          ? await uploadCategoryImage(mainImageFile, id, "main")
+          : mainImage
+
+        const existingUrls = galleryItems.filter((i) => !i.file).map((i) => i.url)
+        const newFiles = galleryItems.filter((i) => i.file).map((i) => i.file!)
+        const newUrls = await Promise.all(
+          newFiles.map((f) => uploadCategoryImage(f, id, "gallery"))
+        )
+        const gallery_urls = [...existingUrls, ...newUrls]
+
+        await updateCategory.mutateAsync({ id, payload: { ...basePayload, image_url, gallery_urls } })
+      }
+
+      toast.success(mode === "create" ? t("createCategory") : t("updateCategory"))
+      router.push("/dashboard/categories")
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : String(err))
+    } finally {
+      setIsSubmitting(false)
+    }
   }
+
+  const galleryPreviews = galleryItems.map((i) => i.url)
 
   return (
     <Form {...form}>
@@ -79,7 +142,7 @@ export function CategoryForm({ defaultValues, mode }: Props) {
             {/* Info */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Category Information</CardTitle>
+                <CardTitle className="text-base">{t("categoryInfo")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <FormField
@@ -159,8 +222,8 @@ export function CategoryForm({ defaultValues, mode }: Props) {
                   preview={mainImage}
                   badge="1/1"
                   onChange={(file) => {
-                    if (file) setMainImage(URL.createObjectURL(file))
-                    else setMainImage(null)
+                    setMainImageFile(file)
+                    setMainImage(file ? URL.createObjectURL(file) : null)
                   }}
                 />
               </CardContent>
@@ -173,8 +236,14 @@ export function CategoryForm({ defaultValues, mode }: Props) {
                   label={t("galleryImages")}
                   description={t("galleryImagesDesc")}
                   previews={galleryPreviews}
-                  badge={`${galleryPreviews.length}/5`}
-                  onChange={(files) => setGalleryPreviews(files.map((f) => URL.createObjectURL(f)))}
+                  badge={`${galleryItems.length}/${MAX_GALLERY}`}
+                  onAdd={(files) => {
+                    const newItems = files.map((f) => ({ url: URL.createObjectURL(f), file: f }))
+                    setGalleryItems((prev) => [...prev, ...newItems].slice(0, MAX_GALLERY))
+                  }}
+                  onRemove={(index) => {
+                    setGalleryItems((prev) => prev.filter((_, i) => i !== index))
+                  }}
                 />
               </CardContent>
             </Card>
@@ -213,18 +282,18 @@ export function CategoryForm({ defaultValues, mode }: Props) {
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div>
-                  <p className="text-xs text-muted-foreground">Name</p>
+                  <p className="text-xs text-muted-foreground">{t("name")}</p>
                   <p className="font-medium">{watchedName || t("namePlaceholder")}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Main Image</p>
+                  <p className="text-xs text-muted-foreground">{t("mainImage")}</p>
                   <p>{mainImage ? "✓" : t("noImageSelected")}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Gallery Images</p>
+                  <p className="text-xs text-muted-foreground">{t("galleryImages")}</p>
                   <p>
-                    {galleryPreviews.length > 0
-                      ? `✓ ${galleryPreviews.length} files`
+                    {galleryItems.length > 0
+                      ? `✓ ${galleryItems.length} files`
                       : t("noImageSelected")}
                   </p>
                 </div>
@@ -235,10 +304,15 @@ export function CategoryForm({ defaultValues, mode }: Props) {
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t">
-          <Button type="button" variant="outline" onClick={() => router.push("/dashboard/categories")}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isSubmitting}
+            onClick={() => router.push("/dashboard/categories")}
+          >
             {tc("cancel")}
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={isSubmitting}>
             {mode === "create" ? t("createCategory") : t("updateCategory")}
           </Button>
         </div>

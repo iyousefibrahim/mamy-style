@@ -31,16 +31,37 @@ export default async function middleware(request: NextRequest) {
 
   const { data } = await supabase.auth.getClaims()
   const isAuthenticated = !!data?.claims
+  const role = (data?.claims?.app_metadata?.role ?? "") as string
 
+  const pathname = request.nextUrl.pathname
+  // Strip the locale prefix (e.g. /en/login → /login)
+  const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, "") || "/"
+  const locale = pathname.split("/")[1] || routing.defaultLocale
+
+  // Block authenticated users from auth pages
   if (isAuthenticated) {
-    const pathname = request.nextUrl.pathname
-    // Strip the locale prefix (e.g. /en/login → /login)
-    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, "") || "/"
     const isAuthPage = AUTH_ONLY_PATHS.some((p) => pathWithoutLocale.startsWith(p))
-
     if (isAuthPage) {
-      const locale = pathname.split("/")[1] || routing.defaultLocale
       return NextResponse.redirect(new URL(`/${locale}`, request.url))
+    }
+  }
+
+  // Block unauthenticated users from dashboard
+  if (!isAuthenticated && pathWithoutLocale.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+  }
+
+  // Block non-admins from entire dashboard
+  if (isAuthenticated && pathWithoutLocale.startsWith("/dashboard")) {
+    if (role !== "admin" && role !== "super-admin") {
+      return NextResponse.redirect(new URL(`/${locale}`, request.url))
+    }
+  }
+
+  // Block non-super-admins from users page
+  if (isAuthenticated && pathWithoutLocale.startsWith("/dashboard/users")) {
+    if (role !== "super-admin") {
+      return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url))
     }
   }
 

@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { updatePasswordSchema, type UpdatePasswordFormValues } from "../../types"
+import { createClient } from "@/lib/supabase/client"
 
 export function SecurityForm() {
   const t = useTranslations("dashboard.settings")
@@ -29,9 +30,15 @@ export function SecurityForm() {
     defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
   })
 
-  function onSubmit(_values: UpdatePasswordFormValues) {
-    toast.success(t("passwordUpdated"))
-    form.reset()
+  async function onSubmit(values: UpdatePasswordFormValues) {
+    const supabase = createClient()
+    const { error } = await supabase.auth.updateUser({ password: values.newPassword })
+    if (error) {
+      toast.error(error.message)
+    } else {
+      toast.success(t("passwordUpdated"))
+      form.reset()
+    }
   }
 
   function PasswordInput({

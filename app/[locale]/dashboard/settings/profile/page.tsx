@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
 import { ProfileForm } from "@/features/dashboard/components/settings/ProfileForm"
 import { SecurityForm } from "@/features/dashboard/components/settings/SecurityForm"
-import { mockCurrentUser } from "@/lib/mock/users"
+import { createClient } from "@/lib/supabase/server"
 
 export async function generateMetadata() {
   const t = await getTranslations("dashboard.settings")
@@ -16,8 +16,11 @@ export default async function ProfileSettingsPage() {
   const t = await getTranslations("dashboard.settings")
   const tc = await getTranslations("dashboard.nav")
 
-  const isAdmin =
-    mockCurrentUser.role === "admin" || mockCurrentUser.role === "super-admin"
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const role = (user?.app_metadata?.role ?? "") as string
+
+  const isAdmin = role === "admin" || role === "super-admin"
 
   return (
     <div>
