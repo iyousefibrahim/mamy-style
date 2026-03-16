@@ -250,6 +250,80 @@
       "customer": "Customer"
     }
   },
+  "home": {
+    "announcementBar": "Free shipping on orders over 500 EGP",
+    "nav": {
+      "home": "Home",
+      "products": "Products",
+      "categories": "Categories",
+      "contact": "Contact",
+      "searchPlaceholder": "Search products...",
+      "login": "Login",
+      "register": "Sign Up"
+    },
+    "hero": {
+      "slide1Title": "New Collection Just Dropped",
+      "slide1Subtitle": "Discover the latest trends in Egyptian fashion",
+      "slide2Title": "Up to 40% Off",
+      "slide2Subtitle": "Exclusive deals on premium evening wear",
+      "slide3Title": "Free Shipping Over 500 EGP",
+      "slide3Subtitle": "Shop now and get it delivered to your door",
+      "cta1": "Shop Now",
+      "cta2": "View Categories"
+    },
+    "categories": {
+      "title": "Shop by Category",
+      "subtitle": "Find your style",
+      "viewAll": "View All"
+    },
+    "cat1": "Evening Wear",
+    "cat2": "Casual",
+    "cat3": "Abayas",
+    "cat4": "Accessories",
+    "products": {
+      "title": "Featured Products",
+      "subtitle": "Handpicked for you",
+      "viewAll": "View All Products",
+      "addToCart": "Add to Cart",
+      "off": "off"
+    },
+    "prod1": "Elegant Evening Dress",
+    "prod2": "Casual Summer Set",
+    "prod3": "Classic Abaya",
+    "prod4": "Gold Accessories Set",
+    "prod5": "Floral Maxi Dress",
+    "prod6": "Linen Blazer Set",
+    "prod7": "Embroidered Kaftan",
+    "prod8": "Modern Jumpsuit",
+    "whyUs": {
+      "title": "Why Choose Mamy Style?",
+      "q1Title": "Premium Quality",
+      "q1Desc": "Every piece is carefully selected for quality and elegance.",
+      "q2Title": "Fast Delivery",
+      "q2Desc": "Delivered to your door across Egypt within 2–5 days.",
+      "q3Title": "Egyptian Brand",
+      "q3Desc": "Proudly Egyptian — designed for the modern Egyptian woman."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "We're here to help — reach out any time.",
+      "whatsapp": "Chat on WhatsApp",
+      "phone": "Call Us",
+      "facebook": "Follow on Facebook",
+      "mapTitle": "Find Us"
+    },
+    "footer": {
+      "rights": "All rights reserved.",
+      "tagline": "Elegant fashion for the modern Egyptian woman.",
+      "quickLinks": "Quick Links",
+      "customerService": "Customer Service",
+      "paymentMethods": "Payment Methods",
+      "shipping": "Shipping & Delivery",
+      "returns": "Returns & Exchange",
+      "faq": "FAQ",
+      "builtBy": "Built by"
+    }
+  },
   "validation": {
     "emailRequired": "Email is required",
     "emailInvalid": "Invalid email address",

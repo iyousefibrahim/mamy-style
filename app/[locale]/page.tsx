@@ -1,23 +1,12 @@
 import { setRequestLocale } from "next-intl/server"
-import { useTranslations } from "next-intl"
+import { HomePage } from "@/features/home/HomePage"
 
 type Props = {
   params: Promise<{ locale: string }>
 }
 
-export default async function HomePage({ params }: Props) {
+export default async function Page({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
-
-  return <HomePageContent />
-}
-
-function HomePageContent() {
-  const t = useTranslations("common")
-
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold text-primary">{t("appName")}</h1>
-    </main>
-  )
+  return <HomePage />
 }
