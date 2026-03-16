@@ -77,7 +77,7 @@ export async function ProductDetails({ product: p }: Props) {
               <Package className="size-4 text-blue-500" />
               <span className="font-semibold">{p.stock}</span>
               {p.stock < 10 && (
-                <Badge variant="destructive" className="text-xs">Low</Badge>
+                <Badge variant="destructive" className="text-xs">{t("stockLow")}</Badge>
               )}
             </div>
           </div>

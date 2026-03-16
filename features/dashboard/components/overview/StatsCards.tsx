@@ -1,38 +1,28 @@
 import { Package, LayoutGrid, Users } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { getTranslations } from "next-intl/server"
-import { createClient } from "@/lib/supabase/server"
+import { fetchDashboardStats } from "@/features/dashboard/api/stats.server"
 
 export async function StatsCards() {
   const t = await getTranslations("dashboard.overview")
-  const supabase = await createClient()
-
-  const [
-    { count: productsCount },
-    { count: categoriesCount },
-    { count: usersCount },
-  ] = await Promise.all([
-    supabase.from("products").select("id", { count: "exact", head: true }),
-    supabase.from("categories").select("id", { count: "exact", head: true }),
-    supabase.from("profiles").select("id", { count: "exact", head: true }),
-  ])
+  const { productsCount, categoriesCount, usersCount } = await fetchDashboardStats()
 
   const stats = [
     {
       label: t("totalProducts"),
-      value: productsCount ?? 0,
+      value: productsCount,
       desc: t("totalProductsDesc"),
       icon: Package,
     },
     {
       label: t("totalCategories"),
-      value: categoriesCount ?? 0,
+      value: categoriesCount,
       desc: t("totalCategoriesDesc"),
       icon: LayoutGrid,
     },
     {
       label: t("totalUsers"),
-      value: usersCount ?? 0,
+      value: usersCount,
       desc: t("totalUsersDesc"),
       icon: Users,
     },

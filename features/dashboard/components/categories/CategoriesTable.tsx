@@ -51,10 +51,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useCategories, useDeleteCategory } from "@/features/dashboard/hooks/useCategories"
-import { getPageItems } from "@/utils/pagination"
+import { getPageItems, PAGE_SIZE } from "@/utils/pagination"
 import type { Category } from "@/features/dashboard/types"
 
-const PAGE_SIZE = 10
 
 export function CategoriesTable() {
   const t = useTranslations("dashboard.categories")

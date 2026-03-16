@@ -1,3 +1,10 @@
+export const PAGE_SIZE = 10
+
+export function paginationRange(page = 1, size = PAGE_SIZE): { from: number; to: number } {
+  const from = (page - 1) * size
+  return { from, to: from + size - 1 }
+}
+
 export function getPageItems(page: number, totalPages: number): (number | "ellipsis")[] {
   if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1)
   const items: (number | "ellipsis")[] = [1]

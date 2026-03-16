@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/client"
-import type { Product } from "../types"
-
-const PAGE_SIZE = 10
+import type { Product, PaginatedResult } from "../types"
+import { paginationRange } from "@/utils/pagination"
 
 export type ProductFilters = {
   search?: string
@@ -9,16 +8,10 @@ export type ProductFilters = {
   page?: number
 }
 
-export type PaginatedResult<T> = {
-  data: T[]
-  total: number
-}
 
 export async function fetchProducts(filters: ProductFilters = {}): Promise<PaginatedResult<Product>> {
   const supabase = createClient()
-  const page = filters.page ?? 1
-  const from = (page - 1) * PAGE_SIZE
-  const to = from + PAGE_SIZE - 1
+  const { from, to } = paginationRange(filters.page)
 
   let query = supabase.from("products_with_category").select("*", { count: "exact" })
 

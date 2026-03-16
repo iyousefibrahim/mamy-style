@@ -51,10 +51,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useProducts, useDeleteProduct } from "@/features/dashboard/hooks/useProducts"
-import { getPageItems } from "@/utils/pagination"
+import { getPageItems, PAGE_SIZE } from "@/utils/pagination"
 import type { Product } from "@/features/dashboard/types"
 
-const PAGE_SIZE = 10
 
 export function ProductsTable() {
   const t = useTranslations("dashboard.products")

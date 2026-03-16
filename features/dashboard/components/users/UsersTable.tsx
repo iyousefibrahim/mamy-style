@@ -35,9 +35,8 @@ import {
   useUpdateUserRole,
   useUpdateUserStatus,
 } from "@/features/dashboard/hooks/useUsers"
-import { getPageItems } from "@/utils/pagination"
+import { getPageItems, PAGE_SIZE } from "@/utils/pagination"
 
-const PAGE_SIZE = 10
 
 export function UsersTable() {
   const t = useTranslations("dashboard.users")

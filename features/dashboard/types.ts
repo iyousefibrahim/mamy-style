@@ -120,3 +120,8 @@ export type UserProfile = {
   status: "active" | "inactive" | "banned"
   created_at: string
 }
+
+export type PaginatedResult<T> = {
+  data: T[]
+  total: number
+}
