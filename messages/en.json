@@ -4,6 +4,11 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "backToHome": "Back to Home",
+    "goBack": "Go Back",
+    "notFoundTitle": "Page Not Found",
+    "notFoundDesc": "Sorry, the page you're looking for doesn't exist.",
+    "notFoundItemTitle": "Not Found",
+    "notFoundItemDesc": "This item doesn't exist or has been removed.",
     "tagline": "Elegant fashion for the modern Egyptian woman"
   },
   "auth": {
