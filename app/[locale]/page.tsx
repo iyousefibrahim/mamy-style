@@ -1,12 +1,10 @@
-import { setRequestLocale } from "next-intl/server"
-import { HomePage } from "@/features/home/HomePage"
+import { redirect } from "next/navigation"
 
 type Props = {
   params: Promise<{ locale: string }>
 }
 
-export default async function Page({ params }: Props) {
+export default async function RootRedirect({ params }: Props) {
   const { locale } = await params
-  setRequestLocale(locale)
-  return <HomePage />
+  redirect(`/${locale}/home`)
 }

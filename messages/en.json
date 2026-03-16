@@ -259,7 +259,8 @@
       "contact": "Contact",
       "searchPlaceholder": "Search products...",
       "login": "Login",
-      "register": "Sign Up"
+      "register": "Sign Up",
+      "logout": "Logout"
     },
     "hero": {
       "slide1Title": "New Collection Just Dropped",
@@ -285,7 +286,10 @@
       "subtitle": "Handpicked for you",
       "viewAll": "View All Products",
       "addToCart": "Add to Cart",
-      "off": "off"
+      "off": "off",
+      "loginToAdd": "Login to add items to your cart",
+      "loginToFav": "Login to save favorites",
+      "loginAction": "Login"
     },
     "prod1": "Elegant Evening Dress",
     "prod2": "Casual Summer Set",
