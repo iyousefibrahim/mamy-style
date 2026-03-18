@@ -21,7 +21,12 @@ export async function fetchCartItems(): Promise<CartItem[]> {
   return (data ?? []) as CartItem[]
 }
 
-export async function addToCart(productId: string, quantity = 1): Promise<void> {
+export async function addToCart(
+  productId: string,
+  quantity = 1,
+  color: string | null = null,
+  size: string | null = null
+): Promise<void> {
   const supabase = createClient()
   const userId = await getCurrentUserId()
 
@@ -29,6 +34,8 @@ export async function addToCart(productId: string, quantity = 1): Promise<void> 
     .from("cart_items")
     .select("id, quantity")
     .eq("product_id", productId)
+    .eq("color", color ?? "")
+    .eq("size", size ?? "")
     .maybeSingle()
 
   if (existing) {
@@ -40,7 +47,7 @@ export async function addToCart(productId: string, quantity = 1): Promise<void> 
   } else {
     const { error } = await supabase
       .from("cart_items")
-      .insert({ user_id: userId, product_id: productId, quantity })
+      .insert({ user_id: userId, product_id: productId, quantity, color, size })
     if (error) throw error
   }
 }

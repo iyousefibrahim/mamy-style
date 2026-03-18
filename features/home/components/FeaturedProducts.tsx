@@ -9,7 +9,6 @@ import type { Product } from "../types"
 type Props = {
   products: Product[]
   isLoading: boolean
-  onAddToCart: (productId: string) => void
   onToggleFavorite: (productId: string) => void
   isFavorited: (productId: string) => boolean
 }
@@ -27,7 +26,7 @@ function ProductSkeleton() {
   )
 }
 
-export function FeaturedProducts({ products, isLoading, onAddToCart, onToggleFavorite, isFavorited }: Props) {
+export function FeaturedProducts({ products, isLoading, onToggleFavorite, isFavorited }: Props) {
   const t = useTranslations("home")
 
   return (
@@ -54,7 +53,6 @@ export function FeaturedProducts({ products, isLoading, onAddToCart, onToggleFav
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={onAddToCart}
                 onToggleFavorite={onToggleFavorite}
                 isFavorited={isFavorited(product.id)}
               />

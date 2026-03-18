@@ -277,10 +277,6 @@
       "subtitle": "Find your style",
       "viewAll": "View All"
     },
-    "cat1": "Evening Wear",
-    "cat2": "Casual",
-    "cat3": "Abayas",
-    "cat4": "Accessories",
     "products": {
       "title": "Featured Products",
       "subtitle": "Handpicked for you",
@@ -289,16 +285,13 @@
       "off": "off",
       "loginToAdd": "Login to add items to your cart",
       "loginToFav": "Login to save favorites",
-      "loginAction": "Login"
+      "loginAction": "Login",
+      "addedToCart": "Added to cart",
+      "addedToFav": "Added to favorites",
+      "removedFromFav": "Removed from favorites",
+      "cartError": "Failed to add to cart",
+      "favError": "Failed to update favorites"
     },
-    "prod1": "Elegant Evening Dress",
-    "prod2": "Casual Summer Set",
-    "prod3": "Classic Abaya",
-    "prod4": "Gold Accessories Set",
-    "prod5": "Floral Maxi Dress",
-    "prod6": "Linen Blazer Set",
-    "prod7": "Embroidered Kaftan",
-    "prod8": "Modern Jumpsuit",
     "whyUs": {
       "title": "Why Choose Mamy Style?",
       "q1Title": "Premium Quality",
@@ -327,6 +320,26 @@
       "faq": "FAQ",
       "builtBy": "Built by"
     }
+  },
+  "product": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProducts": "Products",
+    "brand": "Brand",
+    "category": "Category",
+    "description": "Description",
+    "colors": "Colors",
+    "sizes": "Sizes",
+    "selectColor": "Select a color",
+    "selectSize": "Select a size",
+    "addToCart": "Add to Cart",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "inStock": "In Stock",
+    "lowStock": "Low Stock — only {count} left",
+    "outOfStock": "Out of Stock",
+    "notFound": "Product Not Found",
+    "off": "off",
+    "quantity": "Quantity"
   },
   "validation": {
     "emailRequired": "Email is required",

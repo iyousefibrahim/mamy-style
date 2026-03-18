@@ -7,6 +7,8 @@ export type CartItem = {
   user_id: string
   product_id: string
   quantity: number
+  color: string | null
+  size: string | null
   created_at: string
   updated_at: string
 }

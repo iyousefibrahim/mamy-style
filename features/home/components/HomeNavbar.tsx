@@ -38,7 +38,7 @@ export function HomeNavbar() {
       <div className="wrapper flex items-center justify-between h-16 gap-4">
 
         {/* Logo */}
-        <Link href="/" className="shrink-0">
+        <Link href="/home" className="shrink-0">
           <Image
             src="/mamy-style.png"
             alt="Mamy Style"

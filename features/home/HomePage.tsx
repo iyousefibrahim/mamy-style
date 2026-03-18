@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl"
 import { useFeaturedProducts } from "./hooks/useFeaturedProducts"
 import { useFeaturedCategories } from "./hooks/useFeaturedCategories"
-import { useCart } from "./hooks/useCart"
 import { useFavorites } from "./hooks/useFavorites"
 import { HomeNavbar } from "./components/HomeNavbar"
 import { HeroCarousel } from "./components/HeroCarousel"
@@ -19,7 +18,6 @@ export function HomePage() {
 
   const { data: products = [], isLoading: productsLoading } = useFeaturedProducts()
   const { data: categories = [], isLoading: categoriesLoading } = useFeaturedCategories()
-  const { addItem } = useCart()
   const { isFavorited, toggleFavorite } = useFavorites()
 
   return (
@@ -34,7 +32,6 @@ export function HomePage() {
       <FeaturedProducts
         products={products}
         isLoading={productsLoading}
-        onAddToCart={addItem}
         onToggleFavorite={toggleFavorite}
         isFavorited={isFavorited}
       />

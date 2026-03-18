@@ -3,18 +3,17 @@
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/navigation"
-import { Button } from "@/components/ui/button"
-import { ShoppingCart, Heart, ShoppingBag } from "lucide-react"
+import { ShoppingBag } from "lucide-react"
+import { FavoriteButton } from "@/components/FavoriteButton"
 import type { Product } from "../types"
 
 type Props = {
   product: Product
-  onAddToCart: (productId: string) => void
   onToggleFavorite: (productId: string) => void
   isFavorited: boolean
 }
 
-export function ProductCard({ product, onAddToCart, onToggleFavorite, isFavorited }: Props) {
+export function ProductCard({ product, onToggleFavorite, isFavorited }: Props) {
   const t = useTranslations("home")
 
   const hasDiscount = product.discount_percentage > 0
@@ -52,18 +51,12 @@ export function ProductCard({ product, onAddToCart, onToggleFavorite, isFavorite
 
         {/* Favorite button */}
         <div className="absolute bottom-4 inset-e-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-          <Button
-            size="icon"
-            className="rounded-full shadow-lg bg-white/90 text-primary hover:bg-primary hover:text-white backdrop-blur-sm border-0 size-10 cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              onToggleFavorite(product.id)
-            }}
-            aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
-          >
-            <Heart className={`size-5 ${isFavorited ? "fill-current" : ""}`} />
-          </Button>
+          <FavoriteButton
+            productId={product.id}
+            isFavorited={isFavorited}
+            onToggleFavorite={onToggleFavorite}
+            variant="overlay"
+          />
         </div>
       </div>
 
@@ -72,29 +65,15 @@ export function ProductCard({ product, onAddToCart, onToggleFavorite, isFavorite
         <p className="font-semibold text-base mb-3 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
           {product.name}
         </p>
-        <div className="mt-auto pt-2 flex items-end justify-between gap-2">
-          <div className="flex flex-col">
-            <span className="font-extrabold text-foreground text-xl">
-              {product.price.toLocaleString("en-US")} EGP
+        <div className="mt-auto pt-2">
+          <span className="font-extrabold text-foreground text-xl">
+            {product.price.toLocaleString("en-US")} EGP
+          </span>
+          {originalPrice !== null && (
+            <span className="text-xs text-muted-foreground line-through font-medium mt-0.5 ms-2">
+              {Math.round(originalPrice).toLocaleString("en-US")}
             </span>
-            {originalPrice !== null && (
-              <span className="text-xs text-muted-foreground line-through font-medium mt-0.5">
-                {Math.round(originalPrice).toLocaleString("en-US")}
-              </span>
-            )}
-          </div>
-          <Button
-            size="sm"
-            className="rounded-xl px-4 h-10 gap-2 shrink-0 cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              onAddToCart(product.id)
-            }}
-          >
-            <ShoppingCart className="size-4" />
-            <span className="hidden sm:inline-block">{t("products.addToCart")}</span>
-          </Button>
+          )}
         </div>
       </div>
     </Link>
