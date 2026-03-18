@@ -13,7 +13,7 @@ export async function login({ email, password }: LoginFormValues) {
 
 export async function register(
   values: RegisterFormValues,
-  avatarFile: File | null
+  _avatarFile: File | null // commented out until avatar upload is ready
 ) {
   const supabase = createClient()
   const { firstName, lastName, username, email, password, phone } = values
@@ -31,20 +31,20 @@ export async function register(
 
   const userId = data.user.id
 
-  // Upload avatar if provided
-  let avatarUrl: string | null = null
-  if (avatarFile) {
-    avatarUrl = await uploadAvatar(userId, avatarFile)
-  }
+  // Avatar upload — commented out until ready
+  // let avatarUrl: string | null = null
+  // if (avatarFile) {
+  //   avatarUrl = await uploadAvatar(userId, avatarFile)
+  // }
 
-  // Update profile with username, phone, avatar_url
+  // Update profile with username and phone
   const { error: profileError } = await supabase
     .from("profiles")
     .update({
       full_name: fullName,
       username,
       phone: phone || null,
-      avatar_url: avatarUrl,
+      // avatar_url: avatarUrl,
     })
     .eq("id", userId)
 

@@ -66,7 +66,7 @@ export function ProductsTable() {
   const [page, setPage] = useState(1)
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null)
 
-  const { data: result, isLoading } = useProducts({ search, status: statusFilter, page })
+  const { data: result, isLoading, isError } = useProducts({ search, status: statusFilter, page })
   const deleteProduct = useDeleteProduct()
 
   const products = result?.data ?? []
@@ -135,6 +135,12 @@ export function ProductsTable() {
               <TableRow>
                 <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   {tg("loading")}
+                </TableCell>
+              </TableRow>
+            ) : isError ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center text-destructive py-8">
+                  {tg("error")}
                 </TableCell>
               </TableRow>
             ) : products.length === 0 ? (

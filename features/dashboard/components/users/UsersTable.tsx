@@ -48,7 +48,7 @@ export function UsersTable() {
   const [roleFilter, setRoleFilter] = useState("all")
   const [page, setPage] = useState(1)
 
-  const { data: result, isLoading } = useUsers({
+  const { data: result, isLoading, isError } = useUsers({
     search,
     status: statusFilter as "all" | "active" | "inactive" | "banned",
     role: roleFilter as "all" | "super-admin" | "admin" | "customer",
@@ -142,6 +142,12 @@ export function UsersTable() {
               <TableRow>
                 <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                   {tg("loading")}
+                </TableCell>
+              </TableRow>
+            ) : isError ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center text-destructive py-8">
+                  {tg("error")}
                 </TableCell>
               </TableRow>
             ) : users.length === 0 ? (

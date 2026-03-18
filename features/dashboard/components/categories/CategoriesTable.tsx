@@ -66,7 +66,7 @@ export function CategoriesTable() {
   const [page, setPage] = useState(1)
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null)
 
-  const { data: result, isLoading } = useCategories({ search, status: statusFilter, page })
+  const { data: result, isLoading, isError } = useCategories({ search, status: statusFilter, page })
   const deleteCategory = useDeleteCategory()
 
   const categories = result?.data ?? []
@@ -129,6 +129,12 @@ export function CategoriesTable() {
               <TableRow>
                 <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   {tg("loading")}
+                </TableCell>
+              </TableRow>
+            ) : isError ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center text-destructive py-8">
+                  {tg("error")}
                 </TableCell>
               </TableRow>
             ) : categories.length === 0 ? (

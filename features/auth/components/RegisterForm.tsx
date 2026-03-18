@@ -1,11 +1,11 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
-import { Eye, EyeOff, Camera } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,32 +29,32 @@ import { Link } from "@/i18n/navigation"
 import { useRegister } from "../hooks/useAuth"
 import { registerSchema, type RegisterFormValues } from "../types"
 
-const MAX_AVATAR_SIZE = 2 * 1024 * 1024 // 2MB
+// const MAX_AVATAR_SIZE = 2 * 1024 * 1024 // 2MB
 
-function InitialsAvatar({
-  firstName,
-  lastName,
-}: {
-  firstName: string
-  lastName: string
-}) {
-  const initials =
-    `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || "?"
-
-  return (
-    <div className="flex size-20 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-foreground">
-      {initials}
-    </div>
-  )
-}
+// function InitialsAvatar({
+//   firstName,
+//   lastName,
+// }: {
+//   firstName: string
+//   lastName: string
+// }) {
+//   const initials =
+//     `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || "?"
+//
+//   return (
+//     <div className="flex size-20 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-foreground">
+//       {initials}
+//     </div>
+//   )
+// }
 
 export function RegisterForm() {
   const t = useTranslations("auth")
   const tc = useTranslations("common")
   const router = useRouter()
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [avatarFile, setAvatarFile] = useState<File | null>(null)
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  // const fileInputRef = useRef<HTMLInputElement>(null)
+  // const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  // const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<RegisterFormValues>({
@@ -70,29 +70,27 @@ export function RegisterForm() {
   })
 
   const registerMutation = useRegister()
-  const firstName = form.watch("firstName")
-  const lastName = form.watch("lastName")
+  // const firstName = form.watch("firstName")
+  // const lastName = form.watch("lastName")
 
-  function handleAvatarClick() {
-    fileInputRef.current?.click()
-  }
+  // function handleAvatarClick() {
+  //   fileInputRef.current?.click()
+  // }
 
-  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    if (file.size > MAX_AVATAR_SIZE) {
-      toast.error(t("avatarSizeError"))
-      return
-    }
-
-    setAvatarFile(file)
-    setAvatarPreview(URL.createObjectURL(file))
-  }
+  // function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const file = e.target.files?.[0]
+  //   if (!file) return
+  //   if (file.size > MAX_AVATAR_SIZE) {
+  //     toast.error(t("avatarSizeError"))
+  //     return
+  //   }
+  //   setAvatarFile(file)
+  //   setAvatarPreview(URL.createObjectURL(file))
+  // }
 
   function onSubmit(values: RegisterFormValues) {
     registerMutation.mutate(
-      { values, avatarFile },
+      { values, avatarFile: null },
       {
         onSuccess: () => {
           toast.success(t("registerSuccess"))
@@ -114,7 +112,7 @@ export function RegisterForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Avatar upload */}
+            {/* Avatar upload — commented out until ready
             <div className="flex flex-col items-center gap-2">
               <button
                 type="button"
@@ -129,10 +127,7 @@ export function RegisterForm() {
                     className="size-20 rounded-full object-cover"
                   />
                 ) : (
-                  <InitialsAvatar
-                    firstName={firstName}
-                    lastName={lastName}
-                  />
+                  <InitialsAvatar firstName={firstName} lastName={lastName} />
                 )}
                 <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
                   <Camera className="size-6 text-white" />
@@ -149,6 +144,7 @@ export function RegisterForm() {
                 onChange={handleAvatarChange}
               />
             </div>
+            */}
 
             {/* First Name + Last Name side by side */}
             <div className="grid grid-cols-2 gap-3">
