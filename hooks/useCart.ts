@@ -5,7 +5,14 @@ import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
 import { toast } from "sonner"
 import { useCurrentUser } from "@/features/auth/hooks/useAuth"
-import { fetchCartItems, addToCart, removeFromCart } from "@/features/home/api/cart"
+import {
+  fetchCartItems,
+  addToCart,
+  removeFromCart,
+  updateCartItemQuantity,
+  removeCartItem,
+  clearCartItems,
+} from "@/features/cart/api/cart"
 
 const CART_KEY = (userId: string) => ["home", "cart", userId] as const
 
@@ -42,6 +49,19 @@ export function useCart() {
     onError: () => toast.error(t("cartError")),
   })
 
+  const updateQuantityMutation = useMutation({
+    mutationFn: ({ cartItemId, quantity }: { cartItemId: string; quantity: number }) =>
+      quantity <= 0 ? removeCartItem(cartItemId) : updateCartItemQuantity(cartItemId, quantity),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: CART_KEY(userId) }),
+    onError: () => toast.error(t("cartError")),
+  })
+
+  const clearMutation = useMutation({
+    mutationFn: clearCartItems,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: CART_KEY(userId) }),
+    onError: () => toast.error(t("cartError")),
+  })
+
   const addItem = (productId: string, color: string | null = null, size: string | null = null, quantity = 1) => {
     if (!isLoggedIn) {
       toast(t("loginToAdd"), {
@@ -56,10 +76,21 @@ export function useCart() {
     if (isLoggedIn) removeMutation.mutate(productId)
   }
 
+  const updateQuantity = (cartItemId: string, quantity: number) => {
+    if (isLoggedIn) updateQuantityMutation.mutate({ cartItemId, quantity })
+  }
+
+  const clearCart = () => {
+    if (isLoggedIn) clearMutation.mutate()
+  }
+
   return {
     items: query.data ?? [],
     totalCount,
-    addItem, // addItem(productId, color?, size?)
+    isLoading: query.isLoading,
+    addItem,
     removeItem,
+    updateQuantity,
+    clearCart,
   }
 }

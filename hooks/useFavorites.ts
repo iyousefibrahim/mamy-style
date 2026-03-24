@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
 import { toast } from "sonner"
 import { useCurrentUser } from "@/features/auth/hooks/useAuth"
-import { fetchFavoriteIds, toggleFavorite } from "@/features/home/api/cart"
+import { fetchFavoriteIds, toggleFavorite } from "@/features/home/api/favorites"
 
 const FAVORITES_KEY = (userId: string) => ["home", "favorites", userId] as const
 

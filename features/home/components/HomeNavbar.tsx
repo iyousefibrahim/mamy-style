@@ -119,14 +119,14 @@ export function HomeNavbar() {
           </Button>
 
           {/* Cart */}
-          <Button variant="ghost" size="icon" className="relative size-10 cursor-pointer" aria-label="Cart">
+          <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Cart">
             <ShoppingCart className="size-5" />
             {cartCount > 0 && (
               <span className="absolute -top-1 -inset-e-1 bg-secondary text-secondary-foreground text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
                 {cartCount}
               </span>
             )}
-          </Button>
+          </Link>
 
           {/* Hamburger */}
           <Button
