@@ -341,6 +341,11 @@
     "off": "off",
     "quantity": "Quantity"
   },
+  "categories": {
+    "title": "All Categories",
+    "subtitle": "Browse our collection",
+    "noResults": "No categories found"
+  },
   "products": {
     "title": "Products",
     "subtitle": "Browse our collection",

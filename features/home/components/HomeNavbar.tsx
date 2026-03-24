@@ -15,7 +15,7 @@ const navLinks = [
   { labelKey: "nav.home", href: "/home" },
   { labelKey: "nav.products", href: "/products" },
   { labelKey: "nav.categories", href: "/categories" },
-  { labelKey: "nav.contact", href: "#contact" },
+  { labelKey: "nav.contact", href: "/home#contact" },
 ]
 
 export function HomeNavbar() {

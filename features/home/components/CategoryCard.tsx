@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from "react"
 import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import { ShoppingBag } from "lucide-react"
@@ -9,10 +10,10 @@ type Props = {
   category: Category
 }
 
-export function CategoryCard({ category }: Props) {
+export const CategoryCard = memo(function CategoryCard({ category }: Props) {
   return (
     <Link
-      href={`/categories/${category.id}`}
+      href={`/products?category=${encodeURIComponent(category.name)}`}
       className="group relative block rounded-3xl overflow-hidden border border-border/50 bg-background shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
     >
       <div className="relative h-56 bg-muted">
@@ -21,7 +22,7 @@ export function CategoryCard({ category }: Props) {
             src={category.image_url}
             alt={category.name}
             fill
-            sizes="(max-width: 640px) 50vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
         ) : (
@@ -39,4 +40,4 @@ export function CategoryCard({ category }: Props) {
       </div>
     </Link>
   )
-}
+})
