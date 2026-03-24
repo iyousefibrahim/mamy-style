@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from "react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/navigation"
@@ -13,13 +14,13 @@ type Props = {
   isFavorited: boolean
 }
 
-export function ProductCard({ product, onToggleFavorite, isFavorited }: Props) {
+export const ProductCard = memo(function ProductCard({ product, onToggleFavorite, isFavorited }: Props) {
   const t = useTranslations("home")
 
   const hasDiscount = product.discount_percentage > 0
-  const originalPrice = hasDiscount
-    ? product.price / (1 - product.discount_percentage / 100)
-    : null
+  const currentPrice = hasDiscount
+    ? product.price * (1 - product.discount_percentage / 100)
+    : product.price
 
   return (
     <Link
@@ -67,15 +68,15 @@ export function ProductCard({ product, onToggleFavorite, isFavorited }: Props) {
         </p>
         <div className="mt-auto pt-2">
           <span className="font-extrabold text-foreground text-xl">
-            {product.price.toLocaleString("en-US")} EGP
+            {Math.round(currentPrice).toLocaleString("en-US")} EGP
           </span>
-          {originalPrice !== null && (
+          {hasDiscount && (
             <span className="text-xs text-muted-foreground line-through font-medium mt-0.5 ms-2">
-              {Math.round(originalPrice).toLocaleString("en-US")}
+              {product.price.toLocaleString("en-US")}
             </span>
           )}
         </div>
       </div>
     </Link>
   )
-}
+})

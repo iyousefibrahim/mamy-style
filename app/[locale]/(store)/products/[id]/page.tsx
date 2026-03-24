@@ -1,6 +1,4 @@
 import { setRequestLocale, getTranslations } from "next-intl/server"
-import { HomeNavbar } from "@/features/home/components/HomeNavbar"
-import { HomeFooter } from "@/features/home/components/HomeFooter"
 import { ProductDetailPage } from "@/features/products/components/ProductDetailPage"
 import { fetchProductServer } from "@/features/products/api/products.server"
 
@@ -21,13 +19,5 @@ export default async function Page({ params }: Props) {
   const { locale, id } = await params
   setRequestLocale(locale)
 
-  return (
-    <div className="min-h-screen">
-      <HomeNavbar />
-      <main>
-        <ProductDetailPage productId={id} />
-      </main>
-      <HomeFooter />
-    </div>
-  )
+  return <ProductDetailPage productId={id} />
 }

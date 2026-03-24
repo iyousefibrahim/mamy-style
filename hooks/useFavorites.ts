@@ -1,5 +1,6 @@
 "use client"
 
+import { useCallback, useMemo } from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
@@ -24,7 +25,7 @@ export function useFavorites() {
     staleTime: 2 * 60_000,
   })
 
-  const favoriteIds = (query.data ?? []) as string[]
+  const favoriteIds = useMemo(() => (query.data ?? []) as string[], [query.data])
 
   const toggleMutation = useMutation({
     mutationFn: ({ productId }: { productId: string; wasAdding: boolean }) =>
@@ -36,7 +37,7 @@ export function useFavorites() {
     onError: () => toast.error(t("favError")),
   })
 
-  const toggle = (productId: string) => {
+  const toggle = useCallback((productId: string) => {
     if (!isLoggedIn) {
       toast(t("loginToFav"), {
         action: { label: t("loginAction"), onClick: () => router.push("/login") },
@@ -45,7 +46,7 @@ export function useFavorites() {
     }
     const wasAdding = !favoriteIds.includes(productId)
     toggleMutation.mutate({ productId, wasAdding })
-  }
+  }, [isLoggedIn, favoriteIds, toggleMutation, t, router])
 
   return {
     favoriteIds,

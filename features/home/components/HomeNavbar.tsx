@@ -7,8 +7,8 @@ import { Link, useRouter, usePathname } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, Globe, Search, Menu, X, Heart } from "lucide-react"
 import { useCurrentUser, useLogout } from "@/features/auth/hooks/useAuth"
-import { useCart } from "../hooks/useCart"
-import { useFavorites } from "../hooks/useFavorites"
+import { useCart } from "@/hooks/useCart"
+import { useFavorites } from "@/hooks/useFavorites"
 
 
 const navLinks = [
