@@ -1,8 +1,8 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
+import { Link } from "@/i18n/navigation"
 import { ProductCard } from "./ProductCard"
 import type { Product } from "../types"
 
@@ -61,13 +61,13 @@ export function FeaturedProducts({ products, isLoading, onToggleFavorite, isFavo
         </div>
 
         <div className="text-center mt-12">
-          <Button
-            variant="outline"
-            className="rounded-full gap-2 px-8 h-12 hover:bg-primary hover:text-white transition-all duration-300 border-2 font-medium cursor-pointer"
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 rounded-full px-8 h-12 border-2 font-medium cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 text-sm"
           >
             {t("products.viewAll")}
-            <ChevronRight className="size-5" />
-          </Button>
+            <ChevronRight className="size-5 rtl:rotate-180" />
+          </Link>
         </div>
       </div>
     </section>

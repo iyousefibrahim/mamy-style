@@ -5,11 +5,11 @@ import Image from "next/image"
 import { useTranslations, useLocale } from "next-intl"
 import { Link, useRouter, usePathname } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Globe, Search, Menu, X, Heart } from "lucide-react"
+import { ShoppingCart, Globe, Menu, X, Heart } from "lucide-react"
 import { useCurrentUser, useLogout } from "@/features/auth/hooks/useAuth"
 import { useCart } from "@/hooks/useCart"
 import { useFavorites } from "@/hooks/useFavorites"
-
+import { SearchBar } from "./SearchBar"
 
 const navLinks = [
   { labelKey: "nav.home", href: "/home" },
@@ -51,14 +51,7 @@ export function HomeNavbar() {
 
         {/* Search bar — desktop */}
         <div className="hidden md:flex items-center flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute inset-s-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-            <input
-              type="text"
-              placeholder={t("nav.searchPlaceholder")}
-              className="w-full rounded-full border bg-muted/50 ps-10 pe-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
-            />
-          </div>
+          <SearchBar />
         </div>
 
         {/* Desktop nav links */}
@@ -153,12 +146,10 @@ export function HomeNavbar() {
         <div className="lg:hidden border-t bg-background">
           <div className="wrapper py-4 flex flex-col gap-1">
             {/* Mobile search */}
-            <div className="relative mb-3">
-              <Search className="absolute inset-s-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-              <input
-                type="text"
-                placeholder={t("nav.searchPlaceholder")}
-                className="w-full rounded-full border bg-muted/50 ps-10 pe-4 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+            <div className="mb-3">
+              <SearchBar
+                onNavigate={() => setMenuOpen(false)}
+                inputClassName="py-2.5"
               />
             </div>
 

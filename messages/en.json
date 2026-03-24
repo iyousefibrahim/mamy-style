@@ -258,6 +258,9 @@
       "categories": "Categories",
       "contact": "Contact",
       "searchPlaceholder": "Search products...",
+      "search": "Search",
+      "noResults": "No results found",
+      "seeAllResults": "See all results",
       "login": "Login",
       "register": "Sign Up",
       "logout": "Logout"

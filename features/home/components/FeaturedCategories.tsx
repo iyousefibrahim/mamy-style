@@ -1,8 +1,8 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
+import { Link } from "@/i18n/navigation"
 import { CategoryCard } from "./CategoryCard"
 import type { Category } from "../types"
 
@@ -32,13 +32,13 @@ export function FeaturedCategories({ categories, isLoading }: Props) {
             </p>
             <h2 className="text-4xl font-extrabold tracking-tight">{t("categories.title")}</h2>
           </div>
-          <Button
-            variant="link"
-            className="hidden md:flex gap-1 text-primary hover:text-primary/80 group p-0 h-auto font-semibold cursor-pointer"
+          <Link
+            href="/categories"
+            className="hidden md:flex items-center gap-1 text-primary hover:text-primary/80 group p-0 h-auto font-semibold cursor-pointer"
           >
             {t("categories.viewAll")}
-            <ChevronRight className="size-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+            <ChevronRight className="size-4 group-hover:translate-x-1 transition-transform rtl:rotate-180" />
+          </Link>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -49,10 +49,13 @@ export function FeaturedCategories({ categories, isLoading }: Props) {
         </div>
 
         <div className="text-center mt-10 md:hidden">
-          <Button variant="outline" className="rounded-full gap-2 w-full border-2 h-12 cursor-pointer">
+          <Link
+            href="/categories"
+            className="inline-flex items-center justify-center gap-2 rounded-full px-8 h-12 border-2 font-medium cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 text-sm"
+          >
             {t("categories.viewAll")}
-            <ChevronRight className="size-4" />
-          </Button>
+            <ChevronRight className="size-5 rtl:rotate-180" />
+          </Link>
         </div>
       </div>
     </section>

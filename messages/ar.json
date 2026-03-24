@@ -258,6 +258,9 @@
       "categories": "الفئات",
       "contact": "كلمينا",
       "searchPlaceholder": "دوّري على اللي نفسك فيه...",
+      "search": "بحث",
+      "noResults": "مفيش نتائج",
+      "seeAllResults": "عرض كل النتائج",
       "login": "دخول",
       "register": "حساب جديد",
       "logout": "خروج"
