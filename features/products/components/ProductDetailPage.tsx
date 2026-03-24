@@ -17,6 +17,7 @@ import { useProduct } from "../hooks/useProduct"
 import { ProductImageGallery } from "./ProductImageGallery"
 import { ProductInfo } from "./ProductInfo"
 import { ProductDetailSkeleton } from "./ProductDetailSkeleton"
+import { SimilarProducts } from "./SimilarProducts"
 
 type Props = {
   productId: string
@@ -75,6 +76,8 @@ export function ProductDetailPage({ productId }: Props) {
               isFavorited={isFavorited(productId)}
             />
           </div>
+
+          <SimilarProducts productId={productId} categoryName={product.category_name} />
         </>
       )}
     </div>

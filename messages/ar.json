@@ -362,7 +362,8 @@
     "categories": "الفئات",
     "egp": "ج.م",
     "activeFilters": "{count} فعال",
-    "sortBy": "الترتيب"
+    "sortBy": "الترتيب",
+    "similarProducts": "قد يعجبك أيضاً"
   },
   "validation": {
     "emailRequired": "البريد الإلكتروني مطلوب",

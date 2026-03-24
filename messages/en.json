@@ -362,7 +362,8 @@
     "categories": "Categories",
     "egp": "EGP",
     "activeFilters": "{count} active",
-    "sortBy": "Sort By"
+    "sortBy": "Sort By",
+    "similarProducts": "You Might Also Like"
   },
   "validation": {
     "emailRequired": "Email is required",

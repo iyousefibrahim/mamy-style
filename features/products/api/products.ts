@@ -32,6 +32,27 @@ export async function fetchProduct(id: string): Promise<Product | null> {
   return data as Product
 }
 
+// ─── Similar Products ────────────────────────────────────────────────────────
+
+export async function fetchSimilarProducts(
+  excludeId: string,
+  categoryName: string,
+  limit = 10
+): Promise<Product[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from("products_with_category")
+    .select("*")
+    .eq("status", "active")
+    .eq("publish_status", "published")
+    .eq("category_name", categoryName)
+    .neq("id", excludeId)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+  if (error) throw error
+  return (data ?? []) as Product[]
+}
+
 // ─── Public Products List ───────────────────────────────────────────────────
 
 export async function fetchPublicProducts(
