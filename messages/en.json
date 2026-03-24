@@ -371,6 +371,15 @@
     "clearCartConfirmTitle": "Clear your cart?",
     "clearCartConfirmDesc": "All items will be removed. This cannot be undone."
   },
+  "favorites": {
+    "title": "My Favorites",
+    "empty": "No favorites yet",
+    "emptyDesc": "Save items you love and find them here.",
+    "shopNow": "Discover Products",
+    "loginTitle": "Login to view your favorites",
+    "loginDesc": "Your favorites are saved to your account.",
+    "loginBtn": "Login"
+  },
   "categories": {
     "title": "All Categories",
     "subtitle": "Browse our collection",

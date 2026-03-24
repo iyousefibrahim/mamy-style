@@ -53,5 +53,6 @@ export function useFavorites() {
     isFavorited: (productId: string) => favoriteIds.includes(productId),
     toggleFavorite: toggle,
     count: favoriteIds.length,
+    isLoading: query.isLoading,
   }
 }

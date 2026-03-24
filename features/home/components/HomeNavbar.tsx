@@ -109,14 +109,14 @@ export function HomeNavbar() {
           </div>
 
           {/* Favorites */}
-          <Button variant="ghost" size="icon" className="relative size-10 cursor-pointer" aria-label="Favorites">
+          <Link href="/favorites" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Favorites">
             <Heart className="size-5" />
             {favCount > 0 && (
               <span className="absolute -top-1 -inset-e-1 bg-rose-500 text-white text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
                 {favCount}
               </span>
             )}
-          </Button>
+          </Link>
 
           {/* Cart */}
           <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Cart">
