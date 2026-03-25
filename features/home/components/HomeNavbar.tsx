@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useTranslations, useLocale } from "next-intl"
 import { Link, useRouter, usePathname } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Globe, Menu, X, Heart } from "lucide-react"
+import { ShoppingCart, Globe, Menu, X, Heart, User } from "lucide-react"
 import { useCurrentUser, useLogout } from "@/features/auth/hooks/useAuth"
 import { useCart } from "@/hooks/useCart"
 import { useFavorites } from "@/hooks/useFavorites"
@@ -74,13 +74,38 @@ export function HomeNavbar() {
             {locale === "ar" ? "EN" : "عربي"}
           </Button>
 
-          {/* Auth buttons or user name — desktop */}
-          <div className="hidden lg:flex items-center gap-1">
-            {user ? (
-              <div className="flex items-center gap-1">
-                <span className="text-sm font-medium px-2 py-1.5 truncate max-w-30">
-                  {user.user_metadata?.full_name?.split(" ")[0] ?? user.email}
-                </span>
+          {/* Auth actions */}
+          {user ? (
+            <div className="flex items-center gap-1">
+              {/* Favorites */}
+              <Link href="/favorites" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Favorites">
+                <Heart className="size-5" />
+                {favCount > 0 && (
+                  <span className="absolute -top-1 -inset-e-1 bg-rose-500 text-white text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
+                    {favCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Cart */}
+              <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Cart">
+                <ShoppingCart className="size-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -inset-e-1 bg-secondary text-secondary-foreground text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Profile + Logout — desktop only */}
+              <div className="hidden lg:flex items-center gap-1">
+                <Link
+                  href="/profile"
+                  className="inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors"
+                  aria-label="Profile"
+                >
+                  <User className="size-5" />
+                </Link>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -90,43 +115,23 @@ export function HomeNavbar() {
                   {t("nav.logout")}
                 </Button>
               </div>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
-                >
-                  {t("nav.login")}
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
-                >
-                  {t("nav.register")}
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Favorites */}
-          <Link href="/favorites" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Favorites">
-            <Heart className="size-5" />
-            {favCount > 0 && (
-              <span className="absolute -top-1 -inset-e-1 bg-rose-500 text-white text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
-                {favCount}
-              </span>
-            )}
-          </Link>
-
-          {/* Cart */}
-          <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Cart">
-            <ShoppingCart className="size-5" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -inset-e-1 bg-secondary text-secondary-foreground text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+            </div>
+          ) : (
+            <div className="hidden lg:flex items-center gap-1">
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+              >
+                {t("nav.login")}
+              </Link>
+              <Link
+                href="/register"
+                className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+              >
+                {t("nav.register")}
+              </Link>
+            </div>
+          )}
 
           {/* Hamburger */}
           <Button
@@ -165,24 +170,43 @@ export function HomeNavbar() {
             ))}
 
             {/* Mobile auth */}
-            {!user && (
-              <div className="flex gap-2 mt-2 pt-2 border-t">
-                <Link
-                  href="/login"
-                  className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg border hover:bg-muted transition-colors cursor-pointer"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {t("nav.login")}
-                </Link>
-                <Link
-                  href="/register"
-                  className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {t("nav.register")}
-                </Link>
-              </div>
-            )}
+            <div className="flex gap-2 mt-2 pt-2 border-t">
+              {user ? (
+                <>
+                  <Link
+                    href="/profile"
+                    className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg border hover:bg-muted transition-colors cursor-pointer"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t("nav.profile")}
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="flex-1 text-sm cursor-pointer"
+                    onClick={() => { logout.mutate(); setMenuOpen(false) }}
+                  >
+                    {t("nav.logout")}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg border hover:bg-muted transition-colors cursor-pointer"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t("nav.login")}
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t("nav.register")}
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}

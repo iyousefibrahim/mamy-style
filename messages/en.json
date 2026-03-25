@@ -263,7 +263,8 @@
       "seeAllResults": "See all results",
       "login": "Login",
       "register": "Sign Up",
-      "logout": "Logout"
+      "logout": "Logout",
+      "profile": "My Profile"
     },
     "hero": {
       "slide1Title": "New Collection Just Dropped",
@@ -370,6 +371,19 @@
     "loginBtn": "Login",
     "clearCartConfirmTitle": "Clear your cart?",
     "clearCartConfirmDesc": "All items will be removed. This cannot be undone."
+  },
+  "profile": {
+    "title": "My Profile",
+    "tabInfo": "My Info",
+    "tabSecurity": "Security",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "saveChanges": "Save Changes",
+    "profileUpdated": "Profile updated successfully.",
+    "logout": "Logout"
   },
   "favorites": {
     "title": "My Favorites",

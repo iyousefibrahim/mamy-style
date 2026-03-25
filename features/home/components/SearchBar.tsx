@@ -6,7 +6,6 @@ import { Search, ShoppingBag } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useQuery, keepPreviousData } from "@tanstack/react-query"
 import { useRouter } from "@/i18n/navigation"
-import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { fetchPublicProducts } from "@/features/products/api/products"
@@ -80,13 +79,13 @@ export function SearchBar({ onNavigate, inputClassName }: Props) {
             inputClassName
           )}
         />
-        <Button
-          size="sm"
+        <button
           onClick={handleSubmit}
-          className="absolute inset-e-1.5 top-1/2 -translate-y-1/2 h-7 px-3 rounded-full text-xs cursor-pointer"
+          className="absolute inset-e-1.5 top-1/2 -translate-y-1/2 h-7 px-3 rounded-full text-xs cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 transition-colors inline-flex items-center gap-1 font-medium outline-none"
         >
+          <Search className="size-3.5" />
           {t("nav.search")}
-        </Button>
+        </button>
       </div>
 
       {showDropdown && (

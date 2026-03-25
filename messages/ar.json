@@ -263,7 +263,8 @@
       "seeAllResults": "عرض كل النتائج",
       "login": "دخول",
       "register": "حساب جديد",
-      "logout": "خروج"
+      "logout": "خروج",
+      "profile": "حسابي"
     },
     "hero": {
       "slide1Title": "كولكشن جديد وصل دلوقتي",
@@ -370,6 +371,19 @@
     "loginBtn": "دخول",
     "clearCartConfirmTitle": "تمسحي السلة؟",
     "clearCartConfirmDesc": "كل المنتجات هتتشال ومش هينفع ترجعيها."
+  },
+  "profile": {
+    "title": "حسابي",
+    "tabInfo": "بياناتي",
+    "tabSecurity": "الأمان",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "saveChanges": "حفظ التغييرات",
+    "profileUpdated": "تم تحديث البيانات بنجاح.",
+    "logout": "تسجيل الخروج"
   },
   "favorites": {
     "title": "المفضلة بتاعتي",
