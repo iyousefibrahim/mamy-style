@@ -262,6 +262,10 @@
       "noOrders": "No orders found.",
       "cod": "Cash on Delivery",
       "online": "Online",
+      "viewItems": "View items",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "shipping": "Shipping",
       "statusUpdated": "Order status updated.",
       "statusError": "Failed to update status.",
       "status": {
@@ -395,7 +399,9 @@
     "loginDesc": "Your cart is saved to your account.",
     "loginBtn": "Login",
     "clearCartConfirmTitle": "Clear your cart?",
-    "clearCartConfirmDesc": "All items will be removed. This cannot be undone."
+    "clearCartConfirmDesc": "All items will be removed. This cannot be undone.",
+    "outOfStock": "Out of stock",
+    "outOfStockWarning": "Some items are out of stock. Remove them to continue."
   },
   "profile": {
     "title": "My Profile",

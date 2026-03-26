@@ -17,9 +17,10 @@ const VALID_COUPONS: Record<
 
 type Props = {
   subtotal: number;
+  hasOutOfStock: boolean;
 };
 
-export function CartSummary({ subtotal }: Props) {
+export function CartSummary({ subtotal, hasOutOfStock }: Props) {
   const t = useTranslations("cart");
   const router = useRouter();
   const [couponInput, setCouponInput] = useState("");
@@ -137,8 +138,14 @@ export function CartSummary({ subtotal }: Props) {
       </div>
 
       {/* Actions */}
+      {hasOutOfStock && (
+        <p className="text-xs text-destructive text-center">
+          {t("outOfStockWarning")}
+        </p>
+      )}
       <Button
         className="w-full rounded-xl h-11 cursor-pointer"
+        disabled={hasOutOfStock}
         onClick={() => {
           const params = new URLSearchParams();
           if (appliedCoupon) params.set("coupon", appliedCoupon.code);

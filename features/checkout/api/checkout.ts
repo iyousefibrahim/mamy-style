@@ -23,6 +23,22 @@ export async function createOrder(payload: CreateOrderPayload): Promise<Order> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error("Not authenticated")
 
+  // Validate stock server-side before creating the order
+  const productIds = payload.items.filter((i) => i.product).map((i) => i.product!.id)
+  const { data: freshProducts } = await supabase
+    .from("products")
+    .select("id, name, stock")
+    .in("id", productIds)
+
+  const stockMap = Object.fromEntries((freshProducts ?? []).map((p) => [p.id, p]))
+  for (const item of payload.items) {
+    if (!item.product) continue
+    const fresh = stockMap[item.product.id]
+    if (fresh && item.quantity > fresh.stock) {
+      throw new Error(`"${fresh.name}" is out of stock`)
+    }
+  }
+
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .insert({

@@ -151,7 +151,12 @@ export function CartPage() {
 
         {/* Summary */}
         <div>
-          <CartSummary subtotal={subtotal} />
+          <CartSummary
+            subtotal={subtotal}
+            hasOutOfStock={items.some(
+              (item) => item.product && item.quantity > item.product.stock
+            )}
+          />
         </div>
       </div>
     </div>

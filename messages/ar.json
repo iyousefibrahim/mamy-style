@@ -262,6 +262,10 @@
       "noOrders": "لا توجد طلبات.",
       "cod": "الدفع عند الاستلام",
       "online": "أونلاين",
+      "viewItems": "عرض المنتجات",
+      "subtotal": "المجموع",
+      "discount": "الخصم",
+      "shipping": "الشحن",
       "statusUpdated": "تم تحديث حالة الطلب.",
       "statusError": "فشل تحديث الحالة.",
       "status": {
@@ -395,7 +399,9 @@
     "loginDesc": "سلتك محفوظة في حسابك.",
     "loginBtn": "دخول",
     "clearCartConfirmTitle": "تمسحي السلة؟",
-    "clearCartConfirmDesc": "كل المنتجات هتتشال ومش هينفع ترجعيها."
+    "clearCartConfirmDesc": "كل المنتجات هتتشال ومش هينفع ترجعيها.",
+    "outOfStock": "نفذت الكمية",
+    "outOfStockWarning": "في منتجات نفذت. شيليهم عشان تكملي."
   },
   "profile": {
     "title": "حسابي",

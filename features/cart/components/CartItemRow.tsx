@@ -6,6 +6,10 @@ import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import type { CartItemWithProduct } from "../hooks/useCartPage"
 
+function isOutOfStock(item: CartItemWithProduct): boolean {
+  return !!item.product && item.quantity > item.product.stock
+}
+
 type Props = {
   item: CartItemWithProduct
   onUpdateQty: (cartItemId: string, quantity: number) => void
@@ -15,6 +19,7 @@ type Props = {
 export function CartItemRow({ item, onUpdateQty, onRemove }: Props) {
   const t = useTranslations("cart")
   const product = item.product
+  const outOfStock = isOutOfStock(item)
 
   const price = product
     ? Math.round(product.price * (1 - product.discount_percentage / 100))
@@ -57,6 +62,11 @@ export function CartItemRow({ item, onUpdateQty, onRemove }: Props) {
               </span>
             )}
           </div>
+        )}
+        {outOfStock && (
+          <span className="text-xs text-destructive font-medium">
+            {t("outOfStock")}
+          </span>
         )}
         <p className="font-bold text-base mt-auto">
           {(price * item.quantity).toLocaleString()} EGP

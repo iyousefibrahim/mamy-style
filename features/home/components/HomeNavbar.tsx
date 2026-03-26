@@ -5,11 +5,18 @@ import Image from "next/image"
 import { useTranslations, useLocale } from "next-intl"
 import { Link, useRouter, usePathname } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Globe, Menu, X, Heart, User, Package } from "lucide-react"
+import { ShoppingCart, Globe, Menu, X, Heart, User, Package, LogOut } from "lucide-react"
 import { useCurrentUser, useLogout } from "@/features/auth/hooks/useAuth"
 import { useCart } from "@/hooks/useCart"
 import { useFavorites } from "@/hooks/useFavorites"
 import { SearchBar } from "./SearchBar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const navLinks = [
   { labelKey: "nav.home", href: "/home" },
@@ -87,11 +94,6 @@ export function HomeNavbar() {
                 )}
               </Link>
 
-              {/* Orders */}
-              <Link href="/orders" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Orders">
-                <Package className="size-5" />
-              </Link>
-
               {/* Cart */}
               <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Cart">
                 <ShoppingCart className="size-5" />
@@ -102,23 +104,40 @@ export function HomeNavbar() {
                 )}
               </Link>
 
-              {/* Profile + Logout — desktop only */}
-              <div className="hidden lg:flex items-center gap-1">
-                <Link
-                  href="/profile"
-                  className="inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors"
-                  aria-label="Profile"
-                >
-                  <User className="size-5" />
-                </Link>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-sm text-muted-foreground cursor-pointer"
-                  onClick={() => logout.mutate()}
-                >
-                  {t("nav.logout")}
-                </Button>
+              {/* User dropdown — desktop only */}
+              <div className="hidden lg:block">
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    className="inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors cursor-pointer"
+                    aria-label="Account"
+                  >
+                    <User className="size-5" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-44">
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => router.push("/profile")}
+                    >
+                      <User className="size-4 me-2" />
+                      {t("nav.profile")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => router.push("/orders")}
+                    >
+                      <Package className="size-4 me-2" />
+                      {t("nav.orders")}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="text-destructive cursor-pointer"
+                      onClick={() => logout.mutate()}
+                    >
+                      <LogOut className="size-4 me-2" />
+                      {t("nav.logout")}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           ) : (
