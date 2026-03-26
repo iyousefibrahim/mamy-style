@@ -106,23 +106,14 @@ export function HomeFooter() {
           <div>
             <h3 className="font-bold text-sm mb-4">{t("footer.paymentMethods")}</h3>
             <div className="flex flex-wrap gap-2">
-              <div className="flex items-center gap-1.5 rounded-lg border bg-background px-3 py-2">
+              <div className="rounded-lg border bg-background px-3 py-2">
                 <FaCcVisa className="size-7 text-blue-700" />
               </div>
-              <div className="flex items-center gap-1.5 rounded-lg border bg-background px-3 py-2">
+              <div className="rounded-lg border bg-background px-3 py-2">
                 <FaCcMastercard className="size-7 text-red-500" />
               </div>
-              <div className="rounded-lg border bg-background px-3 py-2 text-xs font-bold text-foreground">
-                Meeza
-              </div>
-              <div className="rounded-lg border bg-background px-3 py-2 text-xs font-bold text-green-600">
-                Fawry
-              </div>
-              <div className="rounded-lg border bg-background px-3 py-2 text-xs font-bold text-red-600">
-                Vodafone Cash
-              </div>
-              <div className="rounded-lg border bg-background px-3 py-2 text-xs font-bold text-purple-600">
-                ValU
+              <div className="rounded-lg border bg-background px-3 py-2">
+                <Image src="/brands/meeza.svg" alt="Meeza" width={48} height={20} className="h-5 w-auto" />
               </div>
             </div>
           </div>

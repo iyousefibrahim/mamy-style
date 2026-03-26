@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useTranslations, useLocale } from "next-intl"
 import { Link, useRouter, usePathname } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Globe, Menu, X, Heart, User } from "lucide-react"
+import { ShoppingCart, Globe, Menu, X, Heart, User, Package } from "lucide-react"
 import { useCurrentUser, useLogout } from "@/features/auth/hooks/useAuth"
 import { useCart } from "@/hooks/useCart"
 import { useFavorites } from "@/hooks/useFavorites"
@@ -85,6 +85,11 @@ export function HomeNavbar() {
                     {favCount}
                   </span>
                 )}
+              </Link>
+
+              {/* Orders */}
+              <Link href="/orders" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Orders">
+                <Package className="size-5" />
               </Link>
 
               {/* Cart */}
@@ -173,6 +178,13 @@ export function HomeNavbar() {
             <div className="flex gap-2 mt-2 pt-2 border-t">
               {user ? (
                 <>
+                  <Link
+                    href="/orders"
+                    className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg border hover:bg-muted transition-colors cursor-pointer"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t("nav.orders")}
+                  </Link>
                   <Link
                     href="/profile"
                     className="flex-1 text-center py-2.5 text-sm font-medium rounded-lg border hover:bg-muted transition-colors cursor-pointer"

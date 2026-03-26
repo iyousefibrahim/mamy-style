@@ -248,10 +248,34 @@
       "admin": "Admin",
       "superAdmin": "Super Admin",
       "customer": "Customer"
+    },
+    "orders": {
+      "ordersTotal": "orders total",
+      "page": "Page",
+      "searchPlaceholder": "Search by ID, city, or phone...",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "total": "Total",
+      "payment": "Payment",
+      "date": "Date",
+      "statusCol": "Status",
+      "noOrders": "No orders found.",
+      "cod": "Cash on Delivery",
+      "online": "Online",
+      "statusUpdated": "Order status updated.",
+      "statusError": "Failed to update status.",
+      "status": {
+        "pending_payment": "Pending Payment",
+        "confirmed": "Confirmed",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      }
     }
   },
   "home": {
-    "announcementBar": "Free shipping on orders over 500 EGP",
+    "announcementBar": "Free shipping on orders over 2000 EGP",
     "nav": {
       "home": "Home",
       "products": "Products",
@@ -264,7 +288,8 @@
       "login": "Login",
       "register": "Sign Up",
       "logout": "Logout",
-      "profile": "My Profile"
+      "profile": "My Profile",
+      "orders": "My Orders"
     },
     "hero": {
       "slide1Title": "New Collection Just Dropped",
@@ -437,5 +462,66 @@
     "confirmPasswordRequired": "Please confirm your password",
     "passwordsMismatch": "Passwords do not match",
     "phoneInvalid": "Must be a valid Egyptian number (e.g. 01012345678)"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "stepAddress": "Delivery Address",
+    "stepReview": "Review & Pay",
+    "governorate": "Governorate",
+    "selectGovernorate": "Select governorate...",
+    "city": "City",
+    "selectCity": "Select city...",
+    "addressLine": "Street Address",
+    "addressPlaceholder": "Street name, building number...",
+    "phone": "Phone Number",
+    "shippingFree": "Free shipping applied!",
+    "shippingLocal": "Delivery to Baltim — {fee} EGP (paid now)",
+    "shippingNational": "Delivery — {fee} EGP (paid to delivery company on arrival)",
+    "continueToPayment": "Continue",
+    "paymentMethod": "Payment Method",
+    "payOnline": "Pay Online",
+    "payOnDelivery": "Pay on Delivery",
+    "payOnlineDesc": "Pay now securely via Paymob (cards accepted).",
+    "payOnDeliveryLocalDesc": "Pay cash when we deliver to you in Baltim.",
+    "payOnDeliveryNationalDesc": "Pay cash to the delivery company when your order arrives.",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shippingFee": "Shipping",
+    "freeShipping": "Free",
+    "total": "Total",
+    "back": "Back",
+    "payWithPaymob": "Pay with Paymob →",
+    "placeOrder": "Place Order",
+    "placing": "Placing order...",
+    "orderPlaced": "Order placed successfully!",
+    "paymentInitFailed": "Failed to initiate payment. Please try again.",
+    "loginTitle": "Login to Checkout",
+    "loginBtn": "Login",
+    "emptyCart": "Your cart is empty",
+    "shopNow": "Shop Now"
+  },
+  "orders": {
+    "title": "My Orders",
+    "loginTitle": "Login to view your orders",
+    "loginBtn": "Login",
+    "empty": "No orders yet",
+    "emptyDesc": "Once you place an order, it will appear here.",
+    "shopNow": "Start Shopping",
+    "address": "Address",
+    "phone": "Phone",
+    "codNote": "Pay cash on delivery",
+    "pendingPaymentNote": "Payment not completed. You can retry below.",
+    "payNow": "Pay Now",
+    "redirecting": "Redirecting...",
+    "retryFailed": "Could not initiate payment. Please try again.",
+    "paymentFailed": "Payment was not completed. Please try again.",
+    "status": {
+      "pending_payment": "Pending Payment",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
   }
 }

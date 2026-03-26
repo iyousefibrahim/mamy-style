@@ -125,3 +125,43 @@ export type PaginatedResult<T> = {
   data: T[]
   total: number
 }
+
+// ─── Orders ─────────────────────────────────────────────────────────────────
+
+export type OrderStatus = 'pending_payment' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+export type ShippingType = 'local' | 'national'
+export type PaymentMethod = 'online' | 'cod'
+
+export type Order = {
+  id: string
+  user_id: string
+  status: OrderStatus
+  governorate: string
+  city: string
+  address_line: string
+  phone: string
+  subtotal: number
+  discount: number
+  shipping_fee: number
+  total: number
+  shipping_type: ShippingType
+  payment_method: PaymentMethod
+  coupon_code: string | null
+  paymob_order_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type OrderItem = {
+  id: string
+  order_id: string
+  product_id: string | null
+  name: string
+  price: number
+  quantity: number
+  color: string | null
+  size: string | null
+  image_url: string | null
+}
+
+export type OrderWithItems = Order & { order_items: OrderItem[] }

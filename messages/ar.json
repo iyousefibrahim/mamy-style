@@ -248,10 +248,34 @@
       "admin": "مسؤول",
       "superAdmin": "مسؤول عام",
       "customer": "عميل"
+    },
+    "orders": {
+      "ordersTotal": "طلب إجمالي",
+      "page": "صفحة",
+      "searchPlaceholder": "ابحث بالرقم أو المدينة أو الهاتف...",
+      "orderId": "رقم الطلب",
+      "customer": "العميل",
+      "total": "الإجمالي",
+      "payment": "الدفع",
+      "date": "التاريخ",
+      "statusCol": "الحالة",
+      "noOrders": "لا توجد طلبات.",
+      "cod": "الدفع عند الاستلام",
+      "online": "أونلاين",
+      "statusUpdated": "تم تحديث حالة الطلب.",
+      "statusError": "فشل تحديث الحالة.",
+      "status": {
+        "pending_payment": "في انتظار الدفع",
+        "confirmed": "مؤكد",
+        "processing": "قيد المعالجة",
+        "shipped": "تم الشحن",
+        "delivered": "تم التوصيل",
+        "cancelled": "ملغي"
+      }
     }
   },
   "home": {
-    "announcementBar": "الشحن ببلاش على الطلبات فوق 500 جنيه",
+    "announcementBar": "الشحن ببلاش على الطلبات فوق 2000 جنيه",
     "nav": {
       "home": "الرئيسية",
       "products": "المنتجات",
@@ -264,7 +288,8 @@
       "login": "دخول",
       "register": "حساب جديد",
       "logout": "خروج",
-      "profile": "حسابي"
+      "profile": "حسابي",
+      "orders": "طلباتي"
     },
     "hero": {
       "slide1Title": "كولكشن جديد وصل دلوقتي",
@@ -437,5 +462,66 @@
     "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
     "passwordsMismatch": "كلمتا المرور غير متطابقتين",
     "phoneInvalid": "يجب أن يكون رقم هاتف مصري صحيح (مثال: 01012345678)"
+  },
+  "checkout": {
+    "title": "إتمام الشراء",
+    "stepAddress": "عنوان التوصيل",
+    "stepReview": "مراجعة وادفع",
+    "governorate": "المحافظة",
+    "selectGovernorate": "اختر المحافظة...",
+    "city": "المدينة",
+    "selectCity": "اختر المدينة...",
+    "addressLine": "عنوان الشارع",
+    "addressPlaceholder": "اسم الشارع، رقم المبنى...",
+    "phone": "رقم الهاتف",
+    "shippingFree": "الشحن مجاني!",
+    "shippingLocal": "توصيل لبلطيم — {fee} جنيه (مدفوع الآن)",
+    "shippingNational": "توصيل — {fee} جنيه (مدفوع لشركة الشحن عند الاستلام)",
+    "continueToPayment": "متابعة",
+    "paymentMethod": "طريقة الدفع",
+    "payOnline": "الدفع أونلاين",
+    "payOnDelivery": "الدفع عند الاستلام",
+    "payOnlineDesc": "ادفع الآن بأمان عبر باي موب (بطاقات مقبولة).",
+    "payOnDeliveryLocalDesc": "ادفع كاش عند التوصيل في بلطيم.",
+    "payOnDeliveryNationalDesc": "ادفع كاش لشركة الشحن عند وصول طلبك.",
+    "subtotal": "المجموع الفرعي",
+    "discount": "الخصم",
+    "shippingFee": "الشحن",
+    "freeShipping": "مجاني",
+    "total": "الإجمالي",
+    "back": "رجوع",
+    "payWithPaymob": "ادفع عبر باي موب ←",
+    "placeOrder": "تأكيد الطلب",
+    "placing": "جارٍ تأكيد الطلب...",
+    "orderPlaced": "تم تأكيد طلبك بنجاح!",
+    "paymentInitFailed": "فشل بدء الدفع. يرجى المحاولة مرة أخرى.",
+    "loginTitle": "سجّل دخولك لإتمام الشراء",
+    "loginBtn": "تسجيل الدخول",
+    "emptyCart": "سلة التسوق فارغة",
+    "shopNow": "تسوق الآن"
+  },
+  "orders": {
+    "title": "طلباتي",
+    "loginTitle": "سجّل دخولك لعرض طلباتك",
+    "loginBtn": "تسجيل الدخول",
+    "empty": "لا توجد طلبات بعد",
+    "emptyDesc": "بمجرد تقديم طلب، سيظهر هنا.",
+    "shopNow": "ابدأ التسوق",
+    "address": "العنوان",
+    "phone": "الهاتف",
+    "codNote": "الدفع كاش عند الاستلام",
+    "pendingPaymentNote": "لم يكتمل الدفع. يمكنك المحاولة مرة أخرى.",
+    "payNow": "ادفع الآن",
+    "redirecting": "جاري التحويل...",
+    "retryFailed": "تعذر بدء الدفع. حاول مرة أخرى.",
+    "paymentFailed": "لم يتم إتمام الدفع. حاول مرة أخرى.",
+    "status": {
+      "pending_payment": "في انتظار الدفع",
+      "confirmed": "مؤكد",
+      "processing": "قيد المعالجة",
+      "shipped": "تم الشحن",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغي"
+    }
   }
 }
