@@ -85,6 +85,12 @@ export function useCheckout(
       if (paymentMethod === "cod") {
         router.push(`/orders`)
         toast.success(t("orderPlaced"))
+        // Notify owner via WhatsApp (fire-and-forget)
+        fetch("/api/orders/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: order.id }),
+        })
       } else {
         // Redirect to Paymob — handled separately via /api/checkout/initiate
         initiatePaymob(order.id, total, address!)

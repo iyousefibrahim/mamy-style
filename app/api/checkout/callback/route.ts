@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { verifyPaymobHmac } from "@/lib/paymob/hmac"
+import { sendOrderWhatsApp } from "@/lib/whatsapp"
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest) {
         .eq("id", merchantOrderId)
 
       if (error) console.error("[callback] Supabase update error:", error)
+      await sendOrderWhatsApp(merchantOrderId)
     }
   } catch (err) {
     console.error("[callback] Unexpected error:", err)
