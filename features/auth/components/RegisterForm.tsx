@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl"
 import { useRouter } from "@/i18n/navigation"
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from "sonner"
+import { Link } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -25,40 +26,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Link } from "@/i18n/navigation"
 import { useRegister } from "../hooks/useAuth"
-import { registerSchema, type RegisterFormValues } from "../types"
-
-// const MAX_AVATAR_SIZE = 2 * 1024 * 1024 // 2MB
-
-// function InitialsAvatar({
-//   firstName,
-//   lastName,
-// }: {
-//   firstName: string
-//   lastName: string
-// }) {
-//   const initials =
-//     `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || "?"
-//
-//   return (
-//     <div className="flex size-20 items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-foreground">
-//       {initials}
-//     </div>
-//   )
-// }
+import { getRegisterSchema, type RegisterFormValues } from "../types"
 
 export function RegisterForm() {
   const t = useTranslations("auth")
   const tc = useTranslations("common")
+  const tv = useTranslations("validation")
   const router = useRouter()
-  // const fileInputRef = useRef<HTMLInputElement>(null)
-  // const [avatarFile, setAvatarFile] = useState<File | null>(null)
-  // const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<RegisterFormValues>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(getRegisterSchema(tv)),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -69,23 +48,6 @@ export function RegisterForm() {
   })
 
   const registerMutation = useRegister()
-  // const firstName = form.watch("firstName")
-  // const lastName = form.watch("lastName")
-
-  // function handleAvatarClick() {
-  //   fileInputRef.current?.click()
-  // }
-
-  // function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const file = e.target.files?.[0]
-  //   if (!file) return
-  //   if (file.size > MAX_AVATAR_SIZE) {
-  //     toast.error(t("avatarSizeError"))
-  //     return
-  //   }
-  //   setAvatarFile(file)
-  //   setAvatarPreview(URL.createObjectURL(file))
-  // }
 
   function onSubmit(values: RegisterFormValues) {
     registerMutation.mutate(
@@ -111,40 +73,6 @@ export function RegisterForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Avatar upload — commented out until ready
-            <div className="flex flex-col items-center gap-2">
-              <button
-                type="button"
-                onClick={handleAvatarClick}
-                className="group relative cursor-pointer"
-                aria-label={t("uploadAvatar")}
-              >
-                {avatarPreview ? (
-                  <img
-                    src={avatarPreview}
-                    alt="Avatar preview"
-                    className="size-20 rounded-full object-cover"
-                  />
-                ) : (
-                  <InitialsAvatar firstName={firstName} lastName={lastName} />
-                )}
-                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Camera className="size-6 text-white" />
-                </div>
-              </button>
-              <span className="text-muted-foreground text-xs">
-                {avatarFile ? t("changeAvatar") : t("uploadAvatar")}
-              </span>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarChange}
-              />
-            </div>
-            */}
-
             {/* First Name + Last Name side by side */}
             <div className="grid grid-cols-2 gap-3">
               <FormField
@@ -243,16 +171,39 @@ export function RegisterForm() {
             >
               {registerMutation.isPending ? tc("loading") : t("signUp")}
             </Button>
+
+            {/* Google sign-in — temporarily disabled
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-card px-2 text-muted-foreground">{t("orContinueWith")}</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full gap-2"
+              disabled={googleSignIn.isPending}
+              onClick={() =>
+                googleSignIn.mutate(locale, {
+                  onError: (e) => toast.error(e.message),
+                })
+              }
+            >
+              <FcGoogle className="size-4" />
+              {t("googleSignIn")}
+            </Button>
+            */}
           </form>
         </Form>
       </CardContent>
       <CardFooter className="justify-center">
         <p className="text-muted-foreground text-sm">
           {t("hasAccount")}{" "}
-          <Link
-            href="/login"
-            className="text-primary font-medium hover:underline"
-          >
+          <Link href="/login" className="text-primary font-medium hover:underline">
             {t("signIn")}
           </Link>
         </p>

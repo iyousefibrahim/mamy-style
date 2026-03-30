@@ -43,7 +43,9 @@
     "loginDescription": "أدخل بياناتك للوصول إلى حسابك",
     "registerDescription": "أنشئ حسابك في مامي ستايل",
     "forgotPasswordDescription": "أدخل بريدك الإلكتروني وسنرسل لك رابط الاستعادة",
-    "resetPasswordDescription": "أدخل كلمة المرور الجديدة أدناه"
+    "resetPasswordDescription": "أدخل كلمة المرور الجديدة أدناه",
+    "googleSignIn": "المتابعة بحساب Google",
+    "orContinueWith": "أو"
   },
   "dashboard": {
     "nav": {

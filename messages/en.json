@@ -43,7 +43,9 @@
     "loginDescription": "Enter your credentials to access your account",
     "registerDescription": "Create your Mamy Style account",
     "forgotPasswordDescription": "Enter your email and we'll send you a reset link",
-    "resetPasswordDescription": "Enter your new password below"
+    "resetPasswordDescription": "Enter your new password below",
+    "googleSignIn": "Continue with Google",
+    "orContinueWith": "or"
   },
   "dashboard": {
     "nav": {

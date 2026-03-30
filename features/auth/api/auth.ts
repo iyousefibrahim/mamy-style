@@ -87,6 +87,19 @@ export async function resetPassword(password: string) {
   if (error) throw error
 }
 
+export async function signInWithGoogle(locale: string) {
+  const supabase = createClient()
+  const redirectTo = `${window.location.origin}/${locale}/auth/callback?next=/home`
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo,
+      queryParams: { prompt: "select_account" },
+    },
+  })
+  if (error) throw error
+}
+
 export async function getCurrentUser() {
   const supabase = createClient()
   const {

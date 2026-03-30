@@ -10,17 +10,18 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { forgotPassword } from "../api/auth"
-import { forgotPasswordSchema, type ForgotPasswordFormValues } from "../types"
+import { getForgotPasswordSchema, type ForgotPasswordFormValues } from "../types"
 
 export function ForgotPasswordForm() {
   const t = useTranslations("auth")
   const tc = useTranslations("common")
+  const tv = useTranslations("validation")
   const [submitted, setSubmitted] = useState(false)
   const [isPending, setIsPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const form = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema),
+    resolver: zodResolver(getForgotPasswordSchema(tv)),
     defaultValues: { email: "" },
   })
 

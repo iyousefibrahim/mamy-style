@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { login, register, logout, getCurrentUser } from "../api/auth"
+import { login, register, logout, getCurrentUser, signInWithGoogle } from "../api/auth"
 import type { LoginFormValues, RegisterFormValues } from "../types"
 
 const USER_QUERY_KEY = ["auth", "user"]
@@ -34,6 +34,10 @@ export function useRegister() {
       queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY })
     },
   })
+}
+
+export function useGoogleSignIn() {
+  return useMutation({ mutationFn: signInWithGoogle })
 }
 
 export function useLogout() {

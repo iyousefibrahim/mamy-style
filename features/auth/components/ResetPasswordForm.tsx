@@ -9,18 +9,19 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { resetPassword } from "../api/auth"
-import { resetPasswordSchema, type ResetPasswordFormValues } from "../types"
+import { getResetPasswordSchema, type ResetPasswordFormValues } from "../types"
 import { useRouter } from "next/navigation"
 
 export function ResetPasswordForm() {
   const t = useTranslations("auth")
   const tc = useTranslations("common")
+  const tv = useTranslations("validation")
   const router = useRouter()
   const [isPending, setIsPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const form = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(getResetPasswordSchema(tv)),
     defaultValues: { password: "", confirmPassword: "" },
   })
 

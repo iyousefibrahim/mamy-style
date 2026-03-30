@@ -27,16 +27,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useLogin } from "../hooks/useAuth"
-import { loginSchema, type LoginFormValues } from "../types"
+import { getLoginSchema, type LoginFormValues } from "../types"
 
 export function LoginForm() {
   const t = useTranslations("auth")
   const tc = useTranslations("common")
+  const tv = useTranslations("validation")
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(getLoginSchema(tv)),
     defaultValues: { email: "", password: "" },
   })
 
@@ -125,6 +126,32 @@ export function LoginForm() {
             >
               {loginMutation.isPending ? tc("loading") : t("signIn")}
             </Button>
+
+            {/* Google sign-in — temporarily disabled
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-card px-2 text-muted-foreground">{t("orContinueWith")}</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full gap-2"
+              disabled={googleSignIn.isPending}
+              onClick={() =>
+                googleSignIn.mutate(locale, {
+                  onError: (e) => toast.error(e.message),
+                })
+              }
+            >
+              <FcGoogle className="size-4" />
+              {t("googleSignIn")}
+            </Button>
+            */}
           </form>
         </Form>
       </CardContent>
