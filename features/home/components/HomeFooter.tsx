@@ -12,7 +12,7 @@ const navLinks = [
   { labelKey: "nav.home", href: "/" },
   { labelKey: "nav.products", href: "/products" },
   { labelKey: "nav.categories", href: "/categories" },
-  { labelKey: "nav.contact", href: "#contact" },
+  { labelKey: "nav.contact", href: "/home#contact" },
 ]
 
 export function HomeFooter() {
@@ -90,13 +90,13 @@ export function HomeFooter() {
           <div>
             <h3 className="font-bold text-sm mb-4">{t("footer.customerService")}</h3>
             <div className="flex flex-col gap-2.5">
-              <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+              <Link href={`/${locale}/shipping`} className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
                 {t("footer.shipping")}
               </Link>
-              <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+              <Link href={`/${locale}/returns`} className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
                 {t("footer.returns")}
               </Link>
-              <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+              <Link href={`/${locale}/faq`} className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
                 {t("footer.faq")}
               </Link>
             </div>
@@ -113,7 +113,7 @@ export function HomeFooter() {
                 <FaCcMastercard className="size-7 text-red-500" />
               </div>
               <div className="rounded-lg border bg-background px-3 py-2">
-                <Image src="/brands/meeza.svg" alt="Meeza" width={48} height={20} className="h-5 w-auto" />
+                <Image src="/brands/meeza.svg" alt="Meeza" width={48} height={20} className="h-5" style={{ width: "auto" }} />
               </div>
             </div>
           </div>

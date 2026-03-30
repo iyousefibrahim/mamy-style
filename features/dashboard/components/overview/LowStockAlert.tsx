@@ -12,7 +12,7 @@ export async function LowStockAlert() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base text-amber-600 dark:text-amber-500">
+        <CardTitle className="flex items-center gap-2 text-base text-amber-600">
           <AlertTriangle className="size-4" />
           {t("lowStockAlert")}
         </CardTitle>

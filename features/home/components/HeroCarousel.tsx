@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react"
 import Image from "next/image"
 import { useTranslations, useLocale } from "next-intl"
+import { useRouter } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Carousel,
@@ -37,6 +38,7 @@ const heroSlides = [
 export function HeroCarousel() {
   const t = useTranslations("home")
   const locale = useLocale()
+  const router = useRouter()
   const [api, setApi] = useState<CarouselApi>()
   const [currentSlide, setCurrentSlide] = useState(0)
 
@@ -69,7 +71,7 @@ export function HeroCarousel() {
                   src={slide.image}
                   alt=""
                   fill
-                  sizes="100vw"
+                  sizes="(max-width: 767px) 1px, 100vw"
                   className="object-cover hidden md:block"
                   priority={i === 0}
                 />
@@ -78,7 +80,7 @@ export function HeroCarousel() {
                   src={slide.imageMobile}
                   alt=""
                   fill
-                  sizes="100vw"
+                  sizes="(max-width: 767px) 100vw, 1px"
                   className="object-cover md:hidden"
                   priority={i === 0}
                 />
@@ -92,11 +94,11 @@ export function HeroCarousel() {
                       {t(slide.subtitleKey)}
                     </p>
                     <div className="flex items-center justify-center gap-4 flex-wrap">
-                      <Button size="lg" className="gap-2 rounded-full px-8 h-14 text-base shadow-lg cursor-pointer">
+                      <Button size="lg" className="gap-2 rounded-full px-8 h-14 text-base shadow-lg cursor-pointer" onClick={() => router.push("/products")}>
                         {t("hero.cta1")}
                         <ChevronRight className="size-5" />
                       </Button>
-                      <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm cursor-pointer">
+                      <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm cursor-pointer" onClick={() => router.push("/categories")}>
                         {t("hero.cta2")}
                       </Button>
                     </div>

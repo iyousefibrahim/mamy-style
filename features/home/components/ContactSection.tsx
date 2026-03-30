@@ -23,7 +23,7 @@ export function ContactSection() {
               href="https://wa.me/201032229365"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 p-5 rounded-2xl border hover:border-green-300 hover:bg-green-50/50 dark:hover:bg-green-950/20 transition-all group cursor-pointer"
+              className="flex items-center gap-4 p-5 rounded-2xl border hover:border-green-300 hover:bg-green-50/50 transition-all group cursor-pointer"
             >
               <div className="size-12 bg-green-500 rounded-xl flex items-center justify-center shrink-0 shadow-sm group-hover:shadow-md group-hover:shadow-green-200 transition-shadow">
                 <FaWhatsapp className="size-6 text-white" />
@@ -37,7 +37,7 @@ export function ContactSection() {
 
             <Link
               href="tel:+201032229365"
-              className="flex items-center gap-4 p-5 rounded-2xl border hover:border-blue-300 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all group cursor-pointer"
+              className="flex items-center gap-4 p-5 rounded-2xl border hover:border-blue-300 hover:bg-blue-50/50  transition-all group cursor-pointer"
             >
               <div className="size-12 bg-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-sm group-hover:shadow-md group-hover:shadow-blue-200 transition-shadow">
                 <Phone className="size-6 text-white" />
@@ -53,7 +53,7 @@ export function ContactSection() {
               href="https://www.facebook.com/mamyystyle"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-4 p-5 rounded-2xl border hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all group cursor-pointer"
+              className="flex items-center gap-4 p-5 rounded-2xl border hover:border-blue-400 hover:bg-blue-50/50  transition-all group cursor-pointer"
             >
               <div className="size-12 bg-blue-600 rounded-xl flex items-center justify-center shrink-0 shadow-sm group-hover:shadow-md group-hover:shadow-blue-200 transition-shadow">
                 <FaFacebookF className="size-5 text-white" />

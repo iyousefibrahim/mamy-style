@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ShoppingCart, Lock } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import { ShoppingCart } from "lucide-react";
+import { AuthGate } from "@/components/AuthGate";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -42,19 +42,11 @@ export function CartPage() {
   // Not logged in
   if (!user) {
     return (
-      <div className="wrapper py-24 flex flex-col items-center gap-4 text-center">
-        <div className="size-16 rounded-full bg-muted flex items-center justify-center">
-          <Lock className="size-7 text-muted-foreground" />
-        </div>
-        <h2 className="text-xl font-bold">{t("loginTitle")}</h2>
-        <p className="text-muted-foreground text-sm">{t("loginDesc")}</p>
-        <Link
-          href="/login"
-          className="inline-flex items-center justify-center rounded-full px-8 h-10 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium transition-colors mt-2"
-        >
-          {t("loginBtn")}
-        </Link>
-      </div>
+      <AuthGate
+        title={t("loginTitle")}
+        description={t("loginDesc")}
+        loginLabel={t("loginBtn")}
+      />
     );
   }
 

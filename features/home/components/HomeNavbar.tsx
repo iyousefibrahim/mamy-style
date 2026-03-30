@@ -85,7 +85,7 @@ export function HomeNavbar() {
           {user ? (
             <div className="flex items-center gap-1">
               {/* Favorites */}
-              <Link href="/favorites" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Favorites">
+              <Link href="/favorites" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-muted transition-colors" aria-label="Favorites">
                 <Heart className="size-5" />
                 {favCount > 0 && (
                   <span className="absolute -top-1 -inset-e-1 bg-rose-500 text-white text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
@@ -95,7 +95,7 @@ export function HomeNavbar() {
               </Link>
 
               {/* Cart */}
-              <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors" aria-label="Cart">
+              <Link href="/cart" className="relative inline-flex items-center justify-center size-10 rounded-md hover:bg-muted transition-colors" aria-label="Cart">
                 <ShoppingCart className="size-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -inset-e-1 bg-secondary text-secondary-foreground text-[10px] font-bold rounded-full size-5 flex items-center justify-center leading-none ring-2 ring-background">
@@ -108,7 +108,7 @@ export function HomeNavbar() {
               <div className="hidden lg:block">
                 <DropdownMenu>
                   <DropdownMenuTrigger
-                    className="inline-flex items-center justify-center size-10 rounded-md hover:bg-accent transition-colors cursor-pointer"
+                    className="inline-flex items-center justify-center size-10 rounded-md hover:bg-muted transition-colors cursor-pointer"
                     aria-label="Account"
                   >
                     <User className="size-5" />
@@ -144,7 +144,7 @@ export function HomeNavbar() {
             <div className="hidden lg:flex items-center gap-1">
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-md hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
               >
                 {t("nav.login")}
               </Link>

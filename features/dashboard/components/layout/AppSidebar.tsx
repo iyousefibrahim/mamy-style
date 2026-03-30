@@ -132,14 +132,6 @@ export function AppSidebar() {
         <div className="flex items-center gap-1 px-2 pb-1 group-data-[collapsible=icon]:flex-col">
           <Button
             variant="ghost"
-            size="icon"
-            className="size-8 text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
-          </Button>
-          <Button
-            variant="ghost"
             size="sm"
             className="h-8 px-2 text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:justify-center"
             onClick={switchLocale}
@@ -179,7 +171,11 @@ export function AppSidebar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-destructive focus:text-destructive"
-                  onClick={() => logout.mutate()}
+                  onClick={() =>
+                    logout.mutate(undefined, {
+                      onSuccess: () => router.push(`/home` as "/"),
+                    })
+                  }
                 >
                   <LogOut className="size-4" />
                   {tc("logout")}

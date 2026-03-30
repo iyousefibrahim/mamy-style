@@ -65,7 +65,6 @@ export function RegisterForm() {
       username: "",
       email: "",
       password: "",
-      phone: "",
     },
   })
 
@@ -214,7 +213,7 @@ export function RegisterForm() {
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        className="pr-10"
+                        className="pe-10"
                         {...field}
                       />
                       <button
@@ -231,24 +230,6 @@ export function RegisterForm() {
                         )}
                       </button>
                     </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("phoneOptional")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="tel"
-                      placeholder={t("phonePlaceholder")}
-                      {...field}
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

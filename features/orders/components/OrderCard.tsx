@@ -12,12 +12,12 @@ import { formatDateShort } from "@/utils/formatDate"
 import { redirectToPaymob } from "@/lib/paymob/initiate"
 
 const STATUS_STYLES: Record<OrderStatus, string> = {
-  pending_payment: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-  confirmed:       "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  processing:      "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-  shipped:         "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
-  delivered:       "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-  cancelled:       "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+  pending_payment: "bg-yellow-100 text-yellow-700",
+  confirmed:       "bg-blue-100 text-blue-700",
+  processing:      "bg-purple-100 text-purple-700",
+  shipped:         "bg-orange-100 text-orange-700",
+  delivered:       "bg-green-100 text-green-700",
+  cancelled:       "bg-red-100 text-red-700",
 }
 
 type Props = { order: OrderWithItems }
@@ -93,8 +93,8 @@ export function OrderCard({ order }: Props) {
 
       {/* Retry payment banner */}
       {canRetryPayment && (
-        <div className="border-t px-4 py-3 bg-yellow-50 dark:bg-yellow-950/20 flex items-center justify-between gap-3">
-          <p className="text-xs text-yellow-700 dark:text-yellow-400">{t("pendingPaymentNote")}</p>
+        <div className="border-t px-4 py-3 bg-yellow-50 flex items-center justify-between gap-3">
+          <p className="text-xs text-yellow-700">{t("pendingPaymentNote")}</p>
           <Button
             size="sm"
             className="shrink-0 gap-1.5 cursor-pointer"
@@ -141,7 +141,7 @@ export function OrderCard({ order }: Props) {
             <p>{t("address")}: {order.address_line}, {order.city}, {order.governorate}</p>
             <p>{t("phone")}: {order.phone}</p>
             {order.payment_method === "cod" && (
-              <p className="text-amber-600 dark:text-amber-400 font-medium">{t("codNote")}</p>
+              <p className="text-amber-600 font-medium">{t("codNote")}</p>
             )}
           </div>
         </div>

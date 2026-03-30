@@ -5,18 +5,6 @@ export const loginSchema = z.object({
   password: z.string().min(8),
 })
 
-// Egyptian phone: 010/011/012/015 + 8 digits, optional +20 prefix
-const egyptianPhonePattern = /^(\+?20|0)1[0125]\d{8}$/
-
-const egyptianPhone = z.string().superRefine((val, ctx) => {
-  if (!egyptianPhonePattern.test(val)) {
-    ctx.addIssue({
-      code: "custom",
-      message: "Must be a valid Egyptian number (e.g. 01012345678)",
-    })
-  }
-})
-
 export const registerSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
@@ -34,7 +22,6 @@ export const registerSchema = z.object({
     }),
   email: z.string().email(),
   password: z.string().min(8),
-  phone: z.union([egyptianPhone, z.literal("")]).optional(),
 })
 
 export const forgotPasswordSchema = z.object({

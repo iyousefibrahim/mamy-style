@@ -135,8 +135,8 @@ export function ProductsSidebar({
             }}
           />
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{localPrice[0].toLocaleString("en-US")} {t("egp")}</span>
-            <span>{localPrice[1].toLocaleString("en-US")} {t("egp")}</span>
+            <span dir="ltr">{localPrice[0]} {t("egp")}</span>
+            <span dir="ltr">{localPrice[1]} {t("egp")}</span>
           </div>
         </div>
       </FilterSection>

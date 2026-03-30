@@ -39,13 +39,13 @@ export default async function ProfileSettingsPage() {
           <TabsContent value="general" className="space-y-6 mt-6">
             {/* Admin banner */}
             {isAdmin && (
-              <div className="flex items-start gap-3 rounded-lg bg-amber-50 border border-amber-200 p-4 dark:bg-amber-950/30 dark:border-amber-800">
+              <div className="flex items-start gap-3 rounded-lg bg-amber-50 border border-amber-200 p-4">
                 <ShieldCheck className="size-5 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-sm text-amber-800 dark:text-amber-400">
+                  <p className="font-semibold text-sm text-amber-800">
                     {t("adminBannerTitle")}
                   </p>
-                  <p className="text-xs text-amber-700 dark:text-amber-500">
+                  <p className="text-xs text-amber-700">
                     {t("adminBannerDesc")}
                   </p>
                 </div>

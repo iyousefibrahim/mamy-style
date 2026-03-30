@@ -51,7 +51,7 @@ export const ProductCard = memo(function ProductCard({ product, onToggleFavorite
         )}
 
         {/* Favorite button */}
-        <div className="absolute bottom-4 inset-e-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute bottom-4 inset-e-4 sm:translate-y-12 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300">
           <FavoriteButton
             productId={product.id}
             isFavorited={isFavorited}

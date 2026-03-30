@@ -95,7 +95,7 @@ export function LoginForm() {
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        className="pr-10"
+                        className="pe-10"
                         {...field}
                       />
                       <button

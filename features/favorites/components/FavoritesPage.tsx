@@ -1,8 +1,8 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { Heart, Lock, ShoppingBag } from "lucide-react"
-import { Link } from "@/i18n/navigation"
+import { Heart, ShoppingBag } from "lucide-react"
+import { AuthGate } from "@/components/AuthGate"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductCard } from "@/features/home/components/ProductCard"
 import { useFavoritesPage } from "../hooks/useFavoritesPage"
@@ -23,23 +23,11 @@ export function FavoritesPage() {
 
   if (!user) {
     return (
-      <div className="wrapper py-24 flex flex-col items-center gap-6 text-center">
-        <div className="relative">
-          <div className="size-24 rounded-full bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center">
-            <Lock className="size-10 text-rose-400" />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold">{t("loginTitle")}</h2>
-          <p className="text-muted-foreground text-sm max-w-xs">{t("loginDesc")}</p>
-        </div>
-        <Link
-          href="/login"
-          className="inline-flex items-center justify-center rounded-full px-8 h-11 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold transition-colors"
-        >
-          {t("loginBtn")}
-        </Link>
-      </div>
+      <AuthGate
+        title={t("loginTitle")}
+        description={t("loginDesc")}
+        loginLabel={t("loginBtn")}
+      />
     )
   }
 
@@ -59,7 +47,7 @@ export function FavoritesPage() {
     return (
       <div className="wrapper py-24 flex flex-col items-center gap-6 text-center">
         <div className="relative">
-          <div className="size-24 rounded-full bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center">
+          <div className="size-24 rounded-full bg-rose-50 flex items-center justify-center">
             <Heart className="size-10 text-rose-300" />
           </div>
           <div className="absolute -bottom-1 -inset-e-1 size-8 rounded-full bg-muted border-2 border-background flex items-center justify-center">
@@ -85,7 +73,7 @@ export function FavoritesPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <h1 className="text-2xl font-bold">{t("title")}</h1>
-        <span className="inline-flex items-center justify-center h-6 px-2.5 rounded-full bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 text-xs font-semibold">
+        <span className="inline-flex items-center justify-center h-6 px-2.5 rounded-full bg-rose-100 text-rose-600 text-xs font-semibold">
           {products.length}
         </span>
       </div>

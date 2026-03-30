@@ -271,7 +271,7 @@ function ProductRow({
         <div className="flex items-center gap-2">
           <span className="font-medium">{p.name}</span>
           {p.is_featured && (
-            <Badge className="shrink-0 border-amber-400 bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400">
+            <Badge className="shrink-0 overflow-visible border-amber-400 bg-amber-50 text-amber-600">
               {t("featured")}
             </Badge>
           )}

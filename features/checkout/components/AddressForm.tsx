@@ -148,7 +148,7 @@ export function AddressForm({ defaultValues, isFreeShipping, onSubmit }: Props) 
         {shippingFee !== null && (
           <div className={`flex items-start gap-3 p-3 rounded-xl text-sm ${
             isFreeShipping || isLocalDelivery
-              ? "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400"
+              ? "bg-green-50 text-green-700"
               : "bg-muted/60 text-muted-foreground"
           }`}>
             <Truck className="size-4 mt-0.5 shrink-0" />
