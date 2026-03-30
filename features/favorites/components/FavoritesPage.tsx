@@ -5,6 +5,7 @@ import { Heart, ShoppingBag } from "lucide-react"
 import { AuthGate } from "@/components/AuthGate"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductCard } from "@/features/home/components/ProductCard"
+import { Link } from "@/i18n/navigation"
 import { useFavoritesPage } from "../hooks/useFavoritesPage"
 
 function FavoritesGridSkeleton() {

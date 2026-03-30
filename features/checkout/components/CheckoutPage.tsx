@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useTranslations } from "next-intl"
+import { Link } from "@/i18n/navigation"
 import { AuthGate } from "@/components/AuthGate"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AddressForm } from "./AddressForm"

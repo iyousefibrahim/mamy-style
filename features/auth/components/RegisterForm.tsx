@@ -89,7 +89,7 @@ export function RegisterForm() {
 
   function onSubmit(values: RegisterFormValues) {
     registerMutation.mutate(
-      { values, avatarFile: null },
+      { values },
       {
         onSuccess: () => {
           toast.success(t("registerSuccess"))

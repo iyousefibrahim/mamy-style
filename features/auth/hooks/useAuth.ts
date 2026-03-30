@@ -29,13 +29,7 @@ export function useRegister() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({
-      values,
-      avatarFile,
-    }: {
-      values: RegisterFormValues
-      avatarFile: File | null
-    }) => register(values, avatarFile),
+    mutationFn: ({ values }: { values: RegisterFormValues }) => register(values),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY })
     },

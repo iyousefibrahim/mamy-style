@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ShoppingCart } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { AuthGate } from "@/components/AuthGate";
 
 import { Skeleton } from "@/components/ui/skeleton";

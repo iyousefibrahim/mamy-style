@@ -13,7 +13,7 @@ export async function login({ email, password }: LoginFormValues) {
 
 export async function register(
   values: RegisterFormValues,
-  _avatarFile: File | null // commented out until avatar upload is ready
+  // _avatarFile: File | null // commented out until avatar upload is ready
 ) {
   const supabase = createClient()
   const { firstName, lastName, username, email, password } = values
