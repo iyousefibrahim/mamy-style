@@ -16,7 +16,7 @@ export async function register(
   _avatarFile: File | null // commented out until avatar upload is ready
 ) {
   const supabase = createClient()
-  const { firstName, lastName, username, email, password, phone } = values
+  const { firstName, lastName, username, email, password } = values
   const fullName = `${firstName} ${lastName}`
 
   const { data, error } = await supabase.auth.signUp({
@@ -37,13 +37,12 @@ export async function register(
   //   avatarUrl = await uploadAvatar(userId, avatarFile)
   // }
 
-  // Update profile with username and phone
+  // Update profile with username
   const { error: profileError } = await supabase
     .from("profiles")
     .update({
       full_name: fullName,
       username,
-      phone: phone || null,
       // avatar_url: avatarUrl,
     })
     .eq("id", userId)
