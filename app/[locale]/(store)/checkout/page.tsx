@@ -3,7 +3,7 @@ import { CheckoutPage } from "@/features/checkout/components/CheckoutPage"
 
 type Props = {
   params: Promise<{ locale: string }>
-  searchParams: Promise<{ coupon?: string; discount?: string }>
+  searchParams: Promise<{ couponId?: string; couponCode?: string; discount?: string; freeShipping?: string }>
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -14,12 +14,14 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Page({ params, searchParams }: Props) {
   const { locale } = await params
-  const { coupon, discount } = await searchParams
+  const { couponId, couponCode, discount, freeShipping } = await searchParams
   setRequestLocale(locale)
   return (
     <CheckoutPage
-      couponCode={coupon ?? null}
+      couponId={couponId ?? null}
+      couponCode={couponCode ?? null}
       discountAmount={Number(discount ?? 0)}
+      couponFreeShipping={freeShipping === "1"}
     />
   )
 }

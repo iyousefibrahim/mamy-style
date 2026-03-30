@@ -5,7 +5,7 @@ export type DashboardOrder = OrderWithItems & {
   profiles: { full_name: string | null } | null
 }
 
-const PAGE_SIZE = 25
+const PAGE_SIZE = 10
 
 export async function fetchAllOrders(
   page: number = 1

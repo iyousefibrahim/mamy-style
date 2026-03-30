@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { ChevronLeft, ChevronRight, Eye, ShoppingBag } from "lucide-react"
+import { Eye, ShoppingBag } from "lucide-react"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
@@ -17,8 +17,13 @@ import { Button } from "@/components/ui/button"
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet"
+import {
+  Pagination, PaginationContent, PaginationEllipsis, PaginationItem,
+  PaginationLink, PaginationNext, PaginationPrevious,
+} from "@/components/ui/pagination"
 import { updateOrderStatus } from "@/features/dashboard/api/orders"
 import { formatDateShort } from "@/utils/formatDate"
+import { getPageItems } from "@/utils/pagination"
 import type { OrderStatus } from "@/features/dashboard/types"
 import type { DashboardOrder } from "@/features/dashboard/api/orders.server"
 
@@ -39,6 +44,7 @@ type Props = { orders: DashboardOrder[]; page: number; totalPages: number }
 
 export function OrdersTable({ orders, page, totalPages }: Props) {
   const t = useTranslations("dashboard.orders")
+  const tc = useTranslations("dashboard.common")
   const router = useRouter()
   const [search, setSearch] = useState("")
   const [selectedOrder, setSelectedOrder] = useState<DashboardOrder | null>(null)
@@ -158,31 +164,46 @@ export function OrdersTable({ orders, page, totalPages }: Props) {
         </Table>
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-4">
-          <p className="text-sm text-muted-foreground">
-            {t("page")} {page} / {totalPages}
-          </p>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page <= 1}
-              onClick={() => router.push(`?page=${page - 1}`)}
-            >
-              <ChevronLeft className="size-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={page >= totalPages}
-              onClick={() => router.push(`?page=${page + 1}`)}
-            >
-              <ChevronRight className="size-4" />
-            </Button>
-          </div>
-        </div>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                text={tc("previous")}
+                onClick={(e) => { e.preventDefault(); router.push(`?page=${page - 1}`) }}
+                aria-disabled={page === 1}
+                className={page === 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+            {getPageItems(page, totalPages).map((item, i) =>
+              item === "ellipsis" ? (
+                <PaginationItem key={`ellipsis-${i}`}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={item}>
+                  <PaginationLink
+                    href="#"
+                    isActive={item === page}
+                    onClick={(e) => { e.preventDefault(); router.push(`?page=${item}`) }}
+                  >
+                    {item}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            )}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                text={tc("next")}
+                onClick={(e) => { e.preventDefault(); router.push(`?page=${page + 1}`) }}
+                aria-disabled={page === totalPages}
+                className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       )}
 
       {/* Order items sheet */}

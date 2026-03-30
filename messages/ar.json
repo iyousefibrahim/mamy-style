@@ -54,6 +54,7 @@
       "categories": "الفئات",
       "users": "المستخدمين",
       "orders": "الطلبات",
+      "coupons": "الكوبونات",
       "settings": "الإعدادات"
     },
     "overview": {
@@ -249,7 +250,38 @@
       "comingSoonDesc": "هذه الصفحة قيد الإنشاء.",
       "admin": "مسؤول",
       "superAdmin": "مسؤول عام",
-      "customer": "عميل"
+      "customer": "عميل",
+      "saving": "جارٍ الحفظ...",
+      "save": "حفظ"
+    },
+    "coupons": {
+      "title": "الكوبونات",
+      "subtitle": "إدارة أكواد الخصم للعملاء",
+      "addCoupon": "إضافة كوبون",
+      "createTitle": "إنشاء كوبون",
+      "editTitle": "تعديل كوبون",
+      "createSuccess": "تم إنشاء الكوبون بنجاح",
+      "updateSuccess": "تم تحديث الكوبون بنجاح",
+      "searchPlaceholder": "ابحث بالكود...",
+      "code": "الكود",
+      "discountPercent": "نسبة الخصم",
+      "discountPercentDesc": "اتركه 0 لتعطيل خصم النسبة",
+      "freeShipping": "شحن مجاني",
+      "freeShippingDesc": "يُلغي رسوم الشحن عند استخدام هذا الكوبون",
+      "maxUses": "الحد الأقصى للاستخدام",
+      "expiresAt": "تاريخ الانتهاء",
+      "expiresAtDesc": "اتركه فارغاً لعدم انتهاء الصلاحية",
+      "isActive": "مفعّل",
+      "isActiveDesc": "عطّله لإيقاف قبول هذا الكوبون دون حذفه",
+      "off": "خصم",
+      "colCode": "الكود",
+      "colBenefit": "المميزات",
+      "colUsage": "الاستخدام",
+      "colExpires": "الانتهاء",
+      "colActive": "مفعّل",
+      "colCreatedAt": "تاريخ الإنشاء",
+      "noBenefit": "حدد نسبة خصم أو فعّل الشحن المجاني",
+      "deleteConfirm": "سيتم حذف الكوبون نهائياً"
     },
     "orders": {
       "ordersTotal": "طلب إجمالي",
@@ -393,7 +425,9 @@
     "coupon": "كود الخصم",
     "couponPlaceholder": "ادخلي كود الخصم",
     "applyCoupon": "تطبيق",
-    "couponApplied": "تم تطبيق الكود!",
+    "couponApplied": "خصم مطبّق!",
+    "couponFreeShipping": "تم تطبيق الشحن المجاني!",
+    "removeCoupon": "إزالة",
     "couponInvalid": "كود الخصم مش صح",
     "freeShipping": "مبروك! الشحن مجاني",
     "freeShippingProgress": "ضيفي {amount} ج.م عشان الشحن يبقى مجاني",
@@ -469,7 +503,12 @@
     "usernameInvalid": "يُسمح فقط بالأحرف والأرقام والشرطة السفلية",
     "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
     "passwordsMismatch": "كلمتا المرور غير متطابقتين",
-    "phoneInvalid": "يجب أن يكون رقم هاتف مصري صحيح (مثال: 01012345678)"
+    "phoneInvalid": "يجب أن يكون رقم هاتف مصري صحيح (مثال: 01012345678)",
+    "couponNotFound": "الكوبون غير موجود",
+    "couponInactive": "هذا الكوبون غير مفعّل",
+    "couponExpired": "انتهت صلاحية هذا الكوبون",
+    "couponMaxUsed": "وصل هذا الكوبون للحد الأقصى من الاستخدام",
+    "couponAlreadyUsed": "لقد استخدمت هذا الكوبون من قبل"
   },
   "checkout": {
     "title": "إتمام الشراء",

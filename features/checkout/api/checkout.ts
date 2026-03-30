@@ -15,6 +15,7 @@ type CreateOrderPayload = {
   shipping_type: ShippingType
   payment_method: PaymentMethod
   coupon_code: string | null
+  coupon_id: string | null
   items: CartItemWithProduct[]
 }
 
@@ -83,6 +84,15 @@ export async function createOrder(payload: CreateOrderPayload): Promise<Order> {
     .insert(orderItems)
 
   if (itemsError) throw itemsError
+
+  // Record coupon usage — the DB trigger will auto-increment used_count
+  if (payload.coupon_id) {
+    await supabase.from("coupon_usages").insert({
+      coupon_id: payload.coupon_id,
+      user_id: user.id,
+      order_id: order.id,
+    })
+  }
 
   return order as Order
 }

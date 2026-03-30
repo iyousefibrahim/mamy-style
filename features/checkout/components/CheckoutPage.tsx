@@ -10,13 +10,15 @@ import { OrderReview } from "./OrderReview"
 import { useCheckout } from "../hooks/useCheckout"
 
 type Props = {
+  couponId: string | null
   couponCode: string | null
   discountAmount: number
+  couponFreeShipping: boolean
 }
 
 type Step = "address" | "review"
 
-export function CheckoutPage({ couponCode, discountAmount }: Props) {
+export function CheckoutPage({ couponId, couponCode, discountAmount, couponFreeShipping }: Props) {
   const t = useTranslations("checkout")
   const [step, setStep] = useState<Step>("address")
 
@@ -26,7 +28,7 @@ export function CheckoutPage({ couponCode, discountAmount }: Props) {
     paymentMethod, setPaymentMethod,
     subtotal, shippingFee, isFreeShipping, isLocalDelivery,
     total, placeOrder, isPlacing,
-  } = useCheckout(couponCode, discountAmount)
+  } = useCheckout(couponId, couponCode, discountAmount, couponFreeShipping)
 
   if (!user) {
     return (

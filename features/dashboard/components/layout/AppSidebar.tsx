@@ -6,11 +6,10 @@ import {
   LayoutGrid,
   Users,
   ShoppingCart,
+  Ticket,
   Settings,
   MoreHorizontal,
   LogOut,
-  Sun,
-  Moon,
   Languages,
 } from "lucide-react"
 import { usePathname } from "next/navigation"
@@ -45,7 +44,6 @@ export function AppSidebar() {
   const t = useTranslations("dashboard.nav")
   const tc = useTranslations("auth")
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
   const router = useRouter()
   const params = useParams()
   const locale = params.locale as string
@@ -59,6 +57,7 @@ export function AppSidebar() {
     { label: t("categories"), href: "/dashboard/categories", icon: LayoutGrid },
     { label: t("users"), href: "/dashboard/users", icon: Users },
     { label: t("orders"), href: "/dashboard/orders", icon: ShoppingCart },
+    { label: t("coupons"), href: "/dashboard/coupons", icon: Ticket },
   ]
 
   const initials = (profile?.full_name ?? "")

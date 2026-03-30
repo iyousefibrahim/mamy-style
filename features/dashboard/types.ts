@@ -165,3 +165,29 @@ export type OrderItem = {
 }
 
 export type OrderWithItems = Order & { order_items: OrderItem[] }
+
+// ─── Coupons ─────────────────────────────────────────────────────────────────
+
+export const createCouponSchema = z.object({
+  code: z.string().min(1).max(30),
+  discount_percent: z.number().min(0).max(100),
+  free_shipping: z.boolean(),
+  max_uses: z.number().int().min(1),
+  is_active: z.boolean(),
+  expires_at: z.string().optional(),
+})
+
+export type CreateCouponFormValues = z.infer<typeof createCouponSchema>
+
+export type Coupon = {
+  id: string
+  code: string
+  discount_percent: number
+  free_shipping: boolean
+  max_uses: number
+  used_count: number
+  is_active: boolean
+  expires_at: string | null
+  created_at: string
+  updated_at: string
+}

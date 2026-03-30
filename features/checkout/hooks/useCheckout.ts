@@ -24,8 +24,10 @@ export type AddressValues = {
 export type { PaymentMethod }
 
 export function useCheckout(
+  couponId: string | null,
   couponCode: string | null,
-  discountAmount: number
+  discountAmount: number,
+  couponFreeShipping: boolean
 ) {
   const t = useTranslations("checkout")
   const locale = useLocale()
@@ -51,7 +53,7 @@ export function useCheckout(
     [items]
   )
 
-  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD
+  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD || couponFreeShipping
   const shipping = shippingFee === null ? 0 : isFreeShipping ? 0 : shippingFee
   const total = subtotal - discountAmount + shipping
 
@@ -73,6 +75,7 @@ export function useCheckout(
         shipping_type: isLocalDelivery ? "local" : "national",
         payment_method: paymentMethod,
         coupon_code: couponCode,
+        coupon_id: couponId,
         items,
       })
 

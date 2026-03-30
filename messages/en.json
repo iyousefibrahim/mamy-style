@@ -54,6 +54,7 @@
       "categories": "Categories",
       "users": "Users",
       "orders": "Orders",
+      "coupons": "Coupons",
       "settings": "Settings"
     },
     "overview": {
@@ -249,7 +250,38 @@
       "comingSoonDesc": "This page is under construction.",
       "admin": "Admin",
       "superAdmin": "Super Admin",
-      "customer": "Customer"
+      "customer": "Customer",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "coupons": {
+      "title": "Coupons",
+      "subtitle": "Manage discount codes for your customers",
+      "addCoupon": "Add Coupon",
+      "createTitle": "Create Coupon",
+      "editTitle": "Edit Coupon",
+      "createSuccess": "Coupon created successfully",
+      "updateSuccess": "Coupon updated successfully",
+      "searchPlaceholder": "Search by code...",
+      "code": "Code",
+      "discountPercent": "Discount Percent",
+      "discountPercentDesc": "Set to 0 to disable percent discount",
+      "freeShipping": "Free Shipping",
+      "freeShippingDesc": "Removes the shipping fee for this coupon",
+      "maxUses": "Max Uses",
+      "expiresAt": "Expires At",
+      "expiresAtDesc": "Leave empty for no expiry",
+      "isActive": "Active",
+      "isActiveDesc": "Disable to stop accepting this coupon without deleting it",
+      "off": "off",
+      "colCode": "Code",
+      "colBenefit": "Benefit",
+      "colUsage": "Usage",
+      "colExpires": "Expires",
+      "colActive": "Active",
+      "colCreatedAt": "Created",
+      "noBenefit": "Set a discount percent or enable free shipping",
+      "deleteConfirm": "This will permanently delete the coupon"
     },
     "orders": {
       "ordersTotal": "orders total",
@@ -393,7 +425,9 @@
     "coupon": "Coupon Code",
     "couponPlaceholder": "Enter coupon code",
     "applyCoupon": "Apply",
-    "couponApplied": "Coupon applied!",
+    "couponApplied": "off applied!",
+    "couponFreeShipping": "Free shipping applied!",
+    "removeCoupon": "Remove",
     "couponInvalid": "Invalid coupon code",
     "freeShipping": "Free shipping unlocked!",
     "freeShippingProgress": "Add {amount} EGP more for free shipping",
@@ -469,7 +503,12 @@
     "usernameInvalid": "Only letters, numbers, and underscores allowed",
     "confirmPasswordRequired": "Please confirm your password",
     "passwordsMismatch": "Passwords do not match",
-    "phoneInvalid": "Must be a valid Egyptian number (e.g. 01012345678)"
+    "phoneInvalid": "Must be a valid Egyptian number (e.g. 01012345678)",
+    "couponNotFound": "Coupon not found",
+    "couponInactive": "This coupon is no longer active",
+    "couponExpired": "This coupon has expired",
+    "couponMaxUsed": "This coupon has reached its usage limit",
+    "couponAlreadyUsed": "You have already used this coupon"
   },
   "checkout": {
     "title": "Checkout",
