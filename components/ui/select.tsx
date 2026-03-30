@@ -18,7 +18,18 @@ function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   )
 }
 
-function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+function SelectValue({
+  className,
+  displayValue,
+  ...props
+}: SelectPrimitive.Value.Props & { displayValue?: React.ReactNode }) {
+  if (displayValue !== undefined) {
+    return (
+      <span data-slot="select-value" className={cn("flex flex-1 text-left text-sm", className)}>
+        {displayValue}
+      </span>
+    )
+  }
   return (
     <SelectPrimitive.Value
       data-slot="select-value"

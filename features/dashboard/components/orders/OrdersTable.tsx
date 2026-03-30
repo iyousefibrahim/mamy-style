@@ -132,7 +132,12 @@ export function OrdersTable({ orders, page, totalPages }: Props) {
                       }
                     >
                       <SelectTrigger className="h-7 w-36 text-xs rounded-lg">
-                        <SelectValue />
+                        <SelectValue displayValue={
+                          <span className="flex items-center gap-2">
+                            <span className={`size-2 rounded-full shrink-0 ${STATUS_DOT[order.status]}`} />
+                            {t(`status.${order.status}`)}
+                          </span>
+                        } />
                       </SelectTrigger>
                       <SelectContent>
                         {ALL_STATUSES.map((s) => (

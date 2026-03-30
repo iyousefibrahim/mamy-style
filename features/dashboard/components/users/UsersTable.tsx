@@ -101,7 +101,7 @@ export function UsersTable() {
         />
         <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v ?? "all"); setPage(1) }}>
           <SelectTrigger className="w-40">
-            <SelectValue placeholder={t("filterStatus")} />
+            <SelectValue displayValue={tc(statusFilter === "all" ? "allStatus" : statusFilter)} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{tc("allStatus")}</SelectItem>
@@ -112,7 +112,7 @@ export function UsersTable() {
         </Select>
         <Select value={roleFilter} onValueChange={(v) => { setRoleFilter(v ?? "all"); setPage(1) }}>
           <SelectTrigger className="w-40">
-            <SelectValue placeholder={t("filterRole")} />
+            <SelectValue displayValue={tc(roleFilter === "all" ? "allStatus" : roleFilter === "super-admin" ? "superAdmin" : roleFilter)} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{tc("allStatus")}</SelectItem>

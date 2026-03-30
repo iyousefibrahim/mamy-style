@@ -106,7 +106,7 @@ export function ProductsTable() {
           onValueChange={(v) => { setStatusFilter((v ?? "all") as typeof statusFilter); setPage(1) }}
         >
           <SelectTrigger className="w-36">
-            <SelectValue />
+            <SelectValue displayValue={tc(statusFilter === "all" ? "allStatus" : statusFilter)} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{tc("allStatus")}</SelectItem>
