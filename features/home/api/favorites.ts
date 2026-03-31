@@ -25,6 +25,7 @@ export async function toggleFavorite(productId: string): Promise<void> {
   const { data: existing } = await supabase
     .from("favorites")
     .select("id")
+    .eq("user_id", userId)
     .eq("product_id", productId)
     .maybeSingle()
 

@@ -86,6 +86,7 @@ export function useCheckout(
     },
     onSuccess: (order) => {
       if (paymentMethod === "cod") {
+        queryClient.invalidateQueries({ queryKey: ["orders", "my"] })
         router.push(`/orders`)
         toast.success(t("orderPlaced"))
         // Notify owner via WhatsApp (fire-and-forget)

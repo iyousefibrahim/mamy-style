@@ -30,7 +30,7 @@ export async function DashboardHeader({ segments, title, subtitle, action }: Pro
   return (
     <div className="flex flex-col gap-4 pb-6">
       {/* Top bar: trigger + breadcrumb */}
-      <div className="flex items-center gap-2 pt-4 px-6">
+      <div className="flex items-center gap-2 pt-4 px-3 sm:px-6">
         <SidebarTrigger className="-ms-1" />
         <Separator orientation="vertical" className="h-4" />
         <Breadcrumb>
@@ -59,7 +59,7 @@ export async function DashboardHeader({ segments, title, subtitle, action }: Pro
       </div>
 
       {/* Page title row */}
-      <div className="flex items-start justify-between px-6">
+      <div className="flex items-start justify-between px-3 sm:px-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
           {subtitle && <p className="text-muted-foreground text-sm mt-0.5">{subtitle}</p>}

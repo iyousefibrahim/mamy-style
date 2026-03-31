@@ -251,8 +251,7 @@
       "admin": "Admin",
       "superAdmin": "Super Admin",
       "customer": "Customer",
-      "saving": "Saving...",
-      "save": "Save"
+      "saving": "Saving..."
     },
     "coupons": {
       "title": "Coupons",
@@ -517,11 +516,16 @@
     "stepReview": "Review & Pay",
     "governorate": "Governorate",
     "selectGovernorate": "Select governorate...",
+    "selectGovernorateError": "Please select a governorate",
     "city": "City",
     "selectCity": "Select city...",
+    "selectCityError": "Please select a city",
     "addressLine": "Street Address",
     "addressPlaceholder": "Street name, building number...",
+    "addressMin": "Address must be at least 5 characters",
     "phone": "Phone Number",
+    "phoneRequired": "Phone number is required",
+    "phoneInvalid": "Must be a valid Egyptian number (e.g. 01012345678)",
     "shippingFree": "Free shipping applied!",
     "shippingLocal": "Delivery to Baltim — {fee} EGP (paid now)",
     "shippingNational": "Delivery — {fee} EGP (paid to delivery company on arrival)",

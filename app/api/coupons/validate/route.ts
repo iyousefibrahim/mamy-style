@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   }
 
   const { code } = await req.json()
-  if (!code || typeof code !== "string") {
+  if (!code || typeof code !== "string" || code.length > 50) {
     return NextResponse.json({ error: "couponNotFound" }, { status: 400 })
   }
 

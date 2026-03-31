@@ -5,7 +5,7 @@ import { Heart, ShoppingBag } from "lucide-react"
 import { AuthGate } from "@/components/AuthGate"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductCard } from "@/features/home/components/ProductCard"
-import { Link } from "@/i18n/navigation"
+import { EmptyState } from "@/components/EmptyState"
 import { useFavoritesPage } from "../hooks/useFavoritesPage"
 
 function FavoritesGridSkeleton() {
@@ -46,25 +46,16 @@ export function FavoritesPage() {
 
   if (products.length === 0) {
     return (
-      <div className="wrapper py-24 flex flex-col items-center gap-6 text-center">
-        <div className="relative">
-          <div className="size-24 rounded-full bg-rose-50 flex items-center justify-center">
-            <Heart className="size-10 text-rose-300" />
-          </div>
-          <div className="absolute -bottom-1 -inset-e-1 size-8 rounded-full bg-muted border-2 border-background flex items-center justify-center">
-            <ShoppingBag className="size-4 text-muted-foreground" />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold">{t("empty")}</h2>
-          <p className="text-muted-foreground text-sm max-w-xs">{t("emptyDesc")}</p>
-        </div>
-        <Link
-          href="/products"
-          className="inline-flex items-center justify-center rounded-full px-8 h-11 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold transition-colors"
-        >
-          {t("shopNow")}
-        </Link>
+      <div className="wrapper py-24">
+        <EmptyState
+          icon={Heart}
+          iconClassName="text-rose-300"
+          iconBgClassName="bg-rose-50"
+          badgeIcon={ShoppingBag}
+          title={t("empty")}
+          description={t("emptyDesc")}
+          action={{ label: t("shopNow"), href: "/products" }}
+        />
       </div>
     )
   }

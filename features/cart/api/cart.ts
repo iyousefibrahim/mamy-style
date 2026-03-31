@@ -33,6 +33,7 @@ export async function addToCart(
   const { data: existing } = await supabase
     .from("cart_items")
     .select("id, quantity")
+    .eq("user_id", userId)
     .eq("product_id", productId)
     .eq("color", color ?? "")
     .eq("size", size ?? "")
@@ -54,28 +55,34 @@ export async function addToCart(
 
 export async function removeFromCart(productId: string): Promise<void> {
   const supabase = createClient()
+  const userId = await getCurrentUserId()
   const { error } = await supabase
     .from("cart_items")
     .delete()
     .eq("product_id", productId)
+    .eq("user_id", userId)
   if (error) throw error
 }
 
 export async function updateCartItemQuantity(cartItemId: string, quantity: number): Promise<void> {
   const supabase = createClient()
+  const userId = await getCurrentUserId()
   const { error } = await supabase
     .from("cart_items")
     .update({ quantity })
     .eq("id", cartItemId)
+    .eq("user_id", userId)
   if (error) throw error
 }
 
 export async function removeCartItem(cartItemId: string): Promise<void> {
   const supabase = createClient()
+  const userId = await getCurrentUserId()
   const { error } = await supabase
     .from("cart_items")
     .delete()
     .eq("id", cartItemId)
+    .eq("user_id", userId)
   if (error) throw error
 }
 

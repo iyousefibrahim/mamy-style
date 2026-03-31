@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { hostname: "picsum.photos" },
       { hostname: "images.unsplash.com" },
+      { hostname: "ohiezynaovfjwdvvsgyl.supabase.co" },
     ],
   },
 }

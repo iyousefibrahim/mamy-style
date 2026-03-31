@@ -14,20 +14,24 @@ import { Input } from "@/components/ui/input"
 import { governorates, useGeo } from "../hooks/useGeo"
 import type { AddressValues } from "../hooks/useCheckout"
 
-const schema = z.object({
-  governorateId: z.coerce.number().min(1, "Please select a governorate"),
-  cityId: z.coerce.number().min(1, "Please select a city"),
-  address_line: z.string().min(5, "Address must be at least 5 characters"),
-  phone: z.string().superRefine((val, ctx) => {
-    if (!val) {
-      ctx.addIssue({ code: "custom", message: "Phone number is required" })
-      return
-    }
-    if (!/^(\+?20|0)1[0125]\d{8}$/.test(val)) {
-      ctx.addIssue({ code: "custom", message: "Must be a valid Egyptian number (e.g. 01012345678)" })
-    }
-  }),
-})
+type TFn = (key: string) => string
+
+function getAddressSchema(t: TFn) {
+  return z.object({
+    governorateId: z.coerce.number().min(1, t("selectGovernorateError")),
+    cityId: z.coerce.number().min(1, t("selectCityError")),
+    address_line: z.string().min(5, t("addressMin")),
+    phone: z.string().superRefine((val, ctx) => {
+      if (!val) {
+        ctx.addIssue({ code: "custom", message: t("phoneRequired") })
+        return
+      }
+      if (!/^(\+?20|0)1[0125]\d{8}$/.test(val)) {
+        ctx.addIssue({ code: "custom", message: t("phoneInvalid") })
+      }
+    }),
+  })
+}
 
 type Props = {
   defaultValues?: AddressValues | null
@@ -39,6 +43,8 @@ export function AddressForm({ defaultValues, isFreeShipping, onSubmit }: Props) 
   const t = useTranslations("checkout")
   const locale = useLocale()
   const isAr = locale === "ar"
+
+  const schema = getAddressSchema(t)
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema) as Resolver<z.infer<typeof schema>>,

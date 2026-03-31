@@ -251,8 +251,7 @@
       "admin": "مسؤول",
       "superAdmin": "مسؤول عام",
       "customer": "عميل",
-      "saving": "جارٍ الحفظ...",
-      "save": "حفظ"
+      "saving": "جارٍ الحفظ..."
     },
     "coupons": {
       "title": "الكوبونات",
@@ -517,11 +516,16 @@
     "stepReview": "مراجعة وادفع",
     "governorate": "المحافظة",
     "selectGovernorate": "اختر المحافظة...",
+    "selectGovernorateError": "يرجى اختيار المحافظة",
     "city": "المدينة",
     "selectCity": "اختر المدينة...",
+    "selectCityError": "يرجى اختيار المدينة",
     "addressLine": "عنوان الشارع",
     "addressPlaceholder": "اسم الشارع، رقم المبنى...",
+    "addressMin": "يجب أن يكون العنوان 5 أحرف على الأقل",
     "phone": "رقم الهاتف",
+    "phoneRequired": "رقم الهاتف مطلوب",
+    "phoneInvalid": "يجب أن يكون رقم هاتف مصري صحيح (مثال: 01012345678)",
     "shippingFree": "الشحن مجاني!",
     "shippingLocal": "توصيل لبلطيم — {fee} جنيه (مدفوع الآن)",
     "shippingNational": "توصيل — {fee} جنيه (مدفوع لشركة الشحن عند الاستلام)",

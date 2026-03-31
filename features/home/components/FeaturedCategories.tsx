@@ -41,7 +41,7 @@ export function FeaturedCategories({ categories, isLoading }: Props) {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
           {isLoading
             ? Array.from({ length: 4 }).map((_, i) => <CategorySkeleton key={i} />)
             : categories.map((cat) => <CategoryCard key={cat.id} category={cat} />)

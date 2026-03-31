@@ -1,13 +1,26 @@
 import { getTranslations } from "next-intl/server"
+import dynamic from "next/dynamic"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
+import { Skeleton } from "@/components/ui/skeleton"
 import { StatsCards } from "@/features/dashboard/components/overview/StatsCards"
-import { ProductsByCategoryChart } from "@/features/dashboard/components/overview/ProductsByCategoryChart"
-import { StockByCategoryChart } from "@/features/dashboard/components/overview/StockByCategoryChart"
 import { LowStockAlert } from "@/features/dashboard/components/overview/LowStockAlert"
-import { NewProductsChart } from "@/features/dashboard/components/overview/NewProductsChart"
 import { FastActions } from "@/features/dashboard/components/overview/FastActions"
 import { fetchOverviewData } from "@/features/dashboard/api/overview.server"
+
+// Lazy-load recharts-heavy chart components — reduces initial JS bundle for admin
+const ProductsByCategoryChart = dynamic(
+  () => import("@/features/dashboard/components/overview/ProductsByCategoryChart").then((m) => m.ProductsByCategoryChart),
+  { loading: () => <Skeleton className="h-75 w-full rounded-xl" /> }
+)
+const StockByCategoryChart = dynamic(
+  () => import("@/features/dashboard/components/overview/StockByCategoryChart").then((m) => m.StockByCategoryChart),
+  { loading: () => <Skeleton className="h-75 w-full rounded-xl" /> }
+)
+const NewProductsChart = dynamic(
+  () => import("@/features/dashboard/components/overview/NewProductsChart").then((m) => m.NewProductsChart),
+  { loading: () => <Skeleton className="h-75 w-full rounded-xl" /> }
+)
 
 function getGreeting(t: (key: string) => string) {
   const hour = new Date().getHours()

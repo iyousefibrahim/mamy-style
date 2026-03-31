@@ -16,15 +16,18 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useCurrentProfile, useUpdateProfile } from "@/features/dashboard/hooks/useProfile"
-import { updateProfileSchema, type UpdateProfileFormValues } from "@/features/dashboard/types"
+import { getUpdateProfileSchema, type UpdateProfileFormValues } from "@/features/dashboard/types"
 
 export function ProfileInfoForm() {
   const t = useTranslations("profile")
+  const tv = useTranslations("validation")
   const { data: profile } = useCurrentProfile()
   const updateProfile = useUpdateProfile()
 
+  const schema = getUpdateProfileSchema(tv)
+
   const form = useForm<UpdateProfileFormValues>({
-    resolver: zodResolver(updateProfileSchema),
+    resolver: zodResolver(schema),
     defaultValues: { firstName: "", lastName: "", username: "", email: "", phone: "" },
   })
 

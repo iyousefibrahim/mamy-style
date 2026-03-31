@@ -74,7 +74,7 @@ export function ContactSection() {
             <div className="rounded-2xl overflow-hidden border">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2979.330441574173!2d31.094285599999996!3d31.5546411!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f73de92d23142b%3A0x30e3dd6a6ebc61b5!2sMamy%20Style!5e1!3m2!1sar!2seg!4v1773661099029!5m2!1sar!2seg"
-                className="w-full h-85"
+                className="w-full h-48 sm:h-64 md:h-85"
                 loading="lazy"
                 allowFullScreen
                 title="Store location"

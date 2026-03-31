@@ -17,11 +17,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { updateProfileSchema, type UpdateProfileFormValues } from "../../types"
+import { getUpdateProfileSchema, type UpdateProfileFormValues } from "../../types"
 import { useCurrentProfile, useUpdateProfile } from "@/features/dashboard/hooks/useProfile"
 
 export function ProfileForm() {
   const t = useTranslations("dashboard.settings")
+  const tv = useTranslations("validation")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { data: profile, isLoading } = useCurrentProfile()
@@ -33,7 +34,7 @@ export function ProfileForm() {
   const [firstName, lastName] = (profile?.full_name ?? "").split(" ")
 
   const form = useForm<UpdateProfileFormValues>({
-    resolver: zodResolver(updateProfileSchema),
+    resolver: zodResolver(getUpdateProfileSchema(tv)),
     defaultValues: {
       firstName: "",
       lastName: "",

@@ -1,8 +1,10 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { Package, Search } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ProductCard } from "@/features/home/components/ProductCard"
+import { EmptyState } from "@/components/EmptyState"
 import type { Product } from "@/features/dashboard/types"
 import { PRODUCTS_PAGE_SIZE } from "../api/products"
 
@@ -41,10 +43,13 @@ export function ProductsGrid({ products, isLoading, onToggleFavorite, isFavorite
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-24 flex flex-col items-center gap-2">
-        <p className="text-lg font-semibold">{t("noResults")}</p>
-        <p className="text-muted-foreground text-sm">{t("noResultsDesc")}</p>
-      </div>
+      <EmptyState
+        icon={Package}
+        badgeIcon={Search}
+        title={t("noResults")}
+        description={t("noResultsDesc")}
+        className="py-16"
+      />
     )
   }
 

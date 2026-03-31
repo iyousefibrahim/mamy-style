@@ -16,17 +16,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { updatePasswordSchema, type UpdatePasswordFormValues } from "../../types"
+import { getUpdatePasswordSchema, type UpdatePasswordFormValues } from "../../types"
 import { createClient } from "@/lib/supabase/client"
 
 export function SecurityForm() {
   const t = useTranslations("dashboard.settings")
+  const tv = useTranslations("validation")
   const [showCurrent, setShowCurrent] = useState(false)
   const [showNew, setShowNew] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
 
   const form = useForm<UpdatePasswordFormValues>({
-    resolver: zodResolver(updatePasswordSchema),
+    resolver: zodResolver(getUpdatePasswordSchema(tv)),
     defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
   })
 

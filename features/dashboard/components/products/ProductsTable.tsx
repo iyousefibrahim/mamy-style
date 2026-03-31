@@ -117,7 +117,7 @@ export function ProductsTable() {
       </div>
 
       {/* Table */}
-      <div className="rounded-md border" dir="ltr">
+      <div className="rounded-md border overflow-x-auto" dir="ltr">
         <Table>
           <TableHeader>
             <TableRow>

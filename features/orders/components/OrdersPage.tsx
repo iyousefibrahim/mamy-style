@@ -4,8 +4,9 @@ import { Suspense, useEffect, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
-import { Lock, PackageOpen } from "lucide-react"
+import { Lock, PackageOpen, ShoppingBag } from "lucide-react"
 import { Link } from "@/i18n/navigation"
+import { EmptyState } from "@/components/EmptyState"
 import { Skeleton } from "@/components/ui/skeleton"
 import { OrderCard } from "./OrderCard"
 import { useOrders } from "../hooks/useOrders"
@@ -61,18 +62,16 @@ export function OrdersPage() {
 
   if (orders.length === 0) {
     return (
-      <div className="wrapper py-24 flex flex-col items-center gap-4 text-center">
-        <div className="size-16 rounded-full bg-muted flex items-center justify-center">
-          <PackageOpen className="size-7 text-muted-foreground" />
-        </div>
-        <h2 className="text-xl font-bold">{t("empty")}</h2>
-        <p className="text-muted-foreground text-sm">{t("emptyDesc")}</p>
-        <Link
-          href="/products"
-          className="inline-flex items-center justify-center rounded-full px-8 h-10 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium transition-colors"
-        >
-          {t("shopNow")}
-        </Link>
+      <div className="wrapper py-24">
+        <EmptyState
+          icon={PackageOpen}
+          iconClassName="text-primary/50"
+          iconBgClassName="bg-primary/10"
+          badgeIcon={ShoppingBag}
+          title={t("empty")}
+          description={t("emptyDesc")}
+          action={{ label: t("shopNow"), href: "/products" }}
+        />
       </div>
     )
   }

@@ -1,9 +1,10 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Package } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { ProductCard } from "./ProductCard"
+import { EmptyState } from "@/components/EmptyState"
 import type { Product } from "../types"
 
 type Props = {
@@ -40,13 +41,17 @@ export function FeaturedProducts({ products, isLoading, onToggleFavorite, isFavo
           <h2 className="text-4xl font-extrabold tracking-tight">{t("products.title")}</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)
             : products.length === 0
             ? (
-              <div className="col-span-full text-center py-16 text-muted-foreground">
-                {t("products.noResults")}
+              <div className="col-span-full">
+                <EmptyState
+                  icon={Package}
+                  title={t("products.noResults")}
+                  className="py-16"
+                />
               </div>
             )
             : products.map((product) => (

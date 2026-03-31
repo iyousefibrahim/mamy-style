@@ -35,7 +35,8 @@ export async function GET(req: NextRequest) {
         .eq("id", merchantOrderId)
 
       if (error) console.error("[callback] Supabase update error:", error)
-      await sendOrderWhatsApp(merchantOrderId)
+      // Fire-and-forget — don't block the redirect on WhatsApp notification
+      sendOrderWhatsApp(merchantOrderId).catch((e) => console.error("[callback] WhatsApp error:", e))
     }
   } catch (err) {
     console.error("[callback] Unexpected error:", err)

@@ -33,7 +33,7 @@ export function SimilarProducts({ productId, categoryName }: Props) {
   return (
     <section className="mt-16">
       <h2 className="text-2xl font-bold mb-6">{t("similarProducts")}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         {isLoading
           ? Array.from({ length: 4 }).map((_, i) => <SimilarSkeleton key={i} />)
           : products.slice(0, 8).map((product) => (

@@ -1,9 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ShoppingCart } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import { ShoppingCart, Package } from "lucide-react";
 import { AuthGate } from "@/components/AuthGate";
+import { EmptyState } from "@/components/EmptyState";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -56,8 +56,8 @@ export function CartPage() {
     return (
       <div className="wrapper py-8">
         <Skeleton className="h-8 w-40 mb-8" />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="md:col-span-2">
             {Array.from({ length: 3 }).map((_, i) => (
               <CartSkeleton key={i} />
             ))}
@@ -71,18 +71,16 @@ export function CartPage() {
   // Empty
   if (items.length === 0) {
     return (
-      <div className="wrapper py-24 flex flex-col items-center gap-4 text-center">
-        <div className="size-16 rounded-full bg-muted flex items-center justify-center">
-          <ShoppingCart className="size-7 text-muted-foreground" />
-        </div>
-        <h2 className="text-xl font-bold">{t("empty")}</h2>
-        <p className="text-muted-foreground text-sm">{t("emptyDesc")}</p>
-        <Link
-          href="/products"
-          className="inline-flex items-center justify-center rounded-full px-8 h-10 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium transition-colors mt-2"
-        >
-          {t("shopNow")}
-        </Link>
+      <div className="wrapper py-24">
+        <EmptyState
+          icon={ShoppingCart}
+          iconClassName="text-primary/50"
+          iconBgClassName="bg-primary/10"
+          badgeIcon={Package}
+          title={t("empty")}
+          description={t("emptyDesc")}
+          action={{ label: t("shopNow"), href: "/products" }}
+        />
       </div>
     );
   }
@@ -129,9 +127,9 @@ export function CartPage() {
         </AlertDialog>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         {/* Items */}
-        <div className="lg:col-span-2">
+        <div className="md:col-span-2">
           {items.map((item) => (
             <CartItemRow
               key={item.id}

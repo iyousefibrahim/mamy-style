@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+type TFn = (key: string) => string
+
 // ─── Product ────────────────────────────────────────────────────────────────
 
 export const createProductSchema = z.object({
@@ -30,45 +32,47 @@ export type CreateCategoryFormValues = z.infer<typeof createCategorySchema>
 
 // ─── Profile ────────────────────────────────────────────────────────────────
 
-export const updateProfileSchema = z.object({
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.string().email(),
-  username: z
-    .string()
-    .min(3)
-    .max(20)
-    .superRefine((val, ctx) => {
-      if (!/^[a-zA-Z0-9_]+$/.test(val)) {
-        ctx.addIssue({ code: "custom", message: "Only letters, numbers, and underscores allowed" })
-      }
-    }),
-  phone: z.union([
-    z.string().superRefine((val, ctx) => {
-      if (!/^(\+?20|0)1[0125]\d{8}$/.test(val)) {
-        ctx.addIssue({ code: "custom", message: "Must be a valid Egyptian number" })
-      }
-    }),
-    z.literal(""),
-  ]).optional(),
-})
+export const getUpdateProfileSchema = (t: TFn) =>
+  z.object({
+    firstName: z.string().min(1, t("firstNameRequired")),
+    lastName: z.string().min(1, t("lastNameRequired")),
+    email: z.string().min(1, t("emailRequired")),
+    username: z
+      .string()
+      .min(3, t("usernameMin"))
+      .max(20, t("usernameMax"))
+      .superRefine((val, ctx) => {
+        if (!/^[a-zA-Z0-9_]+$/.test(val)) {
+          ctx.addIssue({ code: "custom", message: t("usernameInvalid") })
+        }
+      }),
+    phone: z.union([
+      z.string().superRefine((val, ctx) => {
+        if (!/^(\+?20|0)1[0125]\d{8}$/.test(val)) {
+          ctx.addIssue({ code: "custom", message: t("phoneInvalid") })
+        }
+      }),
+      z.literal(""),
+    ]).optional(),
+  })
 
-export type UpdateProfileFormValues = z.infer<typeof updateProfileSchema>
+export type UpdateProfileFormValues = z.infer<ReturnType<typeof getUpdateProfileSchema>>
 
 // ─── Password ───────────────────────────────────────────────────────────────
 
-export const updatePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(8),
-    newPassword: z.string().min(8),
-    confirmPassword: z.string().min(8),
-  })
-  .refine((d) => d.newPassword === d.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  })
+export const getUpdatePasswordSchema = (t: TFn) =>
+  z
+    .object({
+      currentPassword: z.string().min(1, t("passwordRequired")).min(8, t("passwordMin")),
+      newPassword: z.string().min(1, t("passwordRequired")).min(8, t("passwordMin")),
+      confirmPassword: z.string().min(1, t("confirmPasswordRequired")),
+    })
+    .refine((d) => d.newPassword === d.confirmPassword, {
+      message: t("passwordsMismatch"),
+      path: ["confirmPassword"],
+    })
 
-export type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>
+export type UpdatePasswordFormValues = z.infer<ReturnType<typeof getUpdatePasswordSchema>>
 
 // ─── DB row types (returned from Supabase) ───────────────────────────────────
 
