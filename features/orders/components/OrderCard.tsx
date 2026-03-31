@@ -6,18 +6,24 @@ import { useTranslations, useLocale } from "next-intl"
 import { ChevronDown, ShoppingBag, CreditCard } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { useCurrentUser } from "@/features/auth/hooks/useAuth"
+import { useCancelOrder } from "@/features/orders/hooks/useCancelOrder"
 import type { OrderWithItems, OrderStatus } from "@/features/dashboard/types"
 import { formatDateShort } from "@/utils/formatDate"
 import { redirectToPaymob } from "@/lib/paymob/initiate"
 
 const STATUS_STYLES: Record<OrderStatus, string> = {
-  pending_payment: "bg-yellow-100 text-yellow-700",
-  confirmed:       "bg-blue-100 text-blue-700",
-  processing:      "bg-purple-100 text-purple-700",
-  shipped:         "bg-orange-100 text-orange-700",
-  delivered:       "bg-green-100 text-green-700",
-  cancelled:       "bg-red-100 text-red-700",
+  pending_payment:        "bg-yellow-100 text-yellow-700",
+  confirmed:              "bg-blue-100 text-blue-700",
+  processing:             "bg-purple-100 text-purple-700",
+  shipped:                "bg-orange-100 text-orange-700",
+  delivered:              "bg-green-100 text-green-700",
+  cancelled:              "bg-red-100 text-red-700",
+  cancellation_requested: "bg-orange-100 text-orange-700",
 }
 
 type Props = { order: OrderWithItems }
@@ -28,11 +34,19 @@ export function OrderCard({ order }: Props) {
   const { data: user } = useCurrentUser()
   const [open, setOpen] = useState(false)
   const [isPaying, setIsPaying] = useState(false)
+  const [showCancelDialog, setShowCancelDialog] = useState(false)
+  const { cancel, isPending: isCancelling } = useCancelOrder(order.id)
 
   const date = formatDateShort(order.created_at)
 
   const canRetryPayment =
     order.status === "pending_payment" && order.payment_method === "online"
+
+  const canCancel =
+    order.status === "pending_payment" || order.status === "confirmed"
+
+  const isOnlineRefund =
+    order.status === "confirmed" && order.payment_method === "online"
 
   async function handleRetryPayment() {
     setIsPaying(true)
@@ -66,6 +80,16 @@ export function OrderCard({ order }: Props) {
     } catch {
       toast.error(t("retryFailed"))
       setIsPaying(false)
+    }
+  }
+
+  async function handleConfirmCancel() {
+    setShowCancelDialog(false)
+    try {
+      await cancel()
+      toast.success(t("cancelSuccess"))
+    } catch {
+      toast.error(t("cancelError"))
     }
   }
 
@@ -103,6 +127,20 @@ export function OrderCard({ order }: Props) {
           >
             <CreditCard className="size-3.5" />
             {isPaying ? t("redirecting") : t("payNow")}
+          </Button>
+        </div>
+      )}
+
+      {/* Cancel button */}
+      {canCancel && (
+        <div className="border-t px-4 py-3 flex justify-end">
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-destructive border-destructive/30 hover:bg-destructive/5 cursor-pointer"
+            onClick={() => setShowCancelDialog(true)}
+          >
+            {t("cancelOrder")}
           </Button>
         </div>
       )}
@@ -146,6 +184,28 @@ export function OrderCard({ order }: Props) {
           </div>
         </div>
       )}
+
+      {/* Cancel confirmation dialog */}
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("cancelOrder")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {isOnlineRefund ? t("cancelConfirmOnline") : t("cancelConfirm")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("keepOrder")}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-white hover:bg-destructive/90"
+              disabled={isCancelling}
+              onClick={handleConfirmCancel}
+            >
+              {t("cancelOrder")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

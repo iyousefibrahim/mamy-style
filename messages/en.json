@@ -308,7 +308,8 @@
         "processing": "Processing",
         "shipped": "Shipped",
         "delivered": "Delivered",
-        "cancelled": "Cancelled"
+        "cancelled": "Cancelled",
+        "cancellation_requested": "Cancellation Requested"
       }
     }
   },
@@ -562,13 +563,20 @@
     "redirecting": "Redirecting...",
     "retryFailed": "Could not initiate payment. Please try again.",
     "paymentFailed": "Payment was not completed. Please try again.",
+    "cancelOrder": "Cancel Order",
+    "cancelConfirm": "Are you sure you want to cancel this order?",
+    "cancelConfirmOnline": "A refund request will be submitted. Our team will process your refund within 3–5 business days.",
+    "keepOrder": "Keep Order",
+    "cancelSuccess": "Order cancelled successfully.",
+    "cancelError": "Could not cancel this order.",
     "status": {
       "pending_payment": "Pending Payment",
       "confirmed": "Confirmed",
       "processing": "Processing",
       "shipped": "Shipped",
       "delivered": "Delivered",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "cancellation_requested": "Cancellation Requested"
     }
   }
 }

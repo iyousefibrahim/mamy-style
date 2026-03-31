@@ -128,7 +128,7 @@ export type PaginatedResult<T> = {
 
 // ─── Orders ─────────────────────────────────────────────────────────────────
 
-export type OrderStatus = 'pending_payment' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+export type OrderStatus = 'pending_payment' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'cancellation_requested'
 export type ShippingType = 'local' | 'national'
 export type PaymentMethod = 'online' | 'cod'
 

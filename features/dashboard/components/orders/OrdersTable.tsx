@@ -28,16 +28,17 @@ import type { OrderStatus } from "@/features/dashboard/types"
 import type { DashboardOrder } from "@/features/dashboard/api/orders.server"
 
 const STATUS_DOT: Record<OrderStatus, string> = {
-  pending_payment: "bg-muted-foreground",
-  confirmed:       "bg-blue-500",
-  processing:      "bg-yellow-500",
-  shipped:         "bg-purple-500",
-  delivered:       "bg-green-500",
-  cancelled:       "bg-destructive",
+  pending_payment:        "bg-muted-foreground",
+  confirmed:              "bg-blue-500",
+  processing:             "bg-yellow-500",
+  shipped:                "bg-purple-500",
+  delivered:              "bg-green-500",
+  cancelled:              "bg-destructive",
+  cancellation_requested: "bg-orange-400",
 }
 
 const ALL_STATUSES: OrderStatus[] = [
-  "pending_payment", "confirmed", "processing", "shipped", "delivered", "cancelled",
+  "pending_payment", "confirmed", "processing", "shipped", "delivered", "cancelled", "cancellation_requested",
 ]
 
 type Props = { orders: DashboardOrder[]; page: number; totalPages: number }

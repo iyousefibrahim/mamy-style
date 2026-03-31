@@ -308,7 +308,8 @@
         "processing": "قيد المعالجة",
         "shipped": "تم الشحن",
         "delivered": "تم التوصيل",
-        "cancelled": "ملغي"
+        "cancelled": "ملغي",
+        "cancellation_requested": "طلب إلغاء"
       }
     }
   },
@@ -562,13 +563,20 @@
     "redirecting": "جاري التحويل...",
     "retryFailed": "تعذر بدء الدفع. حاول مرة أخرى.",
     "paymentFailed": "لم يتم إتمام الدفع. حاول مرة أخرى.",
+    "cancelOrder": "إلغاء الطلب",
+    "cancelConfirm": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
+    "cancelConfirmOnline": "سيتم تقديم طلب استرداد. سيقوم فريقنا بمعالجة استرداد أموالك خلال 3-5 أيام عمل.",
+    "keepOrder": "الإبقاء على الطلب",
+    "cancelSuccess": "تم إلغاء الطلب بنجاح.",
+    "cancelError": "تعذر إلغاء هذا الطلب.",
     "status": {
       "pending_payment": "في انتظار الدفع",
       "confirmed": "مؤكد",
       "processing": "قيد المعالجة",
       "shipped": "تم الشحن",
       "delivered": "تم التوصيل",
-      "cancelled": "ملغي"
+      "cancelled": "ملغي",
+      "cancellation_requested": "طلب إلغاء"
     }
   }
 }
