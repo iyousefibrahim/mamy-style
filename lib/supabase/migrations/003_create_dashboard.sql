@@ -71,10 +71,10 @@ END $$;
 -- ══════════════════════════════════════════════════════════
 
 -- Replace handle_new_user to sync username, role, status on registration
-CREATE OR REPLACE FUNCTION handle_new_user()
+CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
-  INSERT INTO profiles (id, full_name, email, username, role, status)
+  INSERT INTO public.profiles (id, full_name, email, username, role, status)
   VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'full_name', ''),
@@ -85,10 +85,12 @@ BEGIN
   )
   ON CONFLICT (id) DO UPDATE SET
     email     = EXCLUDED.email,
-    full_name = COALESCE(EXCLUDED.full_name, profiles.full_name);
+    full_name = COALESCE(EXCLUDED.full_name, public.profiles.full_name);
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+-- SET search_path = public is required: the trigger fires from the auth schema
+-- and without it Postgres looks for "profiles" in auth schema and fails.
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created

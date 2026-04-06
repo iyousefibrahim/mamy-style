@@ -123,7 +123,7 @@ export function HomeFooter() {
       {/* Bottom bar */}
       <div className="border-t">
         <div className="wrapper py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground" suppressHydrationWarning>
             © {new Date().getFullYear()} Mamy Style. {t("footer.rights")}
           </p>
           <div className="flex items-center gap-4">
