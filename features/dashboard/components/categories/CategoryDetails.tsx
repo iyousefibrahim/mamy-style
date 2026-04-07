@@ -1,4 +1,4 @@
-import { Package, Eye, Calendar } from "lucide-react"
+import { Eye, Calendar, Package } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Category } from "@/features/dashboard/types"
 import { getTranslations } from "next-intl/server"
@@ -10,8 +10,23 @@ export async function CategoryDetails({ category: c }: Props) {
   const t = await getTranslations("dashboard.categories")
 
   return (
-    <div className="flex justify-end">
-      <Card className="w-full max-w-xs">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px] items-start">
+      {/* Left — image */}
+      <Card>
+        <CardContent className="p-4 flex items-center justify-center min-h-75 bg-muted/30">
+          {c.image_url ? (
+            <img src={c.image_url} alt={c.name} className="max-h-80 object-contain" />
+          ) : (
+            <div className="flex flex-col items-center gap-2 text-muted-foreground">
+              <Package className="size-16 opacity-30" />
+              <p className="text-sm">{t("noImageSelected")}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Right — stats */}
+      <Card>
         <CardContent className="p-0 divide-y">
           <div className="p-4">
             <p className="text-xs text-muted-foreground mb-2">{t("products")}</p>
@@ -56,3 +71,4 @@ export async function CategoryDetails({ category: c }: Props) {
     </div>
   )
 }
+
