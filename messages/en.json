@@ -188,11 +188,14 @@
       "colCreatedAt": "Created At",
       "colActions": "Actions",
       "ban": "Ban",
+      "unban": "Unban",
       "makeAdmin": "Make Admin",
       "removeAdmin": "Remove Admin",
       "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
       "delete": "Delete",
-      "comingSoon": "Coming soon"
+      "comingSoon": "Coming soon",
+      "you": "You"
     },
     "settings": {
       "title": "Profile Settings",

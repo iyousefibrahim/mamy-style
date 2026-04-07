@@ -24,7 +24,7 @@ export async function LowStockAlert() {
               <p className="text-sm font-medium leading-none">{p.name}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{t("stockRemaining")}</p>
             </div>
-            <Badge variant={p.stock < 5 ? "destructive" : "secondary"} className="shrink-0">
+            <Badge variant={p.stock < 5 ? "destructive" : "outline"} className="shrink-0">
               {p.stock} {t("units")}
             </Badge>
           </div>

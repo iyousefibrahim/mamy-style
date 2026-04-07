@@ -188,11 +188,14 @@
       "colCreatedAt": "تاريخ التسجيل",
       "colActions": "الإجراءات",
       "ban": "حظر",
+      "unban": "رفع الحظر",
       "makeAdmin": "تعيين مسؤولاً",
       "removeAdmin": "إزالة الصلاحيات",
       "deactivate": "تعطيل",
+      "reactivate": "إعادة تفعيل",
       "delete": "حذف",
-      "comingSoon": "قريباً"
+      "comingSoon": "قريباً",
+      "you": "أنت"
     },
     "settings": {
       "title": "إعدادات الملف الشخصي",

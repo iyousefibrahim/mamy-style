@@ -35,7 +35,10 @@ import {
   useUpdateUserRole,
   useUpdateUserStatus,
 } from "@/features/dashboard/hooks/useUsers"
+import { useCurrentUser } from "@/features/auth/hooks/useAuth"
+import type { UserProfile } from "@/features/dashboard/types"
 import { getPageItems, PAGE_SIZE } from "@/utils/pagination"
+import { maskEmail } from "@/features/dashboard/utils/maskEmail"
 
 
 export function UsersTable() {
@@ -58,6 +61,7 @@ export function UsersTable() {
   const users = result?.data ?? []
   const totalPages = Math.ceil((result?.total ?? 0) / PAGE_SIZE)
 
+  const { data: currentUser } = useCurrentUser()
   const updateRole = useUpdateUserRole()
   const updateStatus = useUpdateUserStatus()
 
@@ -75,16 +79,18 @@ export function UsersTable() {
     })
   }
 
-  function handleBan(id: string) {
-    updateStatus.mutate({ id, status: "banned" }, {
-      onSuccess: () => toast.success(t("ban")),
+  function handleBanToggle(id: string, status: UserProfile["status"]) {
+    const newStatus = status === "banned" ? "active" : "banned"
+    updateStatus.mutate({ id, status: newStatus }, {
+      onSuccess: () => toast.success(t(newStatus === "banned" ? "ban" : "unban")),
       onError: (err) => toast.error(err.message),
     })
   }
 
-  function handleDeactivate(id: string) {
-    updateStatus.mutate({ id, status: "inactive" }, {
-      onSuccess: () => toast.success(t("deactivate")),
+  function handleDeactivateToggle(id: string, status: UserProfile["status"]) {
+    const newStatus = status === "inactive" ? "active" : "inactive"
+    updateStatus.mutate({ id, status: newStatus }, {
+      onSuccess: () => toast.success(t(newStatus === "inactive" ? "deactivate" : "reactivate")),
       onError: (err) => toast.error(err.message),
     })
   }
@@ -169,7 +175,7 @@ export function UsersTable() {
                       <span className="font-medium">{u.full_name}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                  <TableCell className="text-muted-foreground">{maskEmail(u.email)}</TableCell>
                   <TableCell>{u.username}</TableCell>
                   <TableCell>{getRoleLabel(u.role)}</TableCell>
                   <TableCell>
@@ -190,41 +196,45 @@ export function UsersTable() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-1 flex-wrap">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={updateStatus.isPending}
-                        onClick={() => handleBan(u.id)}
-                      >
-                        {t("ban")}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={updateRole.isPending}
-                        onClick={() => handleRoleToggle(u.id, u.role)}
-                      >
-                        {u.role === "admin" || u.role === "super-admin"
-                          ? t("removeAdmin")
-                          : t("makeAdmin")}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={updateStatus.isPending}
-                        onClick={() => handleDeactivate(u.id)}
-                      >
-                        {t("deactivate")}
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => toast.info(t("comingSoon"))}
-                      >
-                        {tc("delete")}
-                      </Button>
-                    </div>
+                    {u.id === currentUser?.id ? (
+                      <span className="text-xs text-muted-foreground">{t("you")}</span>
+                    ) : (
+                      <div className="flex items-center gap-1 flex-wrap">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={updateStatus.isPending}
+                          onClick={() => handleBanToggle(u.id, u.status)}
+                        >
+                          {u.status === "banned" ? t("unban") : t("ban")}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={updateRole.isPending}
+                          onClick={() => handleRoleToggle(u.id, u.role)}
+                        >
+                          {u.role === "admin" || u.role === "super-admin"
+                            ? t("removeAdmin")
+                            : t("makeAdmin")}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          disabled={updateStatus.isPending}
+                          onClick={() => handleDeactivateToggle(u.id, u.status)}
+                        >
+                          {u.status === "inactive" ? t("reactivate") : t("deactivate")}
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => toast.info(t("comingSoon"))}
+                        >
+                          {tc("delete")}
+                        </Button>
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))
