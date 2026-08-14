@@ -350,6 +350,7 @@
     "products": {
       "title": "Featured Products",
       "subtitle": "Handpicked for you",
+      "noResults": "No products found",
       "viewAll": "View All Products",
       "addToCart": "Add to Cart",
       "off": "off",
